@@ -3,13 +3,8 @@ import { BRAND, whatsappLink } from "@/data/catalog";
 /**
  * Lead capture contract.
  *
- * Every form on the site (catalogue, corporate, bulk quote, product enquiry,
- * contact) produces a `Lead` in this shape so it can be forwarded to a CRM
- * without reshaping the payload.
- *
- * Today `submitLead` opens a pre-filled WhatsApp message to the studio (the
- * channel Giftory already uses). To add a second destination later, keep this
- * payload and POST it to a sheet / CRM / email from the same function.
+ * Every form produces a `Lead`. `submitLead` emails it via Google Apps Script
+ * (Gmail) and opens a pre-filled WhatsApp message at the same time.
  */
 
 export type LeadSource =
@@ -79,10 +74,29 @@ export function formatLeadWhatsApp(lead: Lead) {
 export async function submitLead(lead: Lead): Promise<LeadResult> {
   try {
     if (import.meta.env.DEV) console.info("[lead]", lead);
-    // WhatsApp is the live destination until a CRM is connected.
+
     if (typeof window !== "undefined") {
       window.open(whatsappLink(formatLeadWhatsApp(lead)), "_blank", "noopener,noreferrer");
     }
+
+    const scriptUrl = import.meta.env.VITE_LEADS_SCRIPT_URL?.trim();
+    const token = import.meta.env.VITE_LEADS_TOKEN?.trim();
+    if (!scriptUrl) {
+      if (import.meta.env.DEV) {
+        console.warn("[lead] VITE_LEADS_SCRIPT_URL is empty — Gmail was skipped. Put the URL in .env (not .env.example) and restart npm run dev.");
+      }
+      return { ok: true };
+    }
+
+    // Google turns form POSTs into GET after redirect, so send as GET with payload.
+    const url = new URL(scriptUrl);
+    url.searchParams.set("payload", JSON.stringify({ token, ...lead }));
+    fetch(url.toString(), { method: "GET", mode: "no-cors", keepalive: true }).catch(() => undefined);
+    if (typeof Image !== "undefined") {
+      const beacon = new Image();
+      beacon.src = url.toString();
+    }
+
     return { ok: true };
   } catch {
     return { ok: false, error: "We couldn't send your details. Please try again." };
