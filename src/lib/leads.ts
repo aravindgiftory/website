@@ -88,14 +88,9 @@ export async function submitLead(lead: Lead): Promise<LeadResult> {
       return { ok: true };
     }
 
-    // Google turns form POSTs into GET after redirect, so send as GET with payload.
     const url = new URL(scriptUrl);
     url.searchParams.set("payload", JSON.stringify({ token, ...lead }));
     fetch(url.toString(), { method: "GET", mode: "no-cors", keepalive: true }).catch(() => undefined);
-    if (typeof Image !== "undefined") {
-      const beacon = new Image();
-      beacon.src = url.toString();
-    }
 
     return { ok: true };
   } catch {
