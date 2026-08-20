@@ -1,0 +1,6 @@
+Product photos go here, named by slug:
+
+  brass-crystal-lotus-diya.jpg
+
+Then set image: productPhoto("brass-crystal-lotus-diya") on that product.
+Extra gallery shots: {slug}-2.jpg, {slug}-3.jpg

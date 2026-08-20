@@ -1,0 +1,58 @@
+import type { Product } from "../types";
+import { photos } from "../media";
+
+export const kitchenProducts: Product[] = [
+  {
+    slug: "airtight-plastic-storage-containers",
+    name: "Airtight Plastic Storage Containers",
+    code: "AG-501",
+    description: "Airtight storage containers for everyday kitchen use, popular for large guest lists.",
+    collection: "kitchen-storage",
+    type: "Storage",
+    occasions: ["housewarming", "birthday", "wedding"],
+    image: photos.storageContainers,
+    featured: true,
+  },
+  {
+    slug: "airtight-spice-container-set",
+    name: "Airtight Spice Container Set",
+    code: "AG-502",
+    description: "A set of airtight spice containers, presented gift-ready.",
+    collection: "kitchen-storage",
+    type: "Storage",
+    occasions: ["housewarming", "wedding"],
+    setInfo: "Container set",
+    image: photos.storageContainers,
+  },
+  {
+    slug: "clear-storage-containers",
+    name: "Clear Storage Containers",
+    code: "AG-503",
+    description: "Clear storage containers in graduated sizes.",
+    collection: "kitchen-storage",
+    type: "Storage",
+    occasions: ["housewarming", "birthday"],
+    image: photos.storageContainers,
+  },
+  {
+    slug: "multi-color-spice-jar-set",
+    name: "Multi-Color Spice Jar Set",
+    code: "AG-504",
+    description: "A spice jar set in mixed colours, suited to bright everyday kitchens.",
+    collection: "kitchen-storage",
+    type: "Storage",
+    occasions: ["housewarming", "baby-shower"],
+    setInfo: "Jar set",
+    image: photos.storageContainers,
+  },
+  {
+    slug: "stainless-steel-oil-filter-pot",
+    name: "Stainless Steel Oil Filter Pot",
+    code: "AG-505",
+    description: "A stainless steel oil filter pot — a practical, well-received return gift.",
+    collection: "kitchen-storage",
+    type: "Storage",
+    occasions: ["housewarming", "wedding"],
+    image: photos.storageContainers,
+  },
+];

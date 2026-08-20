@@ -1,0 +1,51 @@
+import type { Product } from "../types";
+import { photos } from "../media";
+
+export const diningProducts: Product[] = [
+  {
+    slug: "gold-silver-plated-tray-set",
+    name: "Gold & Silver Plated Tray Set",
+    code: "AG-208",
+    description: "A plated tray set in gold and silver finishes, for serving and display.",
+    collection: "dining",
+    type: "Trays & Serveware",
+    occasions: ["wedding", "housewarming", "corporate"],
+    setInfo: "Tray set",
+    image: photos.traySet,
+    featured: true,
+  },
+  {
+    slug: "floral-dinner-set",
+    name: "Floral Dinner Set",
+    code: "AG-701",
+    description: "A floral-printed dinner set for the table, packed for gifting.",
+    collection: "dining",
+    type: "Dining",
+    occasions: ["wedding", "housewarming"],
+    setInfo: "Dinner set",
+    image: photos.floralDinnerSet,
+    featured: true,
+  },
+  {
+    slug: "plastic-dinner-set",
+    name: "Plastic Dinner Set",
+    code: "AG-702",
+    description: "A lightweight dinner set, practical for larger gifting quantities.",
+    collection: "dining",
+    type: "Dining",
+    occasions: ["wedding", "birthday"],
+    setInfo: "Dinner set",
+    image: photos.floralDinnerSet,
+  },
+  {
+    slug: "serving-bowl-plate-set",
+    name: "Serving Bowl & Plate Set",
+    code: "AG-703",
+    description: "A serving bowl and plate set for everyday and occasion use.",
+    collection: "dining",
+    type: "Dining",
+    occasions: ["housewarming", "wedding"],
+    setInfo: "Bowl with plate",
+    image: photos.floralDinnerSet,
+  },
+];
