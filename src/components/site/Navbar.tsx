@@ -4,7 +4,6 @@ import { Menu, X, MessageCircle } from "lucide-react";
 import logo from "@/assets/logo.svg";
 import { BRAND, whatsappLink } from "@/data/catalog";
 import { useLeadDialog } from "./LeadDialog";
-import { useEnquiry } from "./EnquiryProvider";
 
 const links = [
   { to: "/collections", label: "Collections" },
@@ -18,7 +17,6 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const { open } = useLeadDialog();
-  const { items, openTray } = useEnquiry();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -73,16 +71,6 @@ export function Navbar() {
           </a>
           <button
             type="button"
-            onClick={openTray}
-            className="hidden items-center gap-2 rounded-sm border border-border px-4 py-3 text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-foreground transition-colors hover:border-primary hover:text-primary sm:flex"
-          >
-            Enquiry
-            <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[0.6rem] text-primary-foreground">
-              {items.length}
-            </span>
-          </button>
-          <button
-            type="button"
             onClick={() =>
               open({
                 source: "bulk-quote",
@@ -122,16 +110,6 @@ export function Navbar() {
             ))}
           </nav>
           <div className="mt-10 space-y-3">
-            <button
-              type="button"
-              onClick={() => {
-                setMenuOpen(false);
-                openTray();
-              }}
-              className="w-full rounded-sm border border-border px-6 py-4 text-xs font-semibold uppercase tracking-[0.16em] text-foreground"
-            >
-              Enquiry list · {items.length}
-            </button>
             <button
               type="button"
               onClick={() => {
