@@ -160,7 +160,7 @@ function ProductPage() {
                     submitLabel: "Enquire Now",
                     productName: product.name,
                     productCode: product.code,
-                    products: [{ slug: product.slug, name: product.name, code: product.code }],
+                    products: [{ slug: product.slug, name: product.name, code: product.code, image: product.image }],
                   })
                 }
                 className="rounded-sm border border-primary/25 px-8 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-primary transition-colors hover:border-primary"

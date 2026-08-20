@@ -55,7 +55,7 @@ export function ProductCard({ product, priority = false }: { product: Product; p
                 submitLabel: "Send Enquiry",
                 productName: product.name,
                 productCode: product.code,
-                products: [{ slug: product.slug, name: product.name, code: product.code }],
+                products: [{ slug: product.slug, name: product.name, code: product.code, image: product.image }],
               })
             }
             className="text-xs uppercase tracking-[0.16em] text-muted-foreground link-underline"

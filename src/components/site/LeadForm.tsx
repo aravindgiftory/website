@@ -23,7 +23,7 @@ export interface LeadFormProps {
   defaultOccasion?: string | undefined;
   productName?: string | undefined;
   productCode?: string | undefined;
-  products?: Array<{ slug: string; name: string; code: string }> | undefined;
+  products?: Array<{ slug: string; name: string; code: string; image?: string }> | undefined;
   compact?: boolean | undefined;
   onSuccess?: (() => void) | undefined;
 }

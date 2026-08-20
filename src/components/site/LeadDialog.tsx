@@ -13,7 +13,7 @@ interface OpenOptions {
   occasion?: string | undefined;
   productName?: string | undefined;
   productCode?: string | undefined;
-  products?: Array<{ slug: string; name: string; code: string }> | undefined;
+  products?: Array<{ slug: string; name: string; code: string; image?: string }> | undefined;
   corporate?: boolean | undefined;
   /** Catalogue flow shows the download success state. */
   catalogue?: boolean | undefined;
