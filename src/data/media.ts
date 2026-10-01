@@ -57,3 +57,32 @@ export const occasionPhoto = (slug: string) => `/occasions/${slug}.jpg`;
 
 /** Designed PDF — drop the file at this public path. */
 export const CATALOGUE_PDF_HREF = "/catalogues/aravind-giftory-2026.pdf";
+
+export interface CatalogueFile {
+  title: string;
+  description: string;
+  href: string;
+  fileName: string;
+}
+
+/** The catalogues offered on the site. Files live in public/catalogues/. */
+export const CATALOGUE_FILES: CatalogueFile[] = [
+  {
+    title: "Diwali Hampers Catalogue 2027",
+    description: "Festive hampers and curated Diwali gifting.",
+    href: "/catalogues/diwali-hampers-2027.pdf",
+    fileName: "Aravind-Giftory-Diwali-Hampers-2027.pdf",
+  },
+  {
+    title: "Electronics & Accessories 2026–27",
+    description: "Gadgets and accessories for modern gifting.",
+    href: "/catalogues/electronics-accessories-2026-27.pdf",
+    fileName: "Aravind-Giftory-Electronics-Accessories-2026-27.pdf",
+  },
+  {
+    title: "Gift Sets Catalogue",
+    description: "Ready-to-give gift sets for every occasion.",
+    href: "/catalogues/gift-sets.pdf",
+    fileName: "Aravind-Giftory-Gift-Sets.pdf",
+  },
+];

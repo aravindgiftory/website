@@ -1,13 +1,19 @@
 import { useId, useState } from "react";
 import {
   budgetOptions,
+  catalogueComingSoonNote,
+  catalogueOptions,
+  isComingSoon,
   isValidEmail,
   isValidPhone,
   occasionOptions,
+  optionLabel,
   quantityOptions,
+  selectableValue,
   submitLead,
   type Lead,
   type LeadSource,
+  type SelectOption,
 } from "@/lib/leads";
 import { downloadCatalogue } from "@/lib/catalogue-download";
 import { useEnquiry } from "./EnquiryProvider";
@@ -33,6 +39,7 @@ interface FieldErrors {
   phone?: string;
   email?: string;
   lookingFor?: string;
+  catalogueChoice?: string;
   quantity?: string;
   consent?: string;
 }
@@ -56,6 +63,7 @@ export function LeadForm({
 }: LeadFormProps) {
   const uid = useId();
   const enquiry = useEnquiry();
+  const showCatalogueChoice = source === "catalogue";
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
   const [errors, setErrors] = useState<FieldErrors>({});
@@ -66,7 +74,8 @@ export function LeadForm({
     email: "",
     company: "",
     lookingFor: "",
-    occasion: defaultOccasion ?? "",
+    catalogueChoice: "",
+    occasion: selectableValue(occasionOptions, defaultOccasion),
     quantity: defaultQuantity ?? "",
     budget: "",
     eventDate: "",
@@ -86,6 +95,8 @@ export function LeadForm({
       next.email = "Enter a valid email address.";
     if (showLookingFor && !values.lookingFor.trim())
       next.lookingFor = "Let us know what you're looking for.";
+    if (showCatalogueChoice && !values.catalogueChoice)
+      next.catalogueChoice = "Please choose a catalogue.";
     if (showLookingFor && !values.quantity) next.quantity = "Approximate quantity helps us help you.";
     if (!values.consent) next.consent = "Please confirm we may contact you.";
     setErrors(next);
@@ -106,7 +117,8 @@ export function LeadForm({
       email: values.email.trim() || undefined,
       company: values.company.trim() || undefined,
       lookingFor: values.lookingFor.trim() || undefined,
-      occasion: values.occasion || undefined,
+      catalogueChoice: selectableValue(catalogueOptions, values.catalogueChoice) || undefined,
+      occasion: selectableValue(occasionOptions, values.occasion) || undefined,
       quantity: values.quantity || undefined,
       budget: values.budget || undefined,
       eventDate: values.eventDate || undefined,
@@ -121,7 +133,7 @@ export function LeadForm({
 
     const result = await submitLead(lead);
     if (result.ok) {
-      if (source === "catalogue") downloadCatalogue();
+      if (source === "catalogue") downloadCatalogue(lead.catalogueChoice);
       if (source === "product-enquiry" && (products?.length ?? 0) > 0) enquiry.clear();
       setStatus("success");
       onSuccess?.();
@@ -199,6 +211,18 @@ export function LeadForm({
             value={values.lookingFor}
             onChange={(v) => set("lookingFor", v)}
             placeholder="Return gifts, hampers, corporate gifting…"
+          />
+        )}
+        {showCatalogueChoice && (
+          <SelectField
+            id={`${uid}-catalogue`}
+            label="Choose the Catalogue *"
+            value={values.catalogueChoice}
+            onChange={(v) => set("catalogueChoice", v)}
+            options={catalogueOptions}
+            placeholder="Select a catalogue"
+            error={errors.catalogueChoice}
+            comingSoonNote={catalogueComingSoonNote}
           />
         )}
 
@@ -348,15 +372,22 @@ function SelectField({
   options,
   placeholder,
   error,
+  comingSoonNote,
 }: {
   id: string;
   label: string;
   value: string;
   onChange: (value: string) => void;
-  options: string[];
+  options: SelectOption[];
   placeholder: string;
   error?: string | undefined;
+  comingSoonNote?: string | undefined;
 }) {
+  const comingSoonLabels = options.filter(isComingSoon).map(optionLabel);
+  const note =
+    comingSoonNote ??
+    (comingSoonLabels.length > 0 ? `${comingSoonLabels.join(" & ")} — Coming Soon` : undefined);
+
   return (
     <div>
       <label htmlFor={id} className={labelClass}>
@@ -370,12 +401,21 @@ function SelectField({
         className={`${controlClass} ${error ? "border-destructive" : ""}`}
       >
         <option value="">{placeholder}</option>
-        {options.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
+        {options.map((option) => {
+          const label = optionLabel(option);
+          const comingSoon = isComingSoon(option);
+          return (
+            <option key={label} value={comingSoon ? "" : label} disabled={comingSoon}>
+              {comingSoon ? `${label} — Coming Soon` : label}
+            </option>
+          );
+        })}
       </select>
+      {note && (
+        <span className="mt-2 inline-flex items-center rounded-full border border-gold/50 bg-gold/10 px-2.5 py-0.5 text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-gold">
+          {note}
+        </span>
+      )}
       {error && <p className="mt-2 text-xs text-destructive">{error}</p>}
     </div>
   );

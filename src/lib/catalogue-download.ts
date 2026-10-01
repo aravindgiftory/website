@@ -1,21 +1,13 @@
-import { CATALOGUE_PDF_HREF } from "@/data/media";
-import { CATALOGUE_FILE_URL } from "@/lib/leads";
+import { CATALOGUE_FILES, type CatalogueFile } from "@/data/media";
 
 export const CATALOGUE_PRINT_PATH = "/catalogue/print";
 
-async function pdfExists(href: string) {
-  try {
-    const response = await fetch(href, { method: "HEAD" });
-    return response.ok;
-  } catch {
-    return false;
-  }
-}
+let lastChosen: CatalogueFile | undefined;
 
-function triggerDownload(href: string) {
+function triggerDownload(file: CatalogueFile) {
   const link = document.createElement("a");
-  link.href = href;
-  link.download = "Aravind-Giftory-2026-Catalogue.pdf";
+  link.href = file.href;
+  link.download = file.fileName;
   link.rel = "noreferrer";
   document.body.appendChild(link);
   link.click();
@@ -23,24 +15,18 @@ function triggerDownload(href: string) {
 }
 
 /**
- * Uses a designed PDF from public/catalogues when that file is present.
- * Otherwise opens the live printable catalogue (always in sync with products).
+ * Downloads the catalogue with the given title. Without a title, repeats the
+ * visitor's last choice, or falls back to the first catalogue.
  */
-export async function downloadCatalogue() {
+export function downloadCatalogue(title?: string) {
   if (typeof window === "undefined") return;
 
-  const candidates = [CATALOGUE_FILE_URL, CATALOGUE_PDF_HREF].filter(
-    (href): href is string => Boolean(href) && href !== "#",
-  );
+  const file =
+    CATALOGUE_FILES.find((item) => item.title === title) ?? lastChosen ?? CATALOGUE_FILES[0];
+  if (!file) return;
 
-  for (const href of candidates) {
-    if (await pdfExists(href)) {
-      triggerDownload(href);
-      return;
-    }
-  }
-
-  window.open(`${CATALOGUE_PRINT_PATH}?print=1`, "_blank", "noopener,noreferrer");
+  lastChosen = file;
+  triggerDownload(file);
 }
 
 export function viewCatalogue() {

@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { LeadForm } from "@/components/site/LeadForm";
-import { edits } from "@/data/catalog";
+import { FileText } from "lucide-react";
+import { CATALOGUE_FILES } from "@/data/media";
 import catalogueCover from "@/assets/catalogue-cover.jpg";
-import catalogueSpread from "@/assets/catalogue-spread.jpg";
 import { downloadCatalogue } from "@/lib/catalogue-download";
 
 export const Route = createFileRoute("/catalogue")({
@@ -50,13 +50,12 @@ function CataloguePage() {
               >
                 Get the Catalogue
               </a>
-              <button
-                type="button"
-                onClick={downloadCatalogue}
-                className="rounded-sm border border-primary/25 px-8 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-primary transition-colors hover:border-primary"
+              <a
+                href="#catalogues"
+                className="rounded-sm border border-primary/25 px-8 py-4 text-center text-xs font-semibold uppercase tracking-[0.18em] text-primary transition-colors hover:border-primary"
               >
-                Preview &amp; Download
-              </button>
+                View Catalogues
+              </a>
             </div>
           </div>
           <div className="overflow-hidden bg-muted">
@@ -71,39 +70,46 @@ function CataloguePage() {
         </div>
       </section>
 
-      <section className="mx-auto mt-32 max-w-[1400px] px-5 sm:px-8">
+      <section id="catalogues" className="mx-auto mt-32 max-w-[1400px] scroll-mt-28 px-5 sm:px-8">
         <SectionHeading
-          eyebrow="Inside"
-          title="A look through the pages"
-          description="Traditional brass, Pichwai-inspired metal, dining, lighting and corporate gifting — page by page."
+          eyebrow="Catalogues"
+          title="Choose your catalogue"
+          description="Browse our latest catalogues and download the one that suits your gifting."
         />
-        <div className="mt-14 overflow-hidden bg-muted">
-          <img
-            src={catalogueSpread}
-            alt="An open spread of the Aravind Giftory catalogue showing gifting products"
-            width={1400}
-            height={1000}
-            loading="lazy"
-            className="w-full object-cover"
-          />
-        </div>
 
-        <div className="mt-14 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-5">
-          {edits.map((edit) => (
-            <div key={edit.title}>
-              <div className="overflow-hidden bg-muted">
-                <img
-                  src={edit.image}
-                  alt={edit.title}
-                  loading="lazy"
-                  className="aspect-[4/5] w-full object-cover"
-                />
+        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {CATALOGUE_FILES.map((file) => (
+            <div
+              key={file.href}
+              className="flex flex-col border border-border bg-card p-8 transition-colors hover:border-gold/60"
+            >
+              <FileText className="h-8 w-8 text-gold" strokeWidth={1.5} aria-hidden />
+              <h3 className="mt-6 font-display text-xl text-primary">{file.title}</h3>
+              <p className="mt-2 flex-1 text-sm text-muted-foreground">{file.description}</p>
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <button
+                  type="button"
+                  onClick={() => downloadCatalogue(file.title)}
+                  className="rounded-sm bg-primary px-6 py-3 text-center text-xs font-semibold uppercase tracking-[0.18em] text-primary-foreground transition-colors hover:bg-primary/90"
+                >
+                  Download
+                </button>
+                <a
+                  href={file.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="rounded-sm border border-primary/25 px-6 py-3 text-center text-xs font-semibold uppercase tracking-[0.18em] text-primary transition-colors hover:border-primary"
+                >
+                  Preview
+                </a>
               </div>
-              <h3 className="mt-5 font-display text-xl text-primary">{edit.title}</h3>
-              <p className="mt-2 text-sm text-muted-foreground">{edit.description}</p>
             </div>
           ))}
         </div>
+
+        <span className="mt-8 inline-flex items-center rounded-full border border-gold/50 bg-gold/10 px-2.5 py-0.5 text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-gold">
+          More catalogues coming soon
+        </span>
       </section>
 
       <section id="catalogue-form" className="mx-auto mt-32 max-w-[1400px] scroll-mt-28 px-5 sm:px-8">

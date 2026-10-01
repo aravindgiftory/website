@@ -1,4 +1,5 @@
 import { BRAND, whatsappLink } from "@/data/catalog";
+import { CATALOGUE_FILES } from "@/data/media";
 
 /**
  * Lead capture contract.
@@ -22,6 +23,8 @@ export interface Lead {
   email?: string | undefined;
   company?: string | undefined;
   lookingFor?: string | undefined;
+  /** Which catalogue the visitor asked for (catalogue form only). */
+  catalogueChoice?: string | undefined;
   occasion?: string | undefined;
   quantity?: string | undefined;
   budget?: string | undefined;
@@ -50,6 +53,7 @@ export function formatLeadWhatsApp(lead: Lead) {
   if (lead.email) lines.push(`Email: ${lead.email}`);
   if (lead.company) lines.push(`Company: ${lead.company}`);
   if (lead.lookingFor) lines.push(`Looking for: ${lead.lookingFor}`);
+  if (lead.catalogueChoice) lines.push(`Catalogue: ${lead.catalogueChoice}`);
   if (lead.occasion) lines.push(`Occasion: ${lead.occasion}`);
   if (lead.quantity) lines.push(`Quantity: ${lead.quantity}`);
   if (lead.budget) lines.push(`Budget per gift: ${lead.budget}`);
@@ -187,15 +191,28 @@ function loadImage(src: string) {
   });
 }
 
-/**
- * Optional override. Leave empty — the download helper looks for
- * public/catalogues/aravind-giftory-2026.pdf on its own.
- */
-export const CATALOGUE_FILE_URL = "";
+export type SelectOption = string | { label: string; comingSoon?: boolean };
 
-export const occasionOptions = [
-  "Wedding",
-  "Birthday",
+export const optionLabel = (option: SelectOption) =>
+  typeof option === "string" ? option : option.label;
+
+export const isComingSoon = (option: SelectOption) =>
+  typeof option !== "string" && Boolean(option.comingSoon);
+
+/** Returns the value only when it matches an active (not "Coming Soon") option. */
+export const selectableValue = (options: SelectOption[], value: string | undefined) =>
+  value && options.some((option) => optionLabel(option) === value && !isComingSoon(option))
+    ? value
+    : "";
+
+export const catalogueOptions: SelectOption[] = CATALOGUE_FILES.map((file) => file.title);
+
+export const catalogueComingSoonNote = "More catalogues coming soon";
+
+export const occasionOptions: SelectOption[] = [
+  "Diwali",
+  { label: "Wedding", comingSoon: true },
+  { label: "Birthday", comingSoon: true },
   "Baby Shower",
   "Housewarming",
   "Pooja / Festive",

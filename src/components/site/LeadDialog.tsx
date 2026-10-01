@@ -106,10 +106,10 @@ export function LeadDialogProvider({ children }: { children: ReactNode }) {
                 <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
                   <button
                     type="button"
-                    onClick={downloadCatalogue}
+                    onClick={() => downloadCatalogue()}
                     className="w-full rounded-sm bg-primary px-8 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-primary-foreground transition-colors hover:bg-primary/90 sm:w-auto"
                   >
-                    Download 2026 Catalogue
+                    Download Catalogue
                   </button>
                   <button
                     type="button"

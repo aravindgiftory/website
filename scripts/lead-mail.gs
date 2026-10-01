@@ -47,6 +47,7 @@ function handleLead(e) {
       "Email: " + (data.email || "—"),
       "Company: " + (data.company || "—"),
       "Looking for: " + (data.lookingFor || "—"),
+      "Catalogue: " + (data.catalogueChoice || "—"),
       "Occasion: " + (data.occasion || "—"),
       "Quantity: " + (data.quantity || "—"),
       "Budget per gift: " + (data.budget || "—"),
