@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { LeadForm } from "@/components/site/LeadForm";
-import { FileText } from "lucide-react";
 import { CATALOGUE_FILES } from "@/data/media";
 import catalogueCover from "@/assets/catalogue-cover.jpg";
 import { downloadCatalogue } from "@/lib/catalogue-download";
@@ -81,27 +80,44 @@ function CataloguePage() {
           {CATALOGUE_FILES.map((file) => (
             <div
               key={file.href}
-              className="flex flex-col border border-border bg-card p-8 transition-colors hover:border-gold/60"
+              className="group flex flex-col overflow-hidden border border-border bg-card transition-colors hover:border-gold/60"
             >
-              <FileText className="h-8 w-8 text-gold" strokeWidth={1.5} aria-hidden />
-              <h3 className="mt-6 font-display text-xl text-primary">{file.title}</h3>
-              <p className="mt-2 flex-1 text-sm text-muted-foreground">{file.description}</p>
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <button
-                  type="button"
-                  onClick={() => downloadCatalogue(file.title)}
-                  className="rounded-sm bg-primary px-6 py-3 text-center text-xs font-semibold uppercase tracking-[0.18em] text-primary-foreground transition-colors hover:bg-primary/90"
-                >
-                  Download
-                </button>
-                <a
-                  href={file.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="rounded-sm border border-primary/25 px-6 py-3 text-center text-xs font-semibold uppercase tracking-[0.18em] text-primary transition-colors hover:border-primary"
-                >
-                  Preview
-                </a>
+              <a
+                href={file.href}
+                target="_blank"
+                rel="noreferrer"
+                className="block overflow-hidden bg-muted"
+                aria-label={`Preview ${file.title}`}
+              >
+                <img
+                  src={file.cover}
+                  alt={`Cover of the ${file.title}`}
+                  width={900}
+                  height={507}
+                  loading="lazy"
+                  className="aspect-[16/9] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                />
+              </a>
+              <div className="flex flex-1 flex-col p-8">
+                <h3 className="font-display text-xl text-primary">{file.title}</h3>
+                <p className="mt-2 flex-1 text-sm text-muted-foreground">{file.description}</p>
+                <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                  <button
+                    type="button"
+                    onClick={() => downloadCatalogue(file.title)}
+                    className="rounded-sm bg-primary px-6 py-3 text-center text-xs font-semibold uppercase tracking-[0.18em] text-primary-foreground transition-colors hover:bg-primary/90"
+                  >
+                    Download
+                  </button>
+                  <a
+                    href={file.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="rounded-sm border border-primary/25 px-6 py-3 text-center text-xs font-semibold uppercase tracking-[0.18em] text-primary transition-colors hover:border-primary"
+                  >
+                    Preview
+                  </a>
+                </div>
               </div>
             </div>
           ))}

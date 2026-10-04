@@ -63,6 +63,8 @@ export interface CatalogueFile {
   description: string;
   href: string;
   fileName: string;
+  /** First page of the PDF, rendered as a 16:9 JPG. */
+  cover: string;
 }
 
 /** The catalogues offered on the site. Files live in public/catalogues/. */
@@ -72,17 +74,20 @@ export const CATALOGUE_FILES: CatalogueFile[] = [
     description: "Festive hampers and curated Diwali gifting.",
     href: "/catalogues/diwali-hampers-2027.pdf",
     fileName: "Aravind-Giftory-Diwali-Hampers-2027.pdf",
+    cover: "/catalogues/diwali-hampers-2027.jpg",
   },
   {
     title: "Electronics & Accessories 2026–27",
     description: "Gadgets and accessories for modern gifting.",
     href: "/catalogues/electronics-accessories-2026-27.pdf",
     fileName: "Aravind-Giftory-Electronics-Accessories-2026-27.pdf",
+    cover: "/catalogues/electronics-accessories-2026-27.jpg",
   },
   {
-    title: "Gift Sets Catalogue",
+    title: "Gift Sets Catalogue 2026–27",
     description: "Ready-to-give gift sets for every occasion.",
     href: "/catalogues/gift-sets.pdf",
-    fileName: "Aravind-Giftory-Gift-Sets.pdf",
+    fileName: "Aravind-Giftory-Gift-Sets-2026-27.pdf",
+    cover: "/catalogues/gift-sets.jpg",
   },
 ];
