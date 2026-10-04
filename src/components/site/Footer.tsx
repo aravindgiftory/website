@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import logo from "@/assets/logo.svg";
+import logo from "@/assets/logo.png";
 import { BRAND } from "@/data/catalog";
 
 const columns = [
@@ -27,7 +27,7 @@ export function Footer() {
       <div className="mx-auto max-w-[1400px] px-5 py-20 sm:px-8">
         <div className="grid gap-14 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div>
-            <img src={logo} alt={BRAND.name} width={180} height={92} className="h-14 w-auto" />
+            <img src={logo} alt={BRAND.name} width={1024} height={516} className="h-24 w-auto" />
             <p className="mt-6 max-w-xs font-display text-2xl leading-snug text-primary">
               {BRAND.tagline}
             </p>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Menu, X, MessageCircle } from "lucide-react";
-import logo from "@/assets/logo.svg";
+import logo from "@/assets/logo.png";
 import { BRAND, whatsappLink } from "@/data/catalog";
 import { useLeadDialog } from "./LeadDialog";
 
@@ -42,7 +42,7 @@ export function Navbar() {
     >
       <div className="mx-auto flex h-20 max-w-[1400px] items-center justify-between gap-6 px-5 sm:px-8">
         <Link to="/" className="flex items-center gap-3" aria-label={`${BRAND.name} — home`}>
-          <img src={logo} alt="" width={140} height={71} className="h-10 w-auto" />
+          <img src={logo} alt="" width={1024} height={516} className="h-16 w-auto" />
           <span className="sr-only">{BRAND.name}</span>
         </Link>
 

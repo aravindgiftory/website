@@ -6,7 +6,7 @@ import {
   products,
   productsByCollection,
 } from "@/data/catalog";
-import logo from "@/assets/logo.svg";
+import logo from "@/assets/logo.png";
 
 export const Route = createFileRoute("/catalogue/print")({
   head: () => ({
@@ -57,7 +57,7 @@ function CataloguePrintPage() {
       </div>
 
       <header className="border-b border-border pb-8">
-        <img src={logo} alt={BRAND.name} className="h-12 w-auto" />
+        <img src={logo} alt={BRAND.name} className="h-24 w-auto" />
         <p className="eyebrow mt-6 text-gold">The 2026 Collection</p>
         <h1 className="display-lg mt-3 text-primary">{BRAND.name}</h1>
         <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground">
