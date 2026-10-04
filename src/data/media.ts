@@ -70,11 +70,11 @@ export interface CatalogueFile {
 /** The catalogues offered on the site. Files live in public/catalogues/. */
 export const CATALOGUE_FILES: CatalogueFile[] = [
   {
-    title: "Diwali Hampers Catalogue 2027",
+    title: "Diwali Hampers Catalogue 2026",
     description: "Festive hampers and curated Diwali gifting.",
-    href: "/catalogues/diwali-hampers-2027.pdf",
-    fileName: "Aravind-Giftory-Diwali-Hampers-2027.pdf",
-    cover: "/catalogues/diwali-hampers-2027.jpg",
+    href: "/catalogues/diwali-hampers-2026.pdf",
+    fileName: "Aravind-Giftory-Diwali-Hampers-2026.pdf",
+    cover: "/catalogues/diwali-hampers-2026.jpg",
   },
   {
     title: "Electronics & Accessories 2026–27",
