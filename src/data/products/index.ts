@@ -1,4 +1,6 @@
 import type { Product } from "../types";
+import { corkComboProducts } from "./cork-combos";
+import { corkPlanterProducts } from "./cork-planters";
 import { corporateProducts } from "./corporate";
 import { diningProducts } from "./dining";
 import { dryFruitProducts } from "./dry-fruit";
@@ -17,6 +19,8 @@ export const allProducts: Product[] = [
   ...homeDecorProducts,
   ...dryFruitProducts,
   ...corporateProducts,
+  ...corkComboProducts,
+  ...corkPlanterProducts,
   ...kitchenProducts,
   ...teaCoffeeProducts,
   ...diningProducts,

@@ -2,7 +2,8 @@
 
 interface ImportMetaEnv {
   readonly VITE_LEADS_SCRIPT_URL?: string;
-  readonly VITE_LEADS_TOKEN?: string;
+  readonly VITE_SITE_URL?: string;
+  readonly VITE_GA_ID?: string;
 }
 
 interface ImportMeta {

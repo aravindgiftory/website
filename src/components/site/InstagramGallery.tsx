@@ -6,7 +6,14 @@ import occasionBirthday from "@/assets/occasion-birthday.jpg";
 import brandStory from "@/assets/brand-story.jpg";
 import dryFruit from "@/assets/product-dry-fruit-box.jpg";
 
-const tiles = [occasionWedding, occasionPooja, brandStory, occasionHousewarming, dryFruit, occasionBirthday];
+const tiles = [
+  occasionWedding,
+  occasionPooja,
+  brandStory,
+  occasionHousewarming,
+  dryFruit,
+  occasionBirthday,
+];
 
 export function InstagramGallery() {
   return (
@@ -44,7 +51,11 @@ export function InstagramGallery() {
               alt={`${BRAND.name} gifting on Instagram`}
               loading="lazy"
               className={`w-full object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105 ${
-                index % 3 === 0 ? "aspect-[3/4]" : index % 3 === 1 ? "aspect-square" : "aspect-[4/5]"
+                index % 3 === 0
+                  ? "aspect-[3/4]"
+                  : index % 3 === 1
+                    ? "aspect-square"
+                    : "aspect-[4/5]"
               }`}
             />
           </a>

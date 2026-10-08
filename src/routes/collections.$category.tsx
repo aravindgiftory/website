@@ -2,7 +2,7 @@ import { createFileRoute, notFound, Link } from "@tanstack/react-router";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { ProductCard } from "@/components/site/ProductCard";
 import { CTASection } from "@/components/site/CTASection";
-import { getCollection, productsByCollection, type CollectionSlug } from "@/data/catalog";
+import { getCollection, productsByCollection, type CollectionSlug, BRAND } from "@/data/catalog";
 
 export const Route = createFileRoute("/collections/$category")({
   loader: ({ params }) => {
@@ -13,7 +13,10 @@ export const Route = createFileRoute("/collections/$category")({
   head: ({ loaderData, params }) => {
     if (!loaderData) {
       return {
-        meta: [{ title: "Collection unavailable | Aravind Giftory" }, { name: "robots", content: "noindex" }],
+        meta: [
+          { title: "Collection unavailable | Aravind Giftory" },
+          { name: "robots", content: "noindex" },
+        ],
       };
     }
     const title = `${loaderData.collection.name} | Aravind Giftory`;
@@ -23,10 +26,10 @@ export const Route = createFileRoute("/collections/$category")({
         { name: "description", content: loaderData.collection.description },
         { property: "og:title", content: title },
         { property: "og:description", content: loaderData.collection.description },
-        { property: "og:url", content: `/collections/${params.category}` },
+        { property: "og:url", content: `${BRAND.siteUrl}/collections/${params.category}` },
         { property: "og:type", content: "website" },
       ],
-      links: [{ rel: "canonical", href: `/collections/${params.category}` }],
+      links: [{ rel: "canonical", href: `${BRAND.siteUrl}/collections/${params.category}` }],
     };
   },
   component: CategoryPage,

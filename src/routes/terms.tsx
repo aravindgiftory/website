@@ -11,11 +11,14 @@ export const Route = createFileRoute("/terms")({
           "Terms for using the Aravind Giftory website, catalogue requests and gifting enquiries.",
       },
       { property: "og:title", content: "Terms & Conditions | Aravind Giftory" },
-      { property: "og:description", content: "Terms for using this website and our enquiry forms." },
-      { property: "og:url", content: "/terms" },
+      {
+        property: "og:description",
+        content: "Terms for using this website and our enquiry forms.",
+      },
+      { property: "og:url", content: `${BRAND.siteUrl}/terms` },
       { property: "og:type", content: "website" },
     ],
-    links: [{ rel: "canonical", href: "/terms" }],
+    links: [{ rel: "canonical", href: `${BRAND.siteUrl}/terms` }],
   }),
   component: TermsPage,
 });

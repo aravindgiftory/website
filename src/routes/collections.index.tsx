@@ -11,6 +11,7 @@ import {
   type CollectionSlug,
   type OccasionSlug,
   type ProductType,
+  BRAND,
 } from "@/data/catalog";
 
 export const Route = createFileRoute("/collections/")({
@@ -27,10 +28,10 @@ export const Route = createFileRoute("/collections/")({
         property: "og:description",
         content: "Explore curated gifting collections for every occasion.",
       },
-      { property: "og:url", content: "/collections" },
+      { property: "og:url", content: `${BRAND.siteUrl}/collections` },
       { property: "og:type", content: "website" },
     ],
-    links: [{ rel: "canonical", href: "/collections" }],
+    links: [{ rel: "canonical", href: `${BRAND.siteUrl}/collections` }],
   }),
   component: CollectionsPage,
 });

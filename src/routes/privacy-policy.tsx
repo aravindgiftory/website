@@ -12,10 +12,10 @@ export const Route = createFileRoute("/privacy-policy")({
       },
       { property: "og:title", content: "Privacy Policy | Aravind Giftory" },
       { property: "og:description", content: "How we handle the details you share with us." },
-      { property: "og:url", content: "/privacy-policy" },
+      { property: "og:url", content: `${BRAND.siteUrl}/privacy-policy` },
       { property: "og:type", content: "website" },
     ],
-    links: [{ rel: "canonical", href: "/privacy-policy" }],
+    links: [{ rel: "canonical", href: `${BRAND.siteUrl}/privacy-policy` }],
   }),
   component: PrivacyPage,
 });
@@ -36,8 +36,8 @@ function PrivacyPage() {
           follow up about a quote or order. We do not sell your details.
         </p>
         <p>
-          If you'd like your details removed from our records, contact us at {BRAND.phone} or through
-          Instagram at @{BRAND.instagram} and we'll take care of it.
+          If you'd like your details removed from our records, contact us at {BRAND.phone} or
+          through Instagram at @{BRAND.instagram} and we'll take care of it.
         </p>
       </div>
     </section>

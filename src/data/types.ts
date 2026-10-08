@@ -1,10 +1,5 @@
 export type OccasionSlug =
-  | "wedding"
-  | "birthday"
-  | "baby-shower"
-  | "housewarming"
-  | "pooja-festive"
-  | "corporate";
+  "wedding" | "birthday" | "baby-shower" | "housewarming" | "pooja-festive" | "corporate";
 
 export type CollectionSlug =
   | "traditional"
@@ -41,6 +36,8 @@ export interface Product {
   type: ProductType;
   occasions: OccasionSlug[];
   setInfo?: string;
+  /** What is inside a set or combo, one item per entry. */
+  contents?: string[];
   image: string;
   images?: string[];
   featured?: boolean;

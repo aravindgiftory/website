@@ -8,12 +8,7 @@ import { CATALOGUE_FILES } from "@/data/media";
  * (Gmail) and opens a pre-filled WhatsApp message at the same time.
  */
 
-export type LeadSource =
-  | "catalogue"
-  | "corporate"
-  | "bulk-quote"
-  | "product-enquiry"
-  | "contact";
+export type LeadSource = "catalogue" | "corporate" | "bulk-quote" | "product-enquiry" | "contact";
 
 export interface Lead {
   source: LeadSource;
@@ -36,11 +31,19 @@ export interface Lead {
   /** Multi-product enquiry tray — grows as the catalogue grows. */
   products?: Array<{ slug: string; name: string; code: string; image?: string }> | undefined;
   consent: boolean;
+  /** Honeypot — must stay empty; filled only by bots. */
+  website?: string | undefined;
   submittedAt: string;
   pageUrl: string;
+  /** Site origin, so the email script can build product links from slugs. */
+  siteUrl?: string | undefined;
 }
 
 export type LeadResult = { ok: true } | { ok: false; error: string };
+
+/** Public link to a product page, for WhatsApp and email. Empty when there is no slug. */
+export const productUrl = (slug: string | undefined) =>
+  slug ? `${BRAND.siteUrl}/products/${slug}` : "";
 
 export function formatLeadWhatsApp(lead: Lead) {
   const lines = [
@@ -61,13 +64,26 @@ export function formatLeadWhatsApp(lead: Lead) {
 
   const listed =
     lead.products && lead.products.length > 0
-      ? lead.products.map((item) => `${item.name} (${item.code})`)
+      ? lead.products.map((item) => ({
+          label: `${item.name} (${item.code})`,
+          link: productUrl(item.slug) || lead.pageUrl,
+        }))
       : lead.productName
-        ? [`${lead.productName}${lead.productCode ? ` (${lead.productCode})` : ""}`]
+        ? [
+            {
+              label: `${lead.productName}${lead.productCode ? ` (${lead.productCode})` : ""}`,
+              link: lead.pageUrl,
+            },
+          ]
         : [];
   if (listed.length > 0) {
     lines.push("", "Products:");
-    listed.forEach((item) => lines.push(`• ${item}`));
+    listed.forEach((item) => {
+      lines.push(`• ${item.label}`);
+      if (item.link) lines.push(`  ${item.link}`);
+    });
+  } else if (lead.pageUrl) {
+    lines.push("", `Page: ${lead.pageUrl}`);
   }
   if (lead.message) {
     lines.push("", lead.message);
@@ -77,6 +93,7 @@ export function formatLeadWhatsApp(lead: Lead) {
 
 export async function submitLead(lead: Lead): Promise<LeadResult> {
   try {
+    if (lead.website) return { ok: true }; // honeypot tripped — silently drop
     if (import.meta.env.DEV) console.info("[lead]", lead);
 
     if (typeof window !== "undefined") {
@@ -84,22 +101,25 @@ export async function submitLead(lead: Lead): Promise<LeadResult> {
     }
 
     const scriptUrl = import.meta.env.VITE_LEADS_SCRIPT_URL?.trim();
-    const token = import.meta.env.VITE_LEADS_TOKEN?.trim();
     if (!scriptUrl) {
       if (import.meta.env.DEV) {
-        console.warn("[lead] VITE_LEADS_SCRIPT_URL is empty — Gmail was skipped. Put the URL in .env (not .env.example) and restart npm run dev.");
+        console.warn(
+          "[lead] VITE_LEADS_SCRIPT_URL is empty — Gmail was skipped. Put the URL in .env (not .env.example) and restart npm run dev.",
+        );
       }
       return { ok: true };
     }
 
-    const payload = await buildLeadPayload(token, lead);
+    const payload = await attachThumbnails({ ...lead, siteUrl: BRAND.siteUrl });
     const json = JSON.stringify(payload);
     const encoded = encodeURIComponent(json);
     // Apps Script GET URLs truncate around 8KB. Prefer GET (POST bodies are often dropped on Google's redirect).
     if (encoded.length < 6200) {
       const url = new URL(scriptUrl);
       url.searchParams.set("payload", json);
-      fetch(url.toString(), { method: "GET", mode: "no-cors", keepalive: true }).catch(() => undefined);
+      fetch(url.toString(), { method: "GET", mode: "no-cors", keepalive: true }).catch(
+        () => undefined,
+      );
     } else {
       fetch(scriptUrl, {
         method: "POST",
@@ -116,13 +136,9 @@ export async function submitLead(lead: Lead): Promise<LeadResult> {
   }
 }
 
-function buildLeadPayload(token: string | undefined, lead: Lead) {
-  return attachThumbnails(token ? { token, ...lead } : { ...lead });
-}
-
 const GET_PAYLOAD_MAX = 6200;
 
-async function attachThumbnails(payload: Lead & { token?: string }) {
+async function attachThumbnails(payload: Lead) {
   if (typeof window === "undefined") return payload;
 
   const listed = payload.products?.length
@@ -140,9 +156,12 @@ async function attachThumbnails(payload: Lead & { token?: string }) {
     thumb: thumbs[index] || "",
   }));
 
-  let next: Lead & { token?: string } = { ...payload, products };
+  let next: Lead = { ...payload, products };
   // Drop trailing thumbs until the GET URL will fit.
-  while (encodeURIComponent(JSON.stringify(next)).length >= GET_PAYLOAD_MAX && products.some((item) => item.thumb)) {
+  while (
+    encodeURIComponent(JSON.stringify(next)).length >= GET_PAYLOAD_MAX &&
+    products.some((item) => item.thumb)
+  ) {
     let index = -1;
     for (let i = products.length - 1; i >= 0; i--) {
       if (products[i]?.thumb) {
@@ -165,7 +184,10 @@ async function attachThumbnails(payload: Lead & { token?: string }) {
 async function makeThumb(src: string | undefined, size: number, quality: number) {
   if (!src) return "";
   try {
-    const url = src.startsWith("http") || src.startsWith("data:") ? src : new URL(src, window.location.origin).href;
+    const url =
+      src.startsWith("http") || src.startsWith("data:")
+        ? src
+        : new URL(src, window.location.origin).href;
     const image = await loadImage(url);
     const canvas = document.createElement("canvas");
     canvas.width = size;
@@ -220,27 +242,13 @@ export const occasionOptions: SelectOption[] = [
   "Other",
 ];
 
-export const quantityOptions = [
-  "Under 25",
-  "25–50",
-  "50–100",
-  "100–250",
-  "250–500",
-  "500+",
-];
+export const quantityOptions = ["Under 25", "25–50", "50–100", "100–250", "250–500", "500+"];
 
-export const budgetOptions = [
-  "Under ₹100",
-  "₹100–₹250",
-  "₹250–₹500",
-  "₹500–₹1,000",
-  "₹1,000+",
-];
+export const budgetOptions = ["Under ₹100", "₹100–₹250", "₹250–₹500", "₹500–₹1,000", "₹1,000+"];
 
 export const isValidPhone = (value: string) => {
   const digits = value.replace(/[^\d]/g, "");
   return digits.length >= 10 && digits.length <= 13;
 };
 
-export const isValidEmail = (value: string) =>
-  /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(value.trim());
+export const isValidEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(value.trim());

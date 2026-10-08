@@ -1,11 +1,6 @@
 import { useEffect } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import {
-  BRAND,
-  collections,
-  products,
-  productsByCollection,
-} from "@/data/catalog";
+import { BRAND, collections, products, productsByCollection } from "@/data/catalog";
 import logo from "@/assets/logo.png";
 
 export const Route = createFileRoute("/catalogue/print")({
@@ -74,7 +69,10 @@ function CataloguePrintPage() {
             <p className="mt-2 text-sm text-muted-foreground">{collection.description}</p>
             <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 print:grid-cols-3">
               {items.map((product) => (
-                <article key={product.slug} className="break-inside-avoid border border-border bg-card p-4">
+                <article
+                  key={product.slug}
+                  className="break-inside-avoid border border-border bg-card p-4"
+                >
                   <img
                     src={product.image}
                     alt={product.name}

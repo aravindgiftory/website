@@ -15,10 +15,12 @@ import { Route as CatalogueRouteImport } from './routes/catalogue'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CorporateGiftingRouteImport } from './routes/corporate-gifting'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as CataloguePrintRouteImport } from './routes/catalogue.print'
 import { Route as CollectionsIndexRouteImport } from './routes/collections.index'
 import { Route as CollectionsCategoryRouteImport } from './routes/collections.$category'
+import { Route as GiftsCatalogueRouteImport } from './routes/gifts.$catalogue'
 import { Route as OccasionsIndexRouteImport } from './routes/occasions.index'
 import { Route as OccasionsOccasionRouteImport } from './routes/occasions.$occasion'
 import { Route as ProductsProductRouteImport } from './routes/products.$product'
@@ -53,6 +55,11 @@ const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
   path: '/privacy-policy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
@@ -71,6 +78,11 @@ const CollectionsIndexRoute = CollectionsIndexRouteImport.update({
 const CollectionsCategoryRoute = CollectionsCategoryRouteImport.update({
   id: '/collections/$category',
   path: '/collections/$category',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GiftsCatalogueRoute = GiftsCatalogueRouteImport.update({
+  id: '/gifts/$catalogue',
+  path: '/gifts/$catalogue',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OccasionsIndexRoute = OccasionsIndexRouteImport.update({
@@ -96,9 +108,11 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/corporate-gifting': typeof CorporateGiftingRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/catalogue/print': typeof CataloguePrintRoute
   '/collections/$category': typeof CollectionsCategoryRoute
+  '/gifts/$catalogue': typeof GiftsCatalogueRoute
   '/occasions/$occasion': typeof OccasionsOccasionRoute
   '/products/$product': typeof ProductsProductRoute
   '/collections/': typeof CollectionsIndexRoute
@@ -111,9 +125,11 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/corporate-gifting': typeof CorporateGiftingRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/catalogue/print': typeof CataloguePrintRoute
   '/collections/$category': typeof CollectionsCategoryRoute
+  '/gifts/$catalogue': typeof GiftsCatalogueRoute
   '/occasions/$occasion': typeof OccasionsOccasionRoute
   '/products/$product': typeof ProductsProductRoute
   '/collections': typeof CollectionsIndexRoute
@@ -127,9 +143,11 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/corporate-gifting': typeof CorporateGiftingRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/catalogue/print': typeof CataloguePrintRoute
   '/collections/$category': typeof CollectionsCategoryRoute
+  '/gifts/$catalogue': typeof GiftsCatalogueRoute
   '/occasions/$occasion': typeof OccasionsOccasionRoute
   '/products/$product': typeof ProductsProductRoute
   '/collections/': typeof CollectionsIndexRoute
@@ -144,9 +162,11 @@ export interface FileRouteTypes {
     | '/contact'
     | '/corporate-gifting'
     | '/privacy-policy'
+    | '/sitemap.xml'
     | '/terms'
     | '/catalogue/print'
     | '/collections/$category'
+    | '/gifts/$catalogue'
     | '/occasions/$occasion'
     | '/products/$product'
     | '/collections/'
@@ -159,9 +179,11 @@ export interface FileRouteTypes {
     | '/contact'
     | '/corporate-gifting'
     | '/privacy-policy'
+    | '/sitemap.xml'
     | '/terms'
     | '/catalogue/print'
     | '/collections/$category'
+    | '/gifts/$catalogue'
     | '/occasions/$occasion'
     | '/products/$product'
     | '/collections'
@@ -174,9 +196,11 @@ export interface FileRouteTypes {
     | '/contact'
     | '/corporate-gifting'
     | '/privacy-policy'
+    | '/sitemap.xml'
     | '/terms'
     | '/catalogue/print'
     | '/collections/$category'
+    | '/gifts/$catalogue'
     | '/occasions/$occasion'
     | '/products/$product'
     | '/collections/'
@@ -190,8 +214,10 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   CorporateGiftingRoute: typeof CorporateGiftingRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
   CollectionsCategoryRoute: typeof CollectionsCategoryRoute
+  GiftsCatalogueRoute: typeof GiftsCatalogueRoute
   OccasionsOccasionRoute: typeof OccasionsOccasionRoute
   ProductsProductRoute: typeof ProductsProductRoute
   CollectionsIndexRoute: typeof CollectionsIndexRoute
@@ -242,6 +268,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyPolicyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/terms': {
       id: '/terms'
       path: '/terms'
@@ -268,6 +301,13 @@ declare module '@tanstack/react-router' {
       path: '/collections/$category'
       fullPath: '/collections/$category'
       preLoaderRoute: typeof CollectionsCategoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gifts/$catalogue': {
+      id: '/gifts/$catalogue'
+      path: '/gifts/$catalogue'
+      fullPath: '/gifts/$catalogue'
+      preLoaderRoute: typeof GiftsCatalogueRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/occasions/': {
@@ -313,8 +353,10 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   CorporateGiftingRoute: CorporateGiftingRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
   CollectionsCategoryRoute: CollectionsCategoryRoute,
+  GiftsCatalogueRoute: GiftsCatalogueRoute,
   OccasionsOccasionRoute: OccasionsOccasionRoute,
   ProductsProductRoute: ProductsProductRoute,
   CollectionsIndexRoute: CollectionsIndexRoute,

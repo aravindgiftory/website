@@ -42,7 +42,13 @@ export function Navbar() {
     >
       <div className="mx-auto flex h-20 max-w-[1400px] items-center justify-between gap-6 px-5 sm:px-8">
         <Link to="/" className="flex items-center gap-3" aria-label={`${BRAND.name} — home`}>
-          <img src={logo} alt="" width={1024} height={516} className="h-16 w-auto" />
+          <img
+            src={logo}
+            alt={BRAND.name}
+            width={1024}
+            height={516}
+            className={`h-16 w-auto transition-[filter] duration-500 `}
+          />
           <span className="sr-only">{BRAND.name}</span>
         </Link>
 
@@ -51,8 +57,7 @@ export function Navbar() {
             <Link
               key={link.to}
               to={link.to}
-              className="link-underline text-[0.8rem] font-medium uppercase tracking-[0.14em] text-foreground/80 transition-colors hover:text-primary"
-              activeProps={{ className: "text-primary" }}
+              className={`link-underline whitespace-nowrap pb-1.5 text-[0.8rem] font-medium uppercase tracking-[0.14em] ${"text-foreground/80 hover:text-primary data-[status=active]:text-primary"} transition-colors data-[status=active]:font-semibold data-[status=active]:[background-image:linear-gradient(var(--color-gold),var(--color-gold))] data-[status=active]:[background-size:100%_2px]`}
             >
               {link.label}
             </Link>
@@ -65,7 +70,7 @@ export function Navbar() {
             target="_blank"
             rel="noreferrer"
             aria-label="Chat on WhatsApp"
-            className="hidden h-10 w-10 items-center justify-center rounded-full border border-border text-foreground/70 transition-colors hover:border-primary hover:text-primary sm:flex"
+            className={`hidden h-10 w-10 items-center justify-center rounded-full border transition-colors sm:flex ${"border-border text-foreground/70 hover:border-primary hover:text-primary"}`}
           >
             <MessageCircle className="h-4 w-4" />
           </a>
@@ -79,13 +84,13 @@ export function Navbar() {
                 submitLabel: "Request a Quote",
               })
             }
-            className="hidden rounded-sm bg-primary px-6 py-3 text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-primary-foreground transition-colors hover:bg-primary/90 sm:block"
+            className={`hidden rounded-sm px-6 py-3 text-[0.7rem] font-semibold uppercase tracking-[0.16em] transition-colors sm:block ${"bg-primary text-primary-foreground hover:bg-primary/90"}`}
           >
             Get a Quote
           </button>
           <button
             type="button"
-            className="flex h-10 w-10 items-center justify-center text-primary lg:hidden"
+            className={`flex h-10 w-10 items-center justify-center lg:hidden ${"text-primary"}`}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             aria-expanded={menuOpen}
             onClick={() => setMenuOpen((v) => !v)}
@@ -103,7 +108,7 @@ export function Navbar() {
                 key={link.to}
                 to={link.to}
                 onClick={() => setMenuOpen(false)}
-                className="font-display text-3xl text-primary"
+                className="flex items-center gap-4 font-display text-3xl text-primary/70 data-[status=active]:text-primary before:h-px before:w-0 before:bg-gold before:transition-all data-[status=active]:before:w-8"
               >
                 {link.label}
               </Link>

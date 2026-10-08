@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { CTASection } from "@/components/site/CTASection";
-import { occasions } from "@/data/catalog";
+import { occasions, BRAND } from "@/data/catalog";
 
 export const Route = createFileRoute("/occasions/")({
   head: () => ({
@@ -17,10 +17,10 @@ export const Route = createFileRoute("/occasions/")({
         property: "og:description",
         content: "Every occasion deserves a thoughtful gift. Explore gifting by occasion.",
       },
-      { property: "og:url", content: "/occasions" },
+      { property: "og:url", content: `${BRAND.siteUrl}/occasions` },
       { property: "og:type", content: "website" },
     ],
-    links: [{ rel: "canonical", href: "/occasions" }],
+    links: [{ rel: "canonical", href: `${BRAND.siteUrl}/occasions` }],
   }),
   component: OccasionsPage,
 });

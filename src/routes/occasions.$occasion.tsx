@@ -3,7 +3,7 @@ import { SectionHeading } from "@/components/site/SectionHeading";
 import { ProductCard } from "@/components/site/ProductCard";
 import { CTASection } from "@/components/site/CTASection";
 import { useLeadDialog } from "@/components/site/LeadDialog";
-import { getOccasion, productsByOccasion, type OccasionSlug } from "@/data/catalog";
+import { getOccasion, productsByOccasion, type OccasionSlug, BRAND } from "@/data/catalog";
 
 export const Route = createFileRoute("/occasions/$occasion")({
   loader: ({ params }) => {
@@ -20,17 +20,17 @@ export const Route = createFileRoute("/occasions/$occasion")({
         ],
       };
     }
-    const title = `${loaderData.occasion.name} Gifts | Aravind Giftory`;
+    const title = `Gifts for ${loaderData.occasion.name} Occasions | Aravind Giftory`;
     return {
       meta: [
         { title },
         { name: "description", content: loaderData.occasion.description },
         { property: "og:title", content: title },
         { property: "og:description", content: loaderData.occasion.description },
-        { property: "og:url", content: `/occasions/${params.occasion}` },
+        { property: "og:url", content: `${BRAND.siteUrl}/occasions/${params.occasion}` },
         { property: "og:type", content: "website" },
       ],
-      links: [{ rel: "canonical", href: `/occasions/${params.occasion}` }],
+      links: [{ rel: "canonical", href: `${BRAND.siteUrl}/occasions/${params.occasion}` }],
     };
   },
   component: OccasionPage,

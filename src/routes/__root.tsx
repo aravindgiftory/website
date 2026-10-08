@@ -5,6 +5,7 @@ import {
   createRootRouteWithContext,
   useRouter,
   HeadContent,
+  type ErrorComponentProps,
   Scripts,
 } from "@tanstack/react-router";
 import { type ReactNode } from "react";
@@ -16,6 +17,8 @@ import { WhatsAppButton } from "@/components/site/WhatsAppButton";
 import { LeadDialogProvider } from "@/components/site/LeadDialog";
 import { EnquiryProvider } from "@/components/site/EnquiryProvider";
 import { EnquiryTray } from "@/components/site/EnquiryTray";
+import { CookieBanner } from "@/components/site/CookieBanner";
+import { BRAND } from "@/data/catalog";
 
 function NotFoundComponent() {
   return (
@@ -39,7 +42,7 @@ function NotFoundComponent() {
   );
 }
 
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+function ErrorComponent({ error, reset }: ErrorComponentProps) {
   console.error(error);
   const router = useRouter();
 
@@ -85,17 +88,29 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:site_name", content: "Aravind Giftory" },
       { property: "og:type", content: "website" },
+      { name: "theme-color", content: "#5a1a1a" },
+      { property: "og:image", content: `${BRAND.siteUrl}/og-image.jpg` },
+      { property: "og:image:width", content: "1280" },
+      { property: "og:image:height", content: "1280" },
+      { property: "og:image:alt", content: "Aravind Giftory curated gift box" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: `${BRAND.siteUrl}/og-image.jpg` },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Manrope:wght@400;500;600;700&display=swap",
-      },
+      ...[
+        "cormorant-garamond-normal-latin",
+        "cormorant-garamond-italic-latin",
+        "manrope-normal-latin",
+      ].map((name) => ({
+        rel: "preload",
+        as: "font",
+        type: "font/woff2",
+        href: `/fonts/${name}.woff2`,
+        crossOrigin: "anonymous" as const,
+      })),
       { rel: "icon", type: "image/png", href: "/favicon.png" },
+      { rel: "apple-touch-icon", href: "/favicon.png" },
     ],
     scripts: [
       {
@@ -104,7 +119,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "@context": "https://schema.org",
           "@type": "Organization",
           name: "Aravind Giftory",
-          description: "Curated gifting collections for weddings, celebrations and corporate occasions.",
+          description:
+            "Curated gifting collections for weddings, celebrations and corporate occasions.",
           address: { "@type": "PostalAddress", addressLocality: "Hyderabad", addressCountry: "IN" },
           telephone: "+91 6309-645424",
           sameAs: ["https://instagram.com/aravindgiftory"],
@@ -139,6 +155,12 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <EnquiryProvider>
         <LeadDialogProvider>
+          <a
+            href="#main"
+            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-sm focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground"
+          >
+            Skip to content
+          </a>
           <Navbar />
           <main id="main">
             {/* Required: nested routes render here. */}
@@ -147,6 +169,7 @@ function RootComponent() {
           <Footer />
           <WhatsAppButton />
           <EnquiryTray />
+          <CookieBanner />
         </LeadDialogProvider>
       </EnquiryProvider>
     </QueryClientProvider>

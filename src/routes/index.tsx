@@ -1,11 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Hero } from "@/components/site/Hero";
+import { FestiveCombos } from "@/components/site/FestiveCombos";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { ProductCard } from "@/components/site/ProductCard";
 import { CTASection } from "@/components/site/CTASection";
 import { InstagramGallery } from "@/components/site/InstagramGallery";
 import { useLeadDialog } from "@/components/site/LeadDialog";
-import { edits, featuredProducts, occasions } from "@/data/catalog";
+import { edits, featuredProducts, occasions, BRAND } from "@/data/catalog";
 import brandStory from "@/assets/brand-story.jpg";
 
 export const Route = createFileRoute("/")({
@@ -23,10 +24,10 @@ export const Route = createFileRoute("/")({
         content:
           "Curated gifting collections for weddings, birthdays, baby showers, housewarmings, celebrations and corporate occasions.",
       },
-      { property: "og:url", content: "/" },
+      { property: "og:url", content: `${BRAND.siteUrl}/` },
       { property: "og:type", content: "website" },
     ],
-    links: [{ rel: "canonical", href: "/" }],
+    links: [{ rel: "canonical", href: `${BRAND.siteUrl}/` }],
   }),
   component: Home,
 });
@@ -60,6 +61,12 @@ const steps = [
   { number: "05", label: "Celebrate" },
 ];
 
+const orderSteps = [
+  { title: "Choose", text: "Pick gifts from the catalogue." },
+  { title: "Enquire", text: "Share your quantity and event date." },
+  { title: "Receive", text: "We pack and deliver, with pricing for your quantity." },
+];
+
 const storyCategories = ["Wedding", "Baby Shower", "Housewarming", "Birthday", "Corporate"];
 
 function Home() {
@@ -68,6 +75,20 @@ function Home() {
   return (
     <>
       <Hero />
+      <FestiveCombos />
+
+      <section aria-label="How ordering works" className="mx-auto max-w-[1400px] px-5 pt-4 sm:px-8">
+        <ol className="grid gap-6 border-y border-border py-8 sm:grid-cols-3">
+          {orderSteps.map((step, i) => (
+            <li key={step.title}>
+              <p className="font-display text-2xl italic text-primary">
+                {i + 1}. {step.title}
+              </p>
+              <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{step.text}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
 
       {/* 02 — Choose the Moment */}
       <section className="mx-auto max-w-[1400px] px-5 pt-16 sm:px-8 lg:pt-24">
@@ -311,9 +332,7 @@ function Home() {
               className="flex aspect-[4/5] flex-col justify-between border border-dashed border-border bg-card p-6"
             >
               <span className="eyebrow text-gold">{category}</span>
-              <p className="text-sm leading-relaxed text-muted-foreground">
-                Story coming soon.
-              </p>
+              <p className="text-sm leading-relaxed text-muted-foreground">Story coming soon.</p>
             </div>
           ))}
         </div>

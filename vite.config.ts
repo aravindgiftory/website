@@ -30,7 +30,29 @@ export default defineConfig({
     tsConfigPaths({ projects: ["./tsconfig.json"] }),
     tailwindcss(),
     tanstackStart(),
-    nitro(),
+    nitro({
+      routeRules: {
+        // Fingerprinted build files never change, so browsers can keep them for a year.
+        "/assets/**": {
+          headers: { "Cache-Control": "public, max-age=31536000, immutable" },
+        },
+        // Photos, fonts and PDFs keep their file names, so cache for a week.
+        "/products/**": { headers: { "Cache-Control": "public, max-age=604800" } },
+        "/catalogue-pages/**": { headers: { "Cache-Control": "public, max-age=604800" } },
+        "/catalogues/**": { headers: { "Cache-Control": "public, max-age=604800" } },
+        "/site/**": { headers: { "Cache-Control": "public, max-age=604800" } },
+        "/fonts/**": { headers: { "Cache-Control": "public, max-age=31536000, immutable" } },
+        "/**": {
+          headers: {
+            "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+            "X-Content-Type-Options": "nosniff",
+            "X-Frame-Options": "SAMEORIGIN",
+            "Referrer-Policy": "strict-origin-when-cross-origin",
+            "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+          },
+        },
+      },
+    }),
     viteReact(),
   ],
 });

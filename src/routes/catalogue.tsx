@@ -1,9 +1,10 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { BRAND } from "@/data/catalog";
+import { Link, createFileRoute } from "@tanstack/react-router";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { LeadForm } from "@/components/site/LeadForm";
 import { CATALOGUE_FILES } from "@/data/media";
 import catalogueCover from "@/assets/catalogue-cover.jpg";
-import { downloadCatalogue } from "@/lib/catalogue-download";
+import { useLeadDialog } from "@/components/site/LeadDialog";
 
 export const Route = createFileRoute("/catalogue")({
   head: () => ({
@@ -19,15 +20,16 @@ export const Route = createFileRoute("/catalogue")({
         property: "og:description",
         content: "Explore our curated gifting collection and request the 2026 catalogue.",
       },
-      { property: "og:url", content: "/catalogue" },
+      { property: "og:url", content: `${BRAND.siteUrl}/catalogue` },
       { property: "og:type", content: "website" },
     ],
-    links: [{ rel: "canonical", href: "/catalogue" }],
+    links: [{ rel: "canonical", href: `${BRAND.siteUrl}/catalogue` }],
   }),
   component: CataloguePage,
 });
 
 function CataloguePage() {
+  const { openCatalogue } = useLeadDialog();
   return (
     <>
       <section className="mx-auto max-w-[1400px] px-5 pt-36 sm:px-8 lg:pt-44">
@@ -82,12 +84,11 @@ function CataloguePage() {
               key={file.href}
               className="group flex flex-col overflow-hidden border border-border bg-card transition-colors hover:border-gold/60"
             >
-              <a
-                href={file.href}
-                target="_blank"
-                rel="noreferrer"
-                className="block overflow-hidden bg-muted"
-                aria-label={`Preview ${file.title}`}
+              <Link
+                to="/gifts/$catalogue"
+                params={{ catalogue: file.slug }}
+                className="block w-full overflow-hidden bg-muted"
+                aria-label={`View products in ${file.title}`}
               >
                 <img
                   src={file.cover}
@@ -97,26 +98,25 @@ function CataloguePage() {
                   loading="lazy"
                   className="aspect-[16/9] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                 />
-              </a>
+              </Link>
               <div className="flex flex-1 flex-col p-8">
                 <h3 className="font-display text-xl text-primary">{file.title}</h3>
                 <p className="mt-2 flex-1 text-sm text-muted-foreground">{file.description}</p>
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                   <button
                     type="button"
-                    onClick={() => downloadCatalogue(file.title)}
+                    onClick={() => openCatalogue(undefined, file.title)}
                     className="rounded-sm bg-primary px-6 py-3 text-center text-xs font-semibold uppercase tracking-[0.18em] text-primary-foreground transition-colors hover:bg-primary/90"
                   >
                     Download
                   </button>
-                  <a
-                    href={file.href}
-                    target="_blank"
-                    rel="noreferrer"
+                  <Link
+                    to="/gifts/$catalogue"
+                    params={{ catalogue: file.slug }}
                     className="rounded-sm border border-primary/25 px-6 py-3 text-center text-xs font-semibold uppercase tracking-[0.18em] text-primary transition-colors hover:border-primary"
                   >
-                    Preview
-                  </a>
+                    View products
+                  </Link>
                 </div>
               </div>
             </div>
@@ -128,7 +128,10 @@ function CataloguePage() {
         </span>
       </section>
 
-      <section id="catalogue-form" className="mx-auto mt-32 max-w-[1400px] scroll-mt-28 px-5 sm:px-8">
+      <section
+        id="catalogue-form"
+        className="mx-auto mt-32 max-w-[1400px] scroll-mt-28 px-5 sm:px-8"
+      >
         <div className="grid gap-12 border border-border bg-card p-6 sm:p-12 lg:grid-cols-[1fr_1.3fr]">
           <div>
             <span className="eyebrow text-gold">Get the Complete Catalogue</span>

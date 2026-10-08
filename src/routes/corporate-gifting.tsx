@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { ProductCard } from "@/components/site/ProductCard";
 import { LeadForm } from "@/components/site/LeadForm";
-import { productsByOccasion } from "@/data/catalog";
+import { productsByOccasion, BRAND } from "@/data/catalog";
 import occasionCorporate from "@/assets/occasion-corporate.jpg";
 
 export const Route = createFileRoute("/corporate-gifting")({
@@ -19,10 +19,10 @@ export const Route = createFileRoute("/corporate-gifting")({
         property: "og:description",
         content: "Gifts that represent your brand — curated corporate gifting in volume.",
       },
-      { property: "og:url", content: "/corporate-gifting" },
+      { property: "og:url", content: `${BRAND.siteUrl}/corporate-gifting` },
       { property: "og:type", content: "website" },
     ],
-    links: [{ rel: "canonical", href: "/corporate-gifting" }],
+    links: [{ rel: "canonical", href: `${BRAND.siteUrl}/corporate-gifting` }],
   }),
   component: CorporatePage,
 });

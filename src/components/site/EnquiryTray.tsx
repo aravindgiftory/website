@@ -24,10 +24,10 @@ export function EnquiryTray() {
         type="button"
         onClick={openTray}
         data-enquiry-fab
-        aria-label={`Enquiry list, ${items.length} ${items.length === 1 ? "gift" : "gifts"}`}
         className="fixed bottom-5 right-20 z-40 flex h-12 items-center gap-2 rounded-full border border-border bg-card px-4 text-xs font-semibold uppercase tracking-[0.14em] text-primary shadow-[var(--shadow-soft)] transition-transform duration-300 hover:-translate-y-0.5"
       >
         Enquiry
+        <span className="sr-only">list, gifts:</span>
         <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-[0.65rem] text-primary-foreground">
           {items.length}
         </span>
@@ -49,7 +49,12 @@ export function EnquiryTray() {
                 <span className="eyebrow text-gold">Your list</span>
                 <h2 className="mt-1 font-display text-2xl text-primary">Enquiry</h2>
               </div>
-              <button type="button" onClick={closeTray} aria-label="Close enquiry list" className="p-2 text-muted-foreground hover:text-primary">
+              <button
+                type="button"
+                onClick={closeTray}
+                aria-label="Close enquiry list"
+                className="p-2 text-muted-foreground hover:text-primary"
+              >
                 <X className="h-4 w-4" />
               </button>
             </div>
@@ -73,7 +78,9 @@ export function EnquiryTray() {
                         <img src={item.image} alt="" className="h-full w-full object-cover" />
                       </Link>
                       <div className="min-w-0 flex-1">
-                        <p className="font-display text-lg leading-snug text-foreground">{item.name}</p>
+                        <p className="font-display text-lg leading-snug text-foreground">
+                          {item.name}
+                        </p>
                         <p className="mt-1 text-xs uppercase tracking-[0.14em] text-muted-foreground">
                           {item.code}
                         </p>

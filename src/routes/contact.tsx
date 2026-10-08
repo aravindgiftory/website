@@ -16,10 +16,10 @@ export const Route = createFileRoute("/contact")({
         property: "og:description",
         content: "Talk to Giftory about your gifting requirement.",
       },
-      { property: "og:url", content: "/contact" },
+      { property: "og:url", content: `${BRAND.siteUrl}/contact` },
       { property: "og:type", content: "website" },
     ],
-    links: [{ rel: "canonical", href: "/contact" }],
+    links: [{ rel: "canonical", href: `${BRAND.siteUrl}/contact` }],
   }),
   component: ContactPage,
 });

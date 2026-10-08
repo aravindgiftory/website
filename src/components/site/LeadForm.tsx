@@ -1,4 +1,5 @@
 import { useId, useState } from "react";
+import { Link } from "@tanstack/react-router";
 import {
   budgetOptions,
   catalogueComingSoonNote,
@@ -27,6 +28,7 @@ export interface LeadFormProps {
   showLookingFor?: boolean | undefined;
   defaultQuantity?: string | undefined;
   defaultOccasion?: string | undefined;
+  defaultCatalogue?: string | undefined;
   productName?: string | undefined;
   productCode?: string | undefined;
   products?: Array<{ slug: string; name: string; code: string; image?: string }> | undefined;
@@ -46,7 +48,7 @@ interface FieldErrors {
 
 const labelClass = "eyebrow block mb-2 text-foreground/70";
 const controlClass =
-  "w-full rounded-sm border border-border bg-card px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/70 transition-colors focus:border-primary focus:outline-none focus-visible:outline-none";
+  "w-full rounded-sm border border-border bg-card px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:border-primary focus:outline-none focus-visible:outline-none";
 
 export function LeadForm({
   source,
@@ -55,6 +57,7 @@ export function LeadForm({
   showLookingFor = false,
   defaultQuantity,
   defaultOccasion,
+  defaultCatalogue,
   productName,
   productCode,
   products,
@@ -74,14 +77,16 @@ export function LeadForm({
     email: "",
     company: "",
     lookingFor: "",
-    catalogueChoice: "",
+    catalogueChoice: selectableValue(catalogueOptions, defaultCatalogue),
     occasion: selectableValue(occasionOptions, defaultOccasion),
     quantity: defaultQuantity ?? "",
     budget: "",
     eventDate: "",
     message: "",
-    consent: true,
+    consent: false,
+    website: "",
   });
+  const [openedAt] = useState(() => Date.now());
 
   const set = (key: keyof typeof values, value: string | boolean) =>
     setValues((prev) => ({ ...prev, [key]: value }));
@@ -97,7 +102,8 @@ export function LeadForm({
       next.lookingFor = "Let us know what you're looking for.";
     if (showCatalogueChoice && !values.catalogueChoice)
       next.catalogueChoice = "Please choose a catalogue.";
-    if (showLookingFor && !values.quantity) next.quantity = "Approximate quantity helps us help you.";
+    if (showLookingFor && !values.quantity)
+      next.quantity = "Approximate quantity helps us help you.";
     if (!values.consent) next.consent = "Please confirm we may contact you.";
     setErrors(next);
     return Object.keys(next).length === 0;
@@ -107,6 +113,11 @@ export function LeadForm({
     event.preventDefault();
     if (status === "loading") return; // prevents duplicate submissions
     if (!validate()) return;
+    // Bots fill the hidden field or submit instantly.
+    if (values.website || Date.now() - openedAt < 1500) {
+      setStatus("success");
+      return;
+    }
 
     setStatus("loading");
     const lead: Lead = {
@@ -127,6 +138,7 @@ export function LeadForm({
       productCode: products?.[0]?.code ?? productCode,
       products,
       consent: values.consent,
+      website: values.website || undefined,
       submittedAt: new Date().toISOString(),
       pageUrl: typeof window === "undefined" ? "" : window.location.href,
     };
@@ -149,8 +161,8 @@ export function LeadForm({
         <span className="eyebrow text-gold">Received</span>
         <h3 className="display-md mt-3 text-primary">Thank you.</h3>
         <p className="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-muted-foreground">
-          We've received your gifting requirements. An Aravind Giftory representative may
-          contact you shortly.
+          We've received your gifting requirements. An Aravind Giftory representative may contact
+          you shortly.
         </p>
       </div>
     );
@@ -158,6 +170,18 @@ export function LeadForm({
 
   return (
     <form onSubmit={handleSubmit} noValidate className="space-y-6">
+      <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
+        <label htmlFor={`${uid}-website`}>Website</label>
+        <input
+          id={`${uid}-website`}
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          value={values.website}
+          onChange={(e) => set("website", e.target.value)}
+        />
+      </div>
+
       <div className={compact ? "space-y-5" : "grid gap-5 sm:grid-cols-2"}>
         <Field
           id={`${uid}-first`}
@@ -258,6 +282,7 @@ export function LeadForm({
           <input
             id={`${uid}-date`}
             type="date"
+            min={new Date().toISOString().slice(0, 10)}
             className={controlClass}
             value={values.eventDate}
             onChange={(e) => set("eventDate", e.target.value)}
@@ -291,7 +316,12 @@ export function LeadForm({
           onChange={(e) => set("consent", e.target.checked)}
         />
         <span>
-          I'd like Aravind Giftory to contact me regarding my gifting requirements.
+          I'd like Aravind Giftory to contact me regarding my gifting requirements, and I agree to
+          the{" "}
+          <Link to="/privacy-policy" className="link-underline text-foreground">
+            Privacy Policy
+          </Link>
+          .
         </span>
       </label>
       {errors.consent && (
@@ -397,6 +427,7 @@ function SelectField({
         id={id}
         value={value}
         aria-invalid={Boolean(error)}
+        aria-describedby={error ? `${id}-error` : undefined}
         onChange={(e) => onChange(e.target.value)}
         className={`${controlClass} ${error ? "border-destructive" : ""}`}
       >
@@ -416,7 +447,11 @@ function SelectField({
           {note}
         </span>
       )}
-      {error && <p className="mt-2 text-xs text-destructive">{error}</p>}
+      {error && (
+        <p id={`${id}-error`} className="mt-2 text-xs text-destructive">
+          {error}
+        </p>
+      )}
     </div>
   );
 }
