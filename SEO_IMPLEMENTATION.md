@@ -71,3 +71,35 @@ Google Apps Script (`scripts/lead-mail.gs`) and open a pre-filled WhatsApp messa
 5. Google Business Profile: claim and verify it; keep the name, phone and city identical to the site;
    add real photos and ask satisfied clients for reviews.
 6. After deployment, run the Rich Results Test on `/`, `/corporate-gifting` and `/occasions/wedding`.
+
+## Round 2: geographic relevance, product and category pages, technical audit
+
+### Changes
+
+- **Home page**: a plain-language "Gifting services in Hyderabad" section links to bulk return gifts, wedding,
+  corporate, Diwali and festive, baby shower and naming ceremony, and housewarming pages. It states only
+  verified facts (Hyderabad base, 25-piece minimum).
+- **Individual product pages (new)**: `/gift/<code>-<name>` for each of the 259 catalogue products, with name,
+  code, "what's included" (extracted from the catalogue PDFs where it exists), the full catalogue page,
+  Enquire now and WhatsApp buttons, related products, breadcrumbs and an internal link from every product
+  card. Pages with fewer than two content lines (all Luxury Gifting items and 38 corporate sets) are
+  `noindex, follow` and left out of the sitemap, so thin pages do not dilute the site.
+- **Category pages**: `/collections/<slug>` now serve the nine real collections (hampers by budget, snacks,
+  corporate gift sets, brass diyas, dry fruit boxes and serveware, drinkware, storage) with an intro, product
+  grid, FAQs, breadcrumbs and links to the other collections. The ten retired placeholder collection URLs return a
+  permanent 301 redirect to `/collections`.
+- **Placeholder products** (`/products/<slug>` without a real photograph) are `noindex, follow` and no longer in
+  the sitemap. Real cork planters and combos stay indexable.
+- **Sitemap**: 226 URLs, all canonical on the production domain.
+
+### Verified on the production build (not on the live site)
+
+All 226 sitemap URLs return 200, have the production canonical, one h1, a unique title (≤70 characters) and
+unique description (≤200), valid JSON-LD and image alt text, and none carries `noindex`. Retired collection URLs
+301, unknown URLs 404, `/catalogue/print` is noindex and disallowed in robots.txt.
+
+### Not verifiable from here
+
+Google indexing itself. Nothing has been deployed or pushed, so the live site and Search Console were not
+checked. After deploying: submit the sitemap, inspect a few `/gift/…` URLs, and watch Coverage for "Crawled -
+currently not indexed". The 137 indexable product pages are the most likely to be slow to index.

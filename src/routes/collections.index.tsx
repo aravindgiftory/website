@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { CatalogueProductCard } from "@/components/site/CatalogueProductCard";
 import { CTASection } from "@/components/site/CTASection";
@@ -63,12 +63,6 @@ function CollectionsPage() {
     [active, groups],
   );
 
-  const choose = (slug: string) => {
-    setActive(slug);
-    setVisible(PAGE_SIZE);
-    document.getElementById("all-gifts")?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
-
   return (
     <>
       <section className="mx-auto max-w-[1400px] px-5 pt-36 sm:px-8 lg:pt-44">
@@ -84,9 +78,9 @@ function CollectionsPage() {
         <ul className="grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 lg:grid-cols-5">
           {groups.map(({ collection, items, cover }) => (
             <li key={collection.slug}>
-              <button
-                type="button"
-                onClick={() => choose(collection.slug)}
+              <Link
+                to="/collections/$category"
+                params={{ category: collection.slug }}
                 className="group block w-full text-left"
               >
                 <span className="block overflow-hidden border border-border bg-white">
@@ -110,7 +104,7 @@ function CollectionsPage() {
                 <span className="mt-2 block text-sm text-muted-foreground">
                   {collection.description}
                 </span>
-              </button>
+              </Link>
             </li>
           ))}
         </ul>

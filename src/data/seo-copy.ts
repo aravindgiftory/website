@@ -122,8 +122,74 @@ export const OCCASION_SEO: Record<string, { title: string; description: string }
       "Brass and crystal diyas, pooja plates, urlis and festive hampers for Diwali and pooja gifting, in bulk, from Aravind Giftory, Hyderabad.",
   },
   corporate: {
-    title: "Corporate Gifting in Hyderabad",
+    title: "Corporate Gifts & Welcome Kits in Hyderabad",
     description:
-      "Corporate gift sets, welcome kits and festive hampers in bulk for teams, clients and partners, from Aravind Giftory, Hyderabad. Request a corporate quote.",
+      "Welcome kits, notebooks, flasks and power bank sets for employees and clients, in bulk from Aravind Giftory, Hyderabad. Browse and request a quote.",
   },
 };
+
+/** Titles, descriptions and intros for each real collection page. Facts only, from the catalogues. */
+export const COLLECTION_SEO: Record<string, { title: string; description: string; intro: string }> =
+  {
+    "hampers-under-1k": {
+      title: "Gift Hampers Under ₹1K in Hyderabad",
+      description:
+        "Budget gift hampers under ₹1,000 from Aravind Giftory, Hyderabad: tea, snacks, candles and mugs. Browse real catalogue products and request a bulk quote.",
+      intro:
+        "Hampers priced under ₹1,000 each, built for return gifts, thank-yous and team gifting. Browse what each hamper contains and enquire with your quantity and event date.",
+    },
+    "hampers-2k-3k": {
+      title: "Gift Hampers ₹2K–₹3K in Hyderabad",
+      description:
+        "Premium gift hampers between ₹2,000 and ₹3,000 with mugs, coffee, chocolates and gadgets, from Aravind Giftory, Hyderabad. Request a bulk quote.",
+      intro:
+        "Mid-range hampers for family, friends and clients, with coffee, mugs, chocolates and desk gadgets. Open a hamper to see exactly what is inside.",
+    },
+    "hampers-5k-plus": {
+      title: "Luxury Gift Hampers ₹5K and Above in Hyderabad",
+      description:
+        "Luxury gift hampers from ₹5,000 with gourmet treats, candles and flasks, from Aravind Giftory, Hyderabad. See contents and request a quote.",
+      intro:
+        "Statement hampers for weddings, milestone celebrations and senior clients. Each page lists the products packed inside.",
+    },
+    "snacks-munchies": {
+      title: "Snacks & Munchies Gift Hampers in Hyderabad",
+      description:
+        "Gourmet snack and munchies hampers for celebrations, return gifts and teams, from Aravind Giftory, Hyderabad. See contents and enquire in bulk.",
+      intro:
+        "Savoury snacks, cookies, makhana, nuts and chocolates in gift packs made for sharing. Every hamper page lists its contents.",
+    },
+    "corporate-gift-sets": {
+      title: "Corporate Gift Sets in Hyderabad",
+      description:
+        "Corporate gift sets and welcome kits with notebooks, flasks, power banks and pens, in bulk from Aravind Giftory, Hyderabad. Request a corporate quote.",
+      intro:
+        "Welcome kits and gift sets for employees, clients and partners, many designed for logo branding. Open any set to see its contents.",
+    },
+    "brass-diyas-pooja": {
+      title: "Brass Diyas & Pooja Gifts in Hyderabad",
+      description:
+        "Brass and crystal diyas, pooja plates and urlis for festive and pooja gifting, in bulk from Aravind Giftory, Hyderabad.",
+      intro:
+        "Brass and crystal diyas, pooja plates and urlis for Diwali, pooja and traditional gifting.",
+    },
+    "dry-fruit-boxes-serveware": {
+      title: "Dry Fruit Boxes & Serveware Gifts in Hyderabad",
+      description:
+        "Metal dry fruit boxes, trays, jars and bowl sets for housewarming and festive gifting, in bulk from Aravind Giftory, Hyderabad.",
+      intro:
+        "Dry fruit boxes, pichwai trays, jars, bowl sets and serveware that settle into a new home or festive table.",
+    },
+    "drinkware-tea": {
+      title: "Drinkware & Tea Set Gifts in Hyderabad",
+      description:
+        "Flasks, mugs, tumblers and tea sets for gifting in bulk, from Aravind Giftory, Hyderabad.",
+      intro: "Flasks, mugs, tumblers and tea sets, practical gifts people use every day.",
+    },
+    "storage-lunch-boxes": {
+      title: "Storage Jars & Lunch Box Gifts in Hyderabad",
+      description:
+        "Storage jars, canisters, tiffin and lunch boxes for practical bulk gifting, from Aravind Giftory, Hyderabad.",
+      intro: "Storage jars, canisters, tiffin and lunch boxes for practical, everyday gifting.",
+    },
+  };

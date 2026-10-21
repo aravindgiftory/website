@@ -13,6 +13,7 @@ import {
   BudgetTiles,
   CategoryStrip,
   ProductCarousel,
+  ServicesSection,
   UspStrip,
 } from "@/components/site/HomeSections";
 import productData from "@/data/catalogue-products.json";
@@ -401,6 +402,8 @@ function Home() {
           ))}
         </div>
       </section>
+
+      <ServicesSection />
 
       <FaqSection items={homeFaqs} />
 

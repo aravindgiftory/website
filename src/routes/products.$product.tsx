@@ -15,6 +15,10 @@ import {
   whatsappLink,
 } from "@/data/catalog";
 
+/** Products with a photograph of the real item (not a stock placeholder). */
+const isRealPhoto = (product: { image: unknown }) =>
+  typeof product.image === "string" && product.image.startsWith("/products/");
+
 export const Route = createFileRoute("/products/$product")({
   loader: ({ params }) => {
     const product = getProduct(params.product);
@@ -30,15 +34,23 @@ export const Route = createFileRoute("/products/$product")({
         ],
       };
     }
-    const title = `${loaderData.product.name} | Aravind Giftory`;
+    const { product } = loaderData;
+    const title = `${product.name} | Aravind Giftory`;
+    const description = product.contents?.length
+      ? `${product.description} Includes ${product.contents.slice(0, 3).join(", ")}.`.slice(0, 200)
+      : product.description;
     return {
       meta: [
         { title },
-        { name: "description", content: loaderData.product.description },
+        { name: "description", content: description },
         { property: "og:title", content: title },
-        { property: "og:description", content: loaderData.product.description },
+        { property: "og:description", content: description },
         { property: "og:url", content: `${BRAND.siteUrl}/products/${params.product}` },
         { property: "og:type", content: "product" },
+        // Placeholder products without a real photograph stay out of search results.
+        ...(isRealPhoto(loaderData.product)
+          ? []
+          : [{ name: "robots", content: "noindex, follow" }]),
       ],
       links: [{ rel: "canonical", href: `${BRAND.siteUrl}/products/${params.product}` }],
       scripts: [

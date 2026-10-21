@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { BRAND } from "@/data/catalog";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -19,8 +19,8 @@ export function CategoryStrip() {
           return (
             <li key={collection.slug} className="w-28 shrink-0 sm:w-32">
               <Link
-                to="/collections"
-                search={{ collection: collection.slug }}
+                to="/collections/$category"
+                params={{ category: collection.slug }}
                 className="group block text-center"
               >
                 <span className="mx-auto block h-24 w-24 overflow-hidden rounded-2xl border border-border bg-white sm:h-28 sm:w-28">
@@ -173,8 +173,8 @@ export function BudgetTiles() {
           return (
             <li key={tile.slug}>
               <Link
-                to="/collections"
-                search={{ collection: tile.slug }}
+                to="/collections/$category"
+                params={{ category: tile.slug }}
                 className="group block overflow-hidden rounded-sm bg-primary text-primary-foreground transition-shadow hover:shadow-[var(--shadow-soft)]"
               >
                 {cover && (
@@ -197,6 +197,96 @@ export function BudgetTiles() {
             </li>
           );
         })}
+      </ul>
+    </section>
+  );
+}
+
+const SERVICES = [
+  {
+    to: "/occasions",
+    occasion: undefined,
+    title: "Bulk return gifts in Hyderabad",
+    text: "Return gifts for guests at weddings, baby showers, housewarmings and birthdays, in quantity.",
+  },
+  {
+    to: "/occasions/$occasion",
+    occasion: "wedding",
+    title: "Wedding return gifts",
+    text: "Gift hampers and brass dry fruit boxes for wedding guests, grouped by budget.",
+  },
+  {
+    to: "/corporate-gifting",
+    occasion: undefined,
+    title: "Corporate gifting",
+    text: "Welcome kits, gift sets and festive hampers for teams, clients and partners.",
+  },
+  {
+    to: "/occasions/$occasion",
+    occasion: "pooja-festive",
+    title: "Diwali and festive gifts",
+    text: "Brass and crystal diyas, pooja plates and festive hampers, plus cork gift combos.",
+  },
+  {
+    to: "/occasions/$occasion",
+    occasion: "baby-shower",
+    title: "Baby shower and naming ceremony",
+    text: "Gift hampers under ₹1K and ₹2K–₹3K with snacks, dry fruits, tea and coffee.",
+  },
+  {
+    to: "/occasions/$occasion",
+    occasion: "housewarming",
+    title: "Housewarming and traditional gifts",
+    text: "Brass bowls, jars, trays and cork planters for griha pravesh and new homes.",
+  },
+] as const;
+
+function ServiceLink({
+  service,
+  className,
+  children,
+}: {
+  service: (typeof SERVICES)[number];
+  className: string;
+  children: ReactNode;
+}) {
+  return service.to === "/occasions/$occasion" ? (
+    <Link to="/occasions/$occasion" params={{ occasion: service.occasion }} className={className}>
+      {children}
+    </Link>
+  ) : (
+    <Link to={service.to} className={className}>
+      {children}
+    </Link>
+  );
+}
+
+/** Plain-language services block: what we supply, where from, and where to start. */
+export function ServicesSection() {
+  return (
+    <section className="mx-auto mt-24 max-w-[1400px] px-5 sm:px-8">
+      <SectionHeading
+        eyebrow={`Gifting in ${BRAND.city}`}
+        title={`Gifting services in ${BRAND.city}`}
+        description={`${BRAND.name} is based in ${BRAND.city} and supplies return gifts, hampers and corporate gift sets in bulk, from ${BRAND.minQuantity} pieces. Choose the occasion you are planning.`}
+      />
+      <ul className="mt-12 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+        {SERVICES.map((service) => (
+          <li key={service.title} className="border-t border-border pt-6">
+            <h3 className="font-display text-2xl text-primary">
+              <ServiceLink service={service} className="hover:underline">
+                {service.title}
+              </ServiceLink>
+            </h3>
+            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{service.text}</p>
+            <ServiceLink
+              service={service}
+              className="link-underline mt-4 inline-block text-xs font-semibold uppercase tracking-[0.16em] text-primary"
+            >
+              View gifts
+            </ServiceLink>
+          </li>
+        ))}
       </ul>
     </section>
   );

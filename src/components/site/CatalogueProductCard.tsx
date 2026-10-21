@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { X } from "lucide-react";
+import { productPageSlug } from "@/lib/product-pages";
 import { useLeadDialog } from "./LeadDialog";
 
 export interface CatalogueProduct {
@@ -27,6 +29,7 @@ export function CatalogueProductCard({
 }) {
   const { open } = useLeadDialog();
   const [viewing, setViewing] = useState(false);
+  const slug = productPageSlug(product.code);
 
   useEffect(() => {
     if (!viewing) return;
@@ -37,19 +40,46 @@ export function CatalogueProductCard({
 
   return (
     <article className="flex flex-col border border-border bg-card">
-      <div className="aspect-square overflow-hidden bg-white">
-        <img
-          src={product.image}
-          alt={product.name || `${catalogueTitle}, product ${product.code}`}
-          width={product.w}
-          height={product.h}
-          loading="lazy"
-          className="h-full w-full object-contain"
-        />
-      </div>
+      {(() => {
+        const image = (
+          <img
+            src={product.image}
+            alt={product.name || `${catalogueTitle}, product ${product.code}`}
+            width={product.w}
+            height={product.h}
+            loading="lazy"
+            className="h-full w-full object-contain"
+          />
+        );
+        return (
+          <div className="aspect-square overflow-hidden bg-white">
+            {slug ? (
+              <Link
+                to="/gift/$slug"
+                params={{ slug }}
+                className="block h-full w-full"
+                tabIndex={-1}
+                aria-hidden="true"
+              >
+                {image}
+              </Link>
+            ) : (
+              image
+            )}
+          </div>
+        );
+      })()}
       <div className="flex flex-1 flex-col gap-4 p-4">
         <div>
-          <h3 className="font-display text-lg leading-snug text-primary">{product.name}</h3>
+          <h3 className="font-display text-lg leading-snug text-primary">
+            {slug ? (
+              <Link to="/gift/$slug" params={{ slug }} className="hover:underline">
+                {product.name}
+              </Link>
+            ) : (
+              product.name
+            )}
+          </h3>
           <p className="mt-1 text-xs font-semibold uppercase tracking-[0.14em] text-gold">
             {product.code}
           </p>
