@@ -11,6 +11,8 @@ import { REAL_COLLECTIONS, collectionProducts } from "@/lib/real-collections";
 const PAGE_SIZE = 24;
 
 export const Route = createFileRoute("/collections/")({
+  validateSearch: (search: Record<string, unknown>): { collection?: string } =>
+    typeof search["collection"] === "string" ? { collection: search["collection"] } : {},
   head: () => ({
     meta: [
       { title: "Gift Collections for Weddings, Festivals & Corporate | Aravind Giftory" },
@@ -39,7 +41,10 @@ export const Route = createFileRoute("/collections/")({
 });
 
 function CollectionsPage() {
-  const [active, setActive] = useState<string>("all");
+  const { collection: requested } = Route.useSearch();
+  const [active, setActive] = useState<string>(
+    REAL_COLLECTIONS.some((item) => item.slug === requested) ? (requested ?? "all") : "all",
+  );
   const [visible, setVisible] = useState(PAGE_SIZE);
 
   const groups = useMemo(

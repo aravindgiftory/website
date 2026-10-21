@@ -8,26 +8,28 @@ import {
 } from "@/components/site/CatalogueProductCard";
 import { InstagramGallery } from "@/components/site/InstagramGallery";
 import { useLeadDialog } from "@/components/site/LeadDialog";
-import { edits, occasions, BRAND, whatsappLink } from "@/data/catalog";
-import pageData from "@/data/catalogue-pages.json";
+import { occasions, BRAND, whatsappLink } from "@/data/catalog";
+import {
+  BudgetTiles,
+  CategoryStrip,
+  ProductCarousel,
+  UspStrip,
+} from "@/components/site/HomeSections";
 import productData from "@/data/catalogue-products.json";
-import { CATALOGUE_FILES } from "@/data/media";
 import { FaqSection } from "@/components/site/Faq";
 import { faqScript } from "@/lib/seo";
 import { homeFaqs } from "@/data/seo-copy";
-import brandStory from "@/assets/brand-story.jpg";
 
 const CATALOGUE_PRODUCTS = productData as CatalogueProduct[];
-const PAGES = pageData as Record<string, Array<{ n: number; src: string }>>;
 
 /** Real catalogue products on the home page: how many to take from each catalogue. */
 const HOME_PICKS: Array<[key: string, count: number]> = [
-  ["luxury-gifting-2026", 2],
-  ["corporate-gifting-2026", 2],
-  ["gift-hampers-5k-plus-2026", 1],
-  ["gift-hampers-2k-3k-2026", 1],
-  ["gift-hampers-1k-2026", 1],
-  ["snacks-munchies-hampers-2026", 1],
+  ["luxury-gifting-2026", 4],
+  ["corporate-gifting-2026", 5],
+  ["gift-hampers-5k-plus-2026", 2],
+  ["gift-hampers-2k-3k-2026", 3],
+  ["gift-hampers-1k-2026", 3],
+  ["snacks-munchies-hampers-2026", 3],
 ];
 
 /** Fixed-seed shuffle, so server and browser render the same order. */
@@ -41,18 +43,22 @@ function shuffled<T>(list: T[], seed: number): T[] {
   return out;
 }
 
-const homeProducts = shuffled(
-  HOME_PICKS.flatMap(([key, count], index) =>
-    shuffled(
-      CATALOGUE_PRODUCTS.filter((product) => product.key === key),
-      7 + index,
-    ).slice(0, count),
-  ),
+const groupPicks = HOME_PICKS.map(([key, count], index) =>
+  shuffled(
+    CATALOGUE_PRODUCTS.filter((product) => product.key === key),
+    7 + index,
+  ).slice(0, count),
+);
+const storyProduct = CATALOGUE_PRODUCTS.find((product) => product.code === "AG10011");
+
+const popularProducts = shuffled(
+  groupPicks.flatMap((group) => group.slice(0, Math.ceil(group.length / 2))),
   2026,
 );
-
-const catalogueTitle = (key: string) =>
-  CATALOGUE_FILES.find((file) => file.href.endsWith(`/${key}.pdf`))?.title ?? "Catalogue";
+const trendingProducts = shuffled(
+  groupPicks.flatMap((group) => group.slice(Math.ceil(group.length / 2))),
+  2027,
+);
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -159,6 +165,8 @@ function Home() {
   return (
     <>
       <Hero />
+      <CategoryStrip />
+      <UspStrip />
       <FestiveCombos />
 
       <section aria-label="How ordering works" className="mx-auto max-w-[1400px] px-5 pt-4 sm:px-8">
@@ -216,79 +224,14 @@ function Home() {
         </div>
       </section>
 
-      {/* 03 — The 2026 Collection */}
-      <section className="mx-auto mt-32 max-w-[1400px] px-5 sm:px-8">
-        <SectionHeading
-          eyebrow="Collection"
-          title="The 2026 Collection"
-          description="A curated selection of traditional, contemporary and practical gifting ideas."
-          action={
-            <Link
-              to="/collections"
-              className="link-underline text-xs font-semibold uppercase tracking-[0.16em] text-primary"
-            >
-              Explore Collections
-            </Link>
-          }
-        />
+      <ProductCarousel
+        eyebrow="Popular Picks"
+        title="Gifts our clients ask for"
+        description="Real products from our catalogues, each available in quantity. Open View details to see the full catalogue page."
+        products={popularProducts}
+      />
 
-        <div className="mt-14 space-y-4">
-          {edits.map((edit, index) => (
-            <Link
-              key={edit.title}
-              to="/collections/$category"
-              params={{ category: edit.collection }}
-              className="group grid items-center gap-6 border-t border-border py-6 md:grid-cols-[7rem_1fr_auto] md:gap-10"
-            >
-              <div className="overflow-hidden bg-muted">
-                <img
-                  src={edit.image}
-                  alt={edit.title}
-                  loading="lazy"
-                  className="aspect-square w-28 object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-              </div>
-              <div>
-                <div className="flex items-baseline gap-4">
-                  <span className="eyebrow">{String(index + 1).padStart(2, "0")}</span>
-                  <h3 className="font-display text-3xl text-primary md:text-4xl">{edit.title}</h3>
-                </div>
-                <p className="mt-2 text-sm text-muted-foreground">{edit.description}</p>
-              </div>
-              <span className="link-underline self-center text-xs font-semibold uppercase tracking-[0.16em] text-primary">
-                View
-              </span>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* 04 — Featured products */}
-      <section className="mx-auto mt-32 max-w-[1400px] px-5 sm:px-8">
-        <SectionHeading
-          eyebrow="Selected Pieces"
-          title="From the Catalogue"
-          description="A handful of pieces our clients return to. Every gift is available in quantity."
-          action={
-            <Link
-              to="/catalogue"
-              className="link-underline text-xs font-semibold uppercase tracking-[0.16em] text-primary"
-            >
-              View all catalogues
-            </Link>
-          }
-        />
-        <div className="mt-14 grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
-          {homeProducts.map((product) => (
-            <CatalogueProductCard
-              key={`${product.key}-${product.code}`}
-              product={product}
-              pageSrc={PAGES[product.key]?.find((page) => page.n === product.n)?.src}
-              catalogueTitle={catalogueTitle(product.key)}
-            />
-          ))}
-        </div>
-      </section>
+      <BudgetTiles />
 
       {/* 05 — Bulk gifting */}
       <section className="mt-32 border-y border-border bg-[oklch(0.951_0.018_86)]">
@@ -350,6 +293,13 @@ function Home() {
         </div>
       </section>
 
+      <ProductCarousel
+        eyebrow="More to Explore"
+        title="Trending in our catalogues"
+        description="More hampers, brass pieces and gift sets to shortlist for your next order."
+        products={trendingProducts}
+      />
+
       {/* 06 — Why Giftory */}
       <section className="mx-auto mt-32 max-w-[1400px] px-5 sm:px-8">
         <SectionHeading eyebrow="Why Giftory?" title="Gifting, handled with care." />
@@ -383,14 +333,16 @@ function Home() {
       <section className="mx-auto mt-32 max-w-[1400px] px-5 sm:px-8">
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
           <div className="overflow-hidden bg-muted">
-            <img
-              src={brandStory}
-              alt="Gifts being curated and packed at the Aravind Giftory workshop in Hyderabad"
-              width={1400}
-              height={1200}
-              loading="lazy"
-              className="w-full object-cover"
-            />
+            {storyProduct && (
+              <img
+                src={storyProduct.image}
+                alt={storyProduct.name}
+                width={storyProduct.w}
+                height={storyProduct.h}
+                loading="lazy"
+                className="aspect-square w-full bg-white object-contain"
+              />
+            )}
           </div>
           <div>
             <div className="flex items-center gap-3">
