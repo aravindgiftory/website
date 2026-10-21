@@ -7,7 +7,6 @@ import { productsByOccasion, BRAND } from "@/data/catalog";
 import { useLeadDialog } from "@/components/site/LeadDialog";
 import { CATALOGUE_FILES } from "@/data/media";
 import pageData from "@/data/catalogue-pages.json";
-import occasionCorporate from "@/assets/occasion-corporate.jpg";
 
 interface CataloguePage {
   n: number;
@@ -55,7 +54,7 @@ export const Route = createFileRoute("/corporate-gifting")({
 });
 
 function CorporatePage() {
-  const items = productsByOccasion("corporate");
+  const items = useMemo(() => shuffled(productsByOccasion("corporate")), []);
   const { open } = useLeadDialog();
   const giftSets = useMemo(() => shuffled(GIFT_SET_PAGES), []);
 
@@ -83,10 +82,10 @@ function CorporatePage() {
           </div>
           <div className="overflow-hidden bg-muted">
             <img
-              src={occasionCorporate}
-              alt="Executive flask set, desk clock organiser and pen set arranged as corporate gifts"
-              width={1200}
-              height={1500}
+              src="/site/corporate-hero.jpg"
+              alt="Four corporate gift sets with notebooks, flasks, pens and leather accessories"
+              width={1600}
+              height={1200}
               className="aspect-[4/3] w-full object-cover"
             />
           </div>
