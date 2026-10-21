@@ -1,12 +1,56 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Hero } from "@/components/site/Hero";
+import { FestiveCombos } from "@/components/site/FestiveCombos";
 import { SectionHeading } from "@/components/site/SectionHeading";
-import { ProductCard } from "@/components/site/ProductCard";
+import {
+  CatalogueProductCard,
+  type CatalogueProduct,
+} from "@/components/site/CatalogueProductCard";
 import { CTASection } from "@/components/site/CTASection";
 import { InstagramGallery } from "@/components/site/InstagramGallery";
 import { useLeadDialog } from "@/components/site/LeadDialog";
-import { edits, featuredProducts, occasions } from "@/data/catalog";
+import { edits, occasions, BRAND } from "@/data/catalog";
+import pageData from "@/data/catalogue-pages.json";
+import productData from "@/data/catalogue-products.json";
+import { CATALOGUE_FILES } from "@/data/media";
 import brandStory from "@/assets/brand-story.jpg";
+
+const CATALOGUE_PRODUCTS = productData as CatalogueProduct[];
+const PAGES = pageData as Record<string, Array<{ n: number; src: string }>>;
+
+/** Real catalogue products on the home page: how many to take from each catalogue. */
+const HOME_PICKS: Array<[key: string, count: number]> = [
+  ["luxury-gifting-2026", 2],
+  ["corporate-gifting-2026", 2],
+  ["gift-hampers-5k-plus-2026", 1],
+  ["gift-hampers-2k-3k-2026", 1],
+  ["gift-hampers-1k-2026", 1],
+  ["snacks-munchies-hampers-2026", 1],
+];
+
+/** Fixed-seed shuffle, so server and browser render the same order. */
+function shuffled<T>(list: T[], seed: number): T[] {
+  const out = [...list];
+  for (let i = out.length - 1; i > 0; i--) {
+    seed = (seed * 1664525 + 1013904223) % 4294967296;
+    const j = seed % (i + 1);
+    [out[i], out[j]] = [out[j] as T, out[i] as T];
+  }
+  return out;
+}
+
+const homeProducts = shuffled(
+  HOME_PICKS.flatMap(([key, count], index) =>
+    shuffled(
+      CATALOGUE_PRODUCTS.filter((product) => product.key === key),
+      7 + index,
+    ).slice(0, count),
+  ),
+  2026,
+);
+
+const catalogueTitle = (key: string) =>
+  CATALOGUE_FILES.find((file) => file.href.endsWith(`/${key}.pdf`))?.title ?? "Catalogue";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -23,10 +67,10 @@ export const Route = createFileRoute("/")({
         content:
           "Curated gifting collections for weddings, birthdays, baby showers, housewarmings, celebrations and corporate occasions.",
       },
-      { property: "og:url", content: "/" },
+      { property: "og:url", content: `${BRAND.siteUrl}/` },
       { property: "og:type", content: "website" },
     ],
-    links: [{ rel: "canonical", href: "/" }],
+    links: [{ rel: "canonical", href: `${BRAND.siteUrl}/` }],
   }),
   component: Home,
 });
@@ -60,6 +104,12 @@ const steps = [
   { number: "05", label: "Celebrate" },
 ];
 
+const orderSteps = [
+  { title: "Choose", text: "Pick gifts from the catalogue." },
+  { title: "Enquire", text: "Share your quantity and event date." },
+  { title: "Receive", text: "We pack and deliver, with pricing for your quantity." },
+];
+
 const storyCategories = ["Wedding", "Baby Shower", "Housewarming", "Birthday", "Corporate"];
 
 function Home() {
@@ -68,6 +118,20 @@ function Home() {
   return (
     <>
       <Hero />
+      <FestiveCombos />
+
+      <section aria-label="How ordering works" className="mx-auto max-w-[1400px] px-5 pt-4 sm:px-8">
+        <ol className="grid gap-6 border-y border-border py-8 sm:grid-cols-3">
+          {orderSteps.map((step, i) => (
+            <li key={step.title}>
+              <p className="font-display text-2xl italic text-primary">
+                {i + 1}. {step.title}
+              </p>
+              <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{step.text}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
 
       {/* 02 — Choose the Moment */}
       <section className="mx-auto max-w-[1400px] px-5 pt-16 sm:px-8 lg:pt-24">
@@ -164,10 +228,23 @@ function Home() {
           eyebrow="Selected Pieces"
           title="From the Catalogue"
           description="A handful of pieces our clients return to. Every gift is available in quantity."
+          action={
+            <Link
+              to="/catalogue"
+              className="link-underline text-xs font-semibold uppercase tracking-[0.16em] text-primary"
+            >
+              View all catalogues
+            </Link>
+          }
         />
-        <div className="mt-14 grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
-          {featuredProducts.slice(0, 8).map((product) => (
-            <ProductCard key={product.slug} product={product} />
+        <div className="mt-14 grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+          {homeProducts.map((product) => (
+            <CatalogueProductCard
+              key={`${product.key}-${product.code}`}
+              product={product}
+              pageSrc={PAGES[product.key]?.find((page) => page.n === product.n)?.src}
+              catalogueTitle={catalogueTitle(product.key)}
+            />
           ))}
         </div>
       </section>
@@ -311,9 +388,7 @@ function Home() {
               className="flex aspect-[4/5] flex-col justify-between border border-dashed border-border bg-card p-6"
             >
               <span className="eyebrow text-gold">{category}</span>
-              <p className="text-sm leading-relaxed text-muted-foreground">
-                Story coming soon.
-              </p>
+              <p className="text-sm leading-relaxed text-muted-foreground">Story coming soon.</p>
             </div>
           ))}
         </div>
