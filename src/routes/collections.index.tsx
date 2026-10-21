@@ -6,7 +6,7 @@ import { CTASection } from "@/components/site/CTASection";
 import { BRAND } from "@/data/catalog";
 import { breadcrumbScript } from "@/lib/seo";
 import { catalogueTitle, pageSrc } from "@/lib/occasion-products";
-import { REAL_COLLECTIONS, collectionProducts } from "@/lib/real-collections";
+import { REAL_COLLECTIONS, collectionCover, collectionProducts } from "@/lib/real-collections";
 
 const PAGE_SIZE = 24;
 
@@ -51,7 +51,7 @@ function CollectionsPage() {
     () =>
       REAL_COLLECTIONS.map((collection) => {
         const items = collectionProducts(collection);
-        return { collection, items, cover: items[0] };
+        return { collection, items, cover: collectionCover(collection.slug) };
       }),
     [],
   );
@@ -93,11 +93,11 @@ function CollectionsPage() {
                   {cover && (
                     <img
                       src={cover.image}
-                      alt={`${collection.name}: ${cover.name}`}
-                      width={cover.w}
-                      height={cover.h}
+                      alt={`${collection.name} gifts`}
+                      width={cover.width}
+                      height={cover.height}
                       loading="lazy"
-                      className="aspect-square w-full object-contain transition-transform duration-500 group-hover:scale-[1.04]"
+                      className="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
                     />
                   )}
                 </span>

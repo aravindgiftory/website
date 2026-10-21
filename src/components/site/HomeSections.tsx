@@ -5,12 +5,9 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { SectionHeading } from "./SectionHeading";
 import { CatalogueProductCard, type CatalogueProduct } from "./CatalogueProductCard";
 import { catalogueTitle, pageSrc } from "@/lib/occasion-products";
-import { REAL_COLLECTIONS, collectionProducts } from "@/lib/real-collections";
+import { REAL_COLLECTIONS, collectionCover } from "@/lib/real-collections";
 
-const coverOf = (slug: string) => {
-  const collection = REAL_COLLECTIONS.find((item) => item.slug === slug);
-  return collection ? collectionProducts(collection)[0] : undefined;
-};
+const coverOf = (slug: string) => collectionCover(slug);
 
 /** Rounded-square quick-links to every collection, shown right under the hero. */
 export function CategoryStrip() {
@@ -31,8 +28,8 @@ export function CategoryStrip() {
                     <img
                       src={cover.image}
                       alt=""
-                      width={cover.w}
-                      height={cover.h}
+                      width={cover.width}
+                      height={cover.height}
                       loading="lazy"
                       className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                     />
@@ -183,11 +180,11 @@ export function BudgetTiles() {
                 {cover && (
                   <img
                     src={cover.image}
-                    alt={`${tile.label}: ${cover.name}`}
-                    width={cover.w}
-                    height={cover.h}
+                    alt={`${tile.label} gift hampers`}
+                    width={cover.width}
+                    height={cover.height}
                     loading="lazy"
-                    className="aspect-[4/3] w-full bg-white object-contain transition-transform duration-500 group-hover:scale-[1.04]"
+                    className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
                   />
                 )}
                 <span className="block p-4">

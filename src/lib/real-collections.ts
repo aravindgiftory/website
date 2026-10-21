@@ -12,6 +12,13 @@ export interface RealCollection {
   prefixes?: string[];
 }
 
+/** Square cover photo for a collection: a real catalogue product, trimmed to fill the tile. */
+export const collectionCover = (slug: string) => ({
+  image: `/collections/${slug}.jpg`,
+  width: 480,
+  height: 480,
+});
+
 /**
  * Collections built from real catalogue products only. Hamper catalogues are grouped by budget;
  * the Luxury Gifting catalogue is split by what its product codes stand for.
