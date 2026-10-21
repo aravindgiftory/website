@@ -20,6 +20,7 @@ import { Route as TermsRouteImport } from './routes/terms'
 import { Route as CataloguePrintRouteImport } from './routes/catalogue.print'
 import { Route as CollectionsIndexRouteImport } from './routes/collections.index'
 import { Route as CollectionsCategoryRouteImport } from './routes/collections.$category'
+import { Route as ForAudienceRouteImport } from './routes/for.$audience'
 import { Route as GiftSlugRouteImport } from './routes/gift.$slug'
 import { Route as GiftsCatalogueRouteImport } from './routes/gifts.$catalogue'
 import { Route as OccasionsIndexRouteImport } from './routes/occasions.index'
@@ -81,6 +82,11 @@ const CollectionsCategoryRoute = CollectionsCategoryRouteImport.update({
   path: '/collections/$category',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ForAudienceRoute = ForAudienceRouteImport.update({
+  id: '/for/$audience',
+  path: '/for/$audience',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GiftSlugRoute = GiftSlugRouteImport.update({
   id: '/gift/$slug',
   path: '/gift/$slug',
@@ -118,6 +124,7 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/catalogue/print': typeof CataloguePrintRoute
   '/collections/$category': typeof CollectionsCategoryRoute
+  '/for/$audience': typeof ForAudienceRoute
   '/gift/$slug': typeof GiftSlugRoute
   '/gifts/$catalogue': typeof GiftsCatalogueRoute
   '/occasions/$occasion': typeof OccasionsOccasionRoute
@@ -136,6 +143,7 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/catalogue/print': typeof CataloguePrintRoute
   '/collections/$category': typeof CollectionsCategoryRoute
+  '/for/$audience': typeof ForAudienceRoute
   '/gift/$slug': typeof GiftSlugRoute
   '/gifts/$catalogue': typeof GiftsCatalogueRoute
   '/occasions/$occasion': typeof OccasionsOccasionRoute
@@ -155,6 +163,7 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/catalogue/print': typeof CataloguePrintRoute
   '/collections/$category': typeof CollectionsCategoryRoute
+  '/for/$audience': typeof ForAudienceRoute
   '/gift/$slug': typeof GiftSlugRoute
   '/gifts/$catalogue': typeof GiftsCatalogueRoute
   '/occasions/$occasion': typeof OccasionsOccasionRoute
@@ -175,6 +184,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/catalogue/print'
     | '/collections/$category'
+    | '/for/$audience'
     | '/gift/$slug'
     | '/gifts/$catalogue'
     | '/occasions/$occasion'
@@ -193,6 +203,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/catalogue/print'
     | '/collections/$category'
+    | '/for/$audience'
     | '/gift/$slug'
     | '/gifts/$catalogue'
     | '/occasions/$occasion'
@@ -211,6 +222,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/catalogue/print'
     | '/collections/$category'
+    | '/for/$audience'
     | '/gift/$slug'
     | '/gifts/$catalogue'
     | '/occasions/$occasion'
@@ -229,6 +241,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
   CollectionsCategoryRoute: typeof CollectionsCategoryRoute
+  ForAudienceRoute: typeof ForAudienceRoute
   GiftSlugRoute: typeof GiftSlugRoute
   GiftsCatalogueRoute: typeof GiftsCatalogueRoute
   OccasionsOccasionRoute: typeof OccasionsOccasionRoute
@@ -316,6 +329,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CollectionsCategoryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/for/$audience': {
+      id: '/for/$audience'
+      path: '/for/$audience'
+      fullPath: '/for/$audience'
+      preLoaderRoute: typeof ForAudienceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/gift/$slug': {
       id: '/gift/$slug'
       path: '/gift/$slug'
@@ -376,6 +396,7 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
   CollectionsCategoryRoute: CollectionsCategoryRoute,
+  ForAudienceRoute: ForAudienceRoute,
   GiftSlugRoute: GiftSlugRoute,
   GiftsCatalogueRoute: GiftsCatalogueRoute,
   OccasionsOccasionRoute: OccasionsOccasionRoute,

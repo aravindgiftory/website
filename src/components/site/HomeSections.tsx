@@ -1,6 +1,7 @@
 import { useRef, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { BRAND } from "@/data/catalog";
+import { AUDIENCES } from "@/data/audiences";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { SectionHeading } from "./SectionHeading";
 import { CatalogueProductCard, type CatalogueProduct } from "./CatalogueProductCard";
@@ -285,6 +286,39 @@ export function ServicesSection() {
             >
               View gifts
             </ServiceLink>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+/** Entry points for the four buyer groups, each with its own landing page. */
+export function AudienceLinks() {
+  return (
+    <section className="mx-auto mt-24 max-w-[1400px] px-5 sm:px-8">
+      <SectionHeading
+        eyebrow="Who we help"
+        title="Gifting for planners, families and teams"
+        description="Pick the page written for the way you buy, with the right catalogues and a quick way to enquire."
+      />
+      <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {AUDIENCES.map((audience) => (
+          <li key={audience.slug}>
+            <Link
+              to="/for/$audience"
+              params={{ audience: audience.slug }}
+              className="group flex h-full flex-col border border-border bg-card p-6 transition-colors hover:border-gold/60"
+            >
+              <span className="eyebrow text-gold">For</span>
+              <span className="mt-2 font-display text-2xl text-primary">{audience.name}</span>
+              <span className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">
+                {audience.h1}
+              </span>
+              <span className="link-underline mt-5 self-start text-xs font-semibold uppercase tracking-[0.16em] text-primary">
+                See how we help
+              </span>
+            </Link>
           </li>
         ))}
       </ul>

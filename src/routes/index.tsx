@@ -14,6 +14,7 @@ import {
   CategoryStrip,
   ProductCarousel,
   ServicesSection,
+  AudienceLinks,
   UspStrip,
 } from "@/components/site/HomeSections";
 import productData from "@/data/catalogue-products.json";
@@ -371,9 +372,9 @@ function Home() {
       {/* 09 — Celebration stories */}
       <section className="mx-auto mt-32 max-w-[1400px] px-5 sm:px-8">
         <SectionHeading
-          eyebrow="Stories"
-          title="Celebrations We've Been Part Of"
-          description="From weddings to welcome kits, the moments our gifts have helped make memorable."
+          eyebrow="Gift ideas"
+          title="Gift ideas for every celebration"
+          description="From weddings to welcome kits, how our gifts fit different moments."
         />
         <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
           {stories.map((story) => (
@@ -402,6 +403,8 @@ function Home() {
           ))}
         </div>
       </section>
+
+      <AudienceLinks />
 
       <ServicesSection />
 

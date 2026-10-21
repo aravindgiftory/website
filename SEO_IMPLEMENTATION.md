@@ -103,3 +103,24 @@ unique description (≤200), valid JSON-LD and image alt text, and none carries 
 Google indexing itself. Nothing has been deployed or pushed, so the live site and Search Console were not
 checked. After deploying: submit the sitemap, inspect a few `/gift/…` URLs, and watch Coverage for "Crawled -
 currently not indexed". The 137 indexable product pages are the most likely to be slow to index.
+
+## Round 3: buyer landing pages, offers, WhatsApp and proof
+
+- **Four landing pages** under `/for/`: `wedding-planners`, `families`, `hr-teams`, `corporate-buyers`. Each has its
+  own h1, intro, "what matters" points, starter gifts from real collections, relevant catalogue downloads, a
+  checklist of what to send, a WhatsApp message builder, FAQs and breadcrumb/FAQ schema. Copy lives in
+  `src/data/audiences.ts` and uses only facts already on the site (25-piece minimum, from ₹150, budget tiers,
+  brand-ready corporate sets, gift message card, Hyderabad packing and delivery). They are linked from the
+  home page, the footer and the sitemap.
+- **Catalogue offers**: cards with the real cover, page count and product count; Get the catalogue opens the
+  existing lead-gated download, Browse pages opens the full catalogue. No discounts or free gifts are claimed.
+- **Easier WhatsApp**: a two-tap message builder (occasion, quantity, budget, date), a labelled floating
+  "WhatsApp us" button, and a message that carries the page the buyer was on. Clicks are tracked as
+  `whatsapp_click`.
+- **Proof**: verifiable counts (259 coded products, 14 catalogues, 25-piece minimum, from ₹150) plus
+  testimonial and event-photo slots in `src/data/proof.ts` that stay hidden until real entries are added.
+  The home page section previously titled "Celebrations We've Been Part Of" is now "Gift ideas for every
+  celebration", because its text is illustrative and must not read as client history.
+
+To add real proof, append entries to `TESTIMONIALS` and `EVENT_PHOTOS` in `src/data/proof.ts` (photos go in
+`public/events/`). Only add quotes and photos the client has agreed to share.

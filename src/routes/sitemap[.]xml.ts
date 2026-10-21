@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { BRAND, occasions, products } from "@/data/catalog";
 import { CATALOGUE_FILES } from "@/data/media";
+import { AUDIENCES } from "@/data/audiences";
 import { REAL_COLLECTIONS } from "@/lib/real-collections";
 import { PRODUCT_PAGES, isSubstantial } from "@/lib/product-pages";
 
@@ -27,6 +28,7 @@ export const Route = createFileRoute("/sitemap.xml")({
       GET: () => {
         const paths = [
           ...STATIC_PATHS,
+          ...AUDIENCES.map((a) => `/for/${a.slug}`),
           ...REAL_COLLECTIONS.map((c) => `/collections/${c.slug}`),
           ...occasions.map((o) => `/occasions/${o.slug}`),
           ...CATALOGUE_FILES.map((c) => `/gifts/${c.slug}`),
