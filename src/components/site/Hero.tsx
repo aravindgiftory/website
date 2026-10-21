@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import useEmblaCarousel from "embla-carousel-react";
 import { ArrowUpRight, ChevronLeft, ChevronRight, Download } from "lucide-react";
-import { BRAND } from "@/data/catalog";
 import { useLeadDialog } from "./LeadDialog";
 
 interface Slide {
@@ -98,7 +97,6 @@ export function Hero() {
 
   const prev = useCallback(() => embla?.scrollPrev(), [embla]);
   const next = useCallback(() => embla?.scrollNext(), [embla]);
-  const current = SLIDES[index] ?? SLIDES[0];
 
   return (
     <section
@@ -111,7 +109,7 @@ export function Hero() {
       }}
       onBlur={() => setPaused(false)}
     >
-      <div className="overflow-hidden rounded-md border border-border bg-card shadow-[var(--shadow-soft)]">
+      <div className="overflow-hidden rounded-md border border-border shadow-[var(--shadow-soft)]">
         <div className="relative">
           <div ref={emblaRef} className="touch-pan-y overflow-hidden">
             <div className="flex">
@@ -123,7 +121,7 @@ export function Hero() {
                     role="group"
                     aria-roledescription="slide"
                     aria-label={`${i + 1} of ${SLIDES.length}: ${slide.kicker}`}
-                    className="min-w-0 flex-[0_0_100%]"
+                    className="relative min-w-0 flex-[0_0_100%]"
                   >
                     <Heading className="sr-only">{slide.title}</Heading>
                     <Link
@@ -144,6 +142,24 @@ export function Hero() {
                         className="aspect-[4/3] w-full object-cover object-left sm:aspect-[2/1] sm:object-center"
                       />
                     </Link>
+                    <div className="absolute bottom-4 left-4 z-10 flex flex-wrap items-center gap-2 sm:bottom-6 sm:left-8 sm:gap-3">
+                      <button
+                        type="button"
+                        onClick={() => openCatalogue(undefined, slide.catalogue)}
+                        className="flex items-center gap-2 rounded-full bg-primary px-4 py-2.5 text-xs font-semibold text-primary-foreground shadow-[var(--shadow-soft)] transition-transform duration-300 hover:-translate-y-0.5 sm:px-6 sm:py-3 sm:text-sm"
+                      >
+                        Get the catalogue
+                        <Download className="h-4 w-4" />
+                      </button>
+                      <Link
+                        to="/gifts/$catalogue"
+                        params={{ catalogue: slide.slug }}
+                        className="flex items-center gap-2 rounded-full border border-primary/25 bg-white/90 px-4 py-2.5 text-xs font-semibold text-primary shadow-[var(--shadow-soft)] transition-colors hover:bg-white sm:px-6 sm:py-3 sm:text-sm"
+                      >
+                        View all products
+                        <ArrowUpRight className="h-4 w-4" />
+                      </Link>
+                    </div>
                   </div>
                 );
               })}
@@ -167,7 +183,7 @@ export function Hero() {
             <ChevronRight className="h-5 w-5" />
           </button>
 
-          <div className="absolute inset-x-0 bottom-3 flex justify-center">
+          <div className="absolute bottom-3 right-4 flex justify-end sm:right-8">
             {SLIDES.map((slide, i) => (
               <button
                 key={slide.id}
@@ -186,41 +202,6 @@ export function Hero() {
             ))}
           </div>
         </div>
-
-        {current && (
-          <div
-            aria-label={`Actions for ${current.kicker}`}
-            role="group"
-            className="flex flex-col gap-4 border-t border-border px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-8"
-          >
-            <div className="flex flex-wrap items-center gap-3">
-              <button
-                type="button"
-                onClick={() => openCatalogue(undefined, current.catalogue)}
-                className="flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-transform duration-300 hover:-translate-y-0.5"
-              >
-                Get the catalogue
-                <Download className="h-4 w-4" />
-              </button>
-              <Link
-                to="/gifts/$catalogue"
-                params={{ catalogue: current.slug }}
-                className="flex items-center gap-2 px-3 py-3 text-sm font-medium text-primary transition-colors hover:text-primary/70"
-              >
-                View all products
-                <ArrowUpRight className="h-4 w-4" />
-              </Link>
-            </div>
-            <ul className="flex flex-wrap gap-2" aria-label="Pricing">
-              <li className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground">
-                From ₹{BRAND.startingPrice} per gift
-              </li>
-              <li className="rounded-full border border-primary/25 bg-white/60 px-4 py-2 text-sm font-medium text-primary">
-                Minimum order {BRAND.minQuantity} pieces
-              </li>
-            </ul>
-          </div>
-        )}
       </div>
     </section>
   );
