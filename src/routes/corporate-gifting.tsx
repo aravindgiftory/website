@@ -4,6 +4,7 @@ import { SectionHeading } from "@/components/site/SectionHeading";
 import { ProductCard } from "@/components/site/ProductCard";
 import { LeadForm } from "@/components/site/LeadForm";
 import { productsByOccasion, BRAND } from "@/data/catalog";
+import type { Product } from "@/data/types";
 import { useLeadDialog } from "@/components/site/LeadDialog";
 import { CATALOGUE_FILES } from "@/data/media";
 import pageData from "@/data/catalogue-pages.json";
@@ -15,6 +16,8 @@ interface CataloguePage {
   h: number;
   codes: string[];
 }
+
+type Entry = { kind: "product"; product: Product } | { kind: "set"; page: CataloguePage };
 
 const GIFT_SETS = CATALOGUE_FILES.find((file) => file.slug === "gift-sets");
 const GIFT_SET_PAGES = ((pageData as Record<string, CataloguePage[]>)["gift-sets"] ?? []).slice(1);
@@ -54,9 +57,18 @@ export const Route = createFileRoute("/corporate-gifting")({
 });
 
 function CorporatePage() {
-  const items = useMemo(() => shuffled(productsByOccasion("corporate")), []);
+  const entries = useMemo(
+    () =>
+      shuffled<Entry>([
+        ...productsByOccasion("corporate").map((product) => ({
+          kind: "product" as const,
+          product,
+        })),
+        ...GIFT_SET_PAGES.map((page) => ({ kind: "set" as const, page })),
+      ]),
+    [],
+  );
   const { open } = useLeadDialog();
-  const giftSets = useMemo(() => shuffled(GIFT_SET_PAGES), []);
 
   return (
     <>
@@ -96,64 +108,53 @@ function CorporatePage() {
         <SectionHeading
           eyebrow="Selected"
           title="Corporate gifting from the catalogue"
-          description="Desk pieces, flask sets, pen sets, dry fruit gifting and drinkware — all available in volume."
-        />
-        <div className="mt-14 grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
-          {items.map((product) => (
-            <ProductCard key={product.slug} product={product} />
-          ))}
-        </div>
-      </section>
-
-      {GIFT_SETS && giftSets.length > 0 && (
-        <section className="mx-auto mt-32 max-w-[1400px] px-5 sm:px-8">
-          <SectionHeading
-            eyebrow="Gift sets"
-            title="Corporate gift sets"
-            description="Ready-to-give sets for teams, clients and celebrations, from our Gift Sets Catalogue 2026–27."
-            action={
+          description="Desk pieces, flask sets, pen sets, dry fruit gifting, drinkware and ready-to-give gift sets, all available in volume."
+          action={
+            GIFT_SETS && (
               <Link
                 to="/gifts/$catalogue"
                 params={{ catalogue: GIFT_SETS.slug }}
                 className="text-xs font-semibold uppercase tracking-[0.16em] text-primary link-underline"
               >
-                View full catalogue
+                View gift sets catalogue
               </Link>
-            }
-          />
-          <ul className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {giftSets.map((page) => (
-              <li key={page.n} className="flex flex-col border border-border bg-card">
+            )
+          }
+        />
+        <div className="mt-14 grid grid-flow-dense gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
+          {entries.map((entry) =>
+            entry.kind === "product" ? (
+              <ProductCard key={entry.product.slug} product={entry.product} />
+            ) : (
+              <article key={`set-${entry.page.n}`} className="flex flex-col sm:col-span-2">
                 <img
-                  src={page.src}
-                  alt={`${GIFT_SETS.title}, page ${page.n}`}
-                  width={page.w}
-                  height={page.h}
+                  src={entry.page.src}
+                  alt={`${GIFT_SETS?.title ?? "Gift Sets"}, page ${entry.page.n}`}
+                  width={entry.page.w}
+                  height={entry.page.h}
                   loading="lazy"
-                  className="w-full bg-muted object-cover"
+                  className="w-full border border-border bg-muted object-cover"
                 />
-                <div className="p-4">
-                  <button
-                    type="button"
-                    onClick={() =>
-                      open({
-                        source: "product-enquiry",
-                        title: "Enquire about this gift set",
-                        intro: `Page ${page.n} of the ${GIFT_SETS.title}. Add your quantity and event date and we'll send pricing.`,
-                        productName: `${GIFT_SETS.title}, page ${page.n}`,
-                        submitLabel: "Request pricing",
-                      })
-                    }
-                    className="text-xs font-semibold uppercase tracking-[0.16em] text-primary link-underline"
-                  >
-                    Enquire about this set
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
+                <button
+                  type="button"
+                  onClick={() =>
+                    open({
+                      source: "product-enquiry",
+                      title: "Enquire about this gift set",
+                      intro: `Page ${entry.page.n} of the ${GIFT_SETS?.title ?? "Gift Sets"}. Add your quantity and event date and we'll send pricing.`,
+                      productName: `${GIFT_SETS?.title ?? "Gift Sets"}, page ${entry.page.n}`,
+                      submitLabel: "Request pricing",
+                    })
+                  }
+                  className="mt-3 self-start text-xs font-semibold uppercase tracking-[0.16em] text-primary link-underline"
+                >
+                  Enquire about this set
+                </button>
+              </article>
+            ),
+          )}
+        </div>
+      </section>
 
       <section
         id="corporate-form"
