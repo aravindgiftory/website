@@ -1,9 +1,36 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { useMemo } from "react";
+import { Link, createFileRoute } from "@tanstack/react-router";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { ProductCard } from "@/components/site/ProductCard";
 import { LeadForm } from "@/components/site/LeadForm";
-import { productsByOccasion } from "@/data/catalog";
+import { productsByOccasion, BRAND } from "@/data/catalog";
+import { useLeadDialog } from "@/components/site/LeadDialog";
+import { CATALOGUE_FILES } from "@/data/media";
+import pageData from "@/data/catalogue-pages.json";
 import occasionCorporate from "@/assets/occasion-corporate.jpg";
+
+interface CataloguePage {
+  n: number;
+  src: string;
+  w: number;
+  h: number;
+  codes: string[];
+}
+
+const GIFT_SETS = CATALOGUE_FILES.find((file) => file.slug === "gift-sets");
+const GIFT_SET_PAGES = ((pageData as Record<string, CataloguePage[]>)["gift-sets"] ?? []).slice(1);
+
+/** Fixed-seed shuffle, so server and browser render the same order. */
+function shuffled<T>(list: T[]): T[] {
+  const out = [...list];
+  let seed = 2026;
+  for (let i = out.length - 1; i > 0; i--) {
+    seed = (seed * 1664525 + 1013904223) % 4294967296;
+    const j = seed % (i + 1);
+    [out[i], out[j]] = [out[j] as T, out[i] as T];
+  }
+  return out;
+}
 
 export const Route = createFileRoute("/corporate-gifting")({
   head: () => ({
@@ -19,16 +46,18 @@ export const Route = createFileRoute("/corporate-gifting")({
         property: "og:description",
         content: "Gifts that represent your brand — curated corporate gifting in volume.",
       },
-      { property: "og:url", content: "/corporate-gifting" },
+      { property: "og:url", content: `${BRAND.siteUrl}/corporate-gifting` },
       { property: "og:type", content: "website" },
     ],
-    links: [{ rel: "canonical", href: "/corporate-gifting" }],
+    links: [{ rel: "canonical", href: `${BRAND.siteUrl}/corporate-gifting` }],
   }),
   component: CorporatePage,
 });
 
 function CorporatePage() {
   const items = productsByOccasion("corporate");
+  const { open } = useLeadDialog();
+  const giftSets = useMemo(() => shuffled(GIFT_SET_PAGES), []);
 
   return (
     <>
@@ -76,6 +105,56 @@ function CorporatePage() {
           ))}
         </div>
       </section>
+
+      {GIFT_SETS && giftSets.length > 0 && (
+        <section className="mx-auto mt-32 max-w-[1400px] px-5 sm:px-8">
+          <SectionHeading
+            eyebrow="Gift sets"
+            title="Corporate gift sets"
+            description="Ready-to-give sets for teams, clients and celebrations, from our Gift Sets Catalogue 2026–27."
+            action={
+              <Link
+                to="/gifts/$catalogue"
+                params={{ catalogue: GIFT_SETS.slug }}
+                className="text-xs font-semibold uppercase tracking-[0.16em] text-primary link-underline"
+              >
+                View full catalogue
+              </Link>
+            }
+          />
+          <ul className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {giftSets.map((page) => (
+              <li key={page.n} className="flex flex-col border border-border bg-card">
+                <img
+                  src={page.src}
+                  alt={`${GIFT_SETS.title}, page ${page.n}`}
+                  width={page.w}
+                  height={page.h}
+                  loading="lazy"
+                  className="w-full bg-muted object-cover"
+                />
+                <div className="p-4">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      open({
+                        source: "product-enquiry",
+                        title: "Enquire about this gift set",
+                        intro: `Page ${page.n} of the ${GIFT_SETS.title}. Add your quantity and event date and we'll send pricing.`,
+                        productName: `${GIFT_SETS.title}, page ${page.n}`,
+                        submitLabel: "Request pricing",
+                      })
+                    }
+                    className="text-xs font-semibold uppercase tracking-[0.16em] text-primary link-underline"
+                  >
+                    Enquire about this set
+                  </button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <section
         id="corporate-form"
