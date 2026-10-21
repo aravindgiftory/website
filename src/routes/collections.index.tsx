@@ -1,19 +1,14 @@
-import { breadcrumbScript } from "@/lib/seo";
 import { useMemo, useState } from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { SectionHeading } from "@/components/site/SectionHeading";
-import { ProductCard } from "@/components/site/ProductCard";
+import { CatalogueProductCard } from "@/components/site/CatalogueProductCard";
 import { CTASection } from "@/components/site/CTASection";
-import {
-  collections,
-  occasions,
-  products,
-  productTypes,
-  type CollectionSlug,
-  type OccasionSlug,
-  type ProductType,
-  BRAND,
-} from "@/data/catalog";
+import { BRAND } from "@/data/catalog";
+import { breadcrumbScript } from "@/lib/seo";
+import { catalogueTitle, pageSrc } from "@/lib/occasion-products";
+import { REAL_COLLECTIONS, collectionProducts } from "@/lib/real-collections";
+
+const PAGE_SIZE = 24;
 
 export const Route = createFileRoute("/collections/")({
   head: () => ({
@@ -44,93 +39,130 @@ export const Route = createFileRoute("/collections/")({
 });
 
 function CollectionsPage() {
-  const [category, setCategory] = useState<CollectionSlug | "all">("all");
-  const [occasion, setOccasion] = useState<OccasionSlug | "all">("all");
-  const [type, setType] = useState<ProductType | "all">("all");
+  const [active, setActive] = useState<string>("all");
+  const [visible, setVisible] = useState(PAGE_SIZE);
 
+  const groups = useMemo(
+    () =>
+      REAL_COLLECTIONS.map((collection) => {
+        const items = collectionProducts(collection);
+        return { collection, items, cover: items[0] };
+      }),
+    [],
+  );
   const filtered = useMemo(
     () =>
-      products.filter(
-        (product) =>
-          (category === "all" || product.collection === category) &&
-          (occasion === "all" || product.occasions.includes(occasion)) &&
-          (type === "all" || product.type === type),
-      ),
-    [category, occasion, type],
+      active === "all"
+        ? groups.flatMap((group) => group.items)
+        : (groups.find((group) => group.collection.slug === active)?.items ?? []),
+    [active, groups],
   );
+
+  const choose = (slug: string) => {
+    setActive(slug);
+    setVisible(PAGE_SIZE);
+    document.getElementById("all-gifts")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   return (
     <>
       <section className="mx-auto max-w-[1400px] px-5 pt-36 sm:px-8 lg:pt-44">
         <SectionHeading
-          eyebrow="Collections"
           as="h1"
+          eyebrow="Collections"
           title="The Giftory Collections"
-          description="Traditional, contemporary and practical gifting — organised so you can find the right fit quickly."
+          description="Hampers by budget, corporate gift sets, brass and heritage pieces, drinkware and storage. Every gift here is a real product from our catalogues."
         />
       </section>
 
       <section className="mx-auto mt-16 max-w-[1400px] px-5 sm:px-8">
-        <div className="grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
-          {collections.map((collection) => (
-            <Link
-              key={collection.slug}
-              to="/collections/$category"
-              params={{ category: collection.slug }}
-              className="group block"
-            >
-              <div className="overflow-hidden bg-muted">
-                <img
-                  src={collection.image}
-                  alt={collection.name}
-                  loading="lazy"
-                  className="aspect-[5/4] w-full object-cover transition-transform duration-[1100ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.06]"
-                />
-              </div>
-              <h2 className="mt-5 font-display text-2xl text-primary">{collection.name}</h2>
-              <p className="mt-2 text-sm text-muted-foreground">{collection.description}</p>
-            </Link>
+        <ul className="grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 lg:grid-cols-5">
+          {groups.map(({ collection, items, cover }) => (
+            <li key={collection.slug}>
+              <button
+                type="button"
+                onClick={() => choose(collection.slug)}
+                className="group block w-full text-left"
+              >
+                <span className="block overflow-hidden border border-border bg-white">
+                  {cover && (
+                    <img
+                      src={cover.image}
+                      alt={`${collection.name}: ${cover.name}`}
+                      width={cover.w}
+                      height={cover.h}
+                      loading="lazy"
+                      className="aspect-square w-full object-contain transition-transform duration-500 group-hover:scale-[1.04]"
+                    />
+                  )}
+                </span>
+                <span className="mt-4 block font-display text-xl leading-snug text-primary">
+                  {collection.name}
+                </span>
+                <span className="mt-1 block text-xs uppercase tracking-[0.14em] text-gold">
+                  {items.length} gifts
+                </span>
+                <span className="mt-2 block text-sm text-muted-foreground">
+                  {collection.description}
+                </span>
+              </button>
+            </li>
           ))}
-        </div>
+        </ul>
       </section>
 
-      <section className="mx-auto mt-32 max-w-[1400px] px-5 sm:px-8">
+      <section id="all-gifts" className="mx-auto mt-32 max-w-[1400px] scroll-mt-28 px-5 sm:px-8">
         <SectionHeading eyebrow="All Gifts" title="Browse the full range" />
 
-        <div className="mt-10 grid gap-4 border-y border-border py-6 sm:grid-cols-3">
-          <Filter
-            label="Category"
-            value={category}
-            onChange={(value) => setCategory(value as CollectionSlug | "all")}
-            options={collections.map((c) => ({ value: c.slug, label: c.name }))}
-          />
-          <Filter
-            label="Occasion"
-            value={occasion}
-            onChange={(value) => setOccasion(value as OccasionSlug | "all")}
-            options={occasions.map((o) => ({ value: o.slug, label: o.name }))}
-          />
-          <Filter
-            label="Product Type"
-            value={type}
-            onChange={(value) => setType(value as ProductType | "all")}
-            options={productTypes.map((t) => ({ value: t, label: t }))}
-          />
+        <div
+          className="mt-10 flex flex-wrap gap-2 border-y border-border py-5"
+          role="group"
+          aria-label="Filter by collection"
+        >
+          {[{ slug: "all", name: "All" }, ...REAL_COLLECTIONS].map((item) => (
+            <button
+              key={item.slug}
+              type="button"
+              aria-pressed={active === item.slug}
+              onClick={() => {
+                setActive(item.slug);
+                setVisible(PAGE_SIZE);
+              }}
+              className={`rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] transition-colors ${
+                active === item.slug
+                  ? "border-primary bg-primary text-primary-foreground"
+                  : "border-primary/25 text-primary hover:border-primary"
+              }`}
+            >
+              {item.name}
+            </button>
+          ))}
         </div>
 
         <p className="mt-6 text-sm text-muted-foreground" aria-live="polite">
           {filtered.length} {filtered.length === 1 ? "gift" : "gifts"}
         </p>
 
-        {filtered.length === 0 ? (
-          <p className="mt-16 font-display text-2xl text-primary">
-            Nothing matches that combination — try widening a filter.
-          </p>
-        ) : (
-          <div className="mt-10 grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
-            {filtered.map((product) => (
-              <ProductCard key={product.slug} product={product} />
-            ))}
+        <div className="mt-10 grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+          {filtered.slice(0, visible).map((product) => (
+            <CatalogueProductCard
+              key={`${product.key}-${product.code}`}
+              product={product}
+              pageSrc={pageSrc(product)}
+              catalogueTitle={catalogueTitle(product.key)}
+            />
+          ))}
+        </div>
+
+        {visible < filtered.length && (
+          <div className="mt-12 text-center">
+            <button
+              type="button"
+              onClick={() => setVisible((count) => count + PAGE_SIZE)}
+              className="rounded-sm border border-primary/25 px-8 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-primary transition-colors hover:border-primary"
+            >
+              Show more gifts
+            </button>
           </div>
         )}
       </section>
@@ -139,38 +171,5 @@ function CollectionsPage() {
         <CTASection />
       </div>
     </>
-  );
-}
-
-function Filter({
-  label,
-  value,
-  onChange,
-  options,
-}: {
-  label: string;
-  value: string;
-  onChange: (value: string) => void;
-  options: { value: string; label: string }[];
-}) {
-  return (
-    <div>
-      <label className="eyebrow mb-2 block" htmlFor={`filter-${label}`}>
-        {label}
-      </label>
-      <select
-        id={`filter-${label}`}
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-        className="w-full rounded-sm border border-border bg-card px-4 py-3 text-sm text-foreground"
-      >
-        <option value="all">All</option>
-        {options.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-    </div>
   );
 }
