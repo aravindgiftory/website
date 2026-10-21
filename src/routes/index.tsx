@@ -453,24 +453,30 @@ function Home() {
         <CTASection />
       </div>
 
-      <div className="mx-auto max-w-[1400px] px-5 py-20 text-center sm:px-8">
-        <p className="font-display text-3xl text-primary">
-          Still deciding? Connect with us, we'll help you.
-        </p>
-        <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-muted-foreground">
-          Tell us the occasion, quantity and budget, and we'll suggest the right gifts.
-        </p>
-        <a
-          href={whatsappLink(
-            "Hi Aravind Giftory, I'd like help choosing gifts. Occasion: \nQuantity: \nBudget: ",
-          )}
-          target="_blank"
-          rel="noreferrer"
-          className="mt-8 inline-block rounded-sm bg-primary px-8 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-primary-foreground transition-colors hover:bg-primary/90"
-        >
-          Chat with us
-        </a>
-      </div>
+      <section className="mx-auto mb-20 mt-8 max-w-[1400px] px-5 sm:px-8">
+        <div className="relative overflow-hidden rounded-sm bg-primary px-6 py-16 text-center text-primary-foreground sm:px-12 sm:py-20">
+          <div className="pointer-events-none absolute inset-3 border border-gold/50" />
+          <div className="relative">
+            <span className="eyebrow text-primary-foreground/70">Need a hand?</span>
+            <h2 className="display-md mx-auto mt-5 max-w-2xl">
+              Still deciding? Connect with us, we'll help you.
+            </h2>
+            <p className="mx-auto mt-5 max-w-md text-sm leading-relaxed text-primary-foreground/80">
+              Tell us the occasion, quantity and budget, and we'll suggest the right gifts.
+            </p>
+            <a
+              href={whatsappLink(
+                "Hi Aravind Giftory, I'd like help choosing gifts. Occasion: \nQuantity: \nBudget: ",
+              )}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-9 inline-block rounded-sm bg-primary-foreground px-9 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-primary transition-colors hover:bg-primary-foreground/90"
+            >
+              Chat with us
+            </a>
+          </div>
+        </div>
+      </section>
     </>
   );
 }
