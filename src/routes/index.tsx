@@ -9,7 +9,7 @@ import {
 import { CTASection } from "@/components/site/CTASection";
 import { InstagramGallery } from "@/components/site/InstagramGallery";
 import { useLeadDialog } from "@/components/site/LeadDialog";
-import { edits, occasions, BRAND } from "@/data/catalog";
+import { edits, occasions, BRAND, whatsappLink } from "@/data/catalog";
 import pageData from "@/data/catalogue-pages.json";
 import productData from "@/data/catalogue-products.json";
 import { CATALOGUE_FILES } from "@/data/media";
@@ -148,7 +148,7 @@ const stories = [
 }));
 
 function Home() {
-  const { open, openCatalogue } = useLeadDialog();
+  const { open } = useLeadDialog();
 
   return (
     <>
@@ -454,14 +454,22 @@ function Home() {
       </div>
 
       <div className="mx-auto max-w-[1400px] px-5 py-20 text-center sm:px-8">
-        <p className="font-display text-3xl text-primary">Still deciding?</p>
-        <button
-          type="button"
-          onClick={() => openCatalogue()}
-          className="link-underline mt-4 text-xs font-semibold uppercase tracking-[0.16em] text-primary"
+        <p className="font-display text-3xl text-primary">
+          Still deciding? Connect with us, we'll help you.
+        </p>
+        <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-muted-foreground">
+          Tell us the occasion, quantity and budget, and we'll suggest the right gifts.
+        </p>
+        <a
+          href={whatsappLink(
+            "Hi Aravind Giftory, I'd like help choosing gifts. Occasion: \nQuantity: \nBudget: ",
+          )}
+          target="_blank"
+          rel="noreferrer"
+          className="mt-8 inline-block rounded-sm bg-primary px-8 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-primary-foreground transition-colors hover:bg-primary/90"
         >
-          Get the 2026 Catalogue
-        </button>
+          Chat with us
+        </a>
       </div>
     </>
   );
