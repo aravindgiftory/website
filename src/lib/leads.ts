@@ -1,5 +1,6 @@
 import { BRAND, whatsappLink } from "@/data/catalog";
 import { CATALOGUE_FILES } from "@/data/media";
+import { getAttribution, trackEvent, type Attribution } from "@/lib/analytics";
 
 /**
  * Lead capture contract.
@@ -8,12 +9,7 @@ import { CATALOGUE_FILES } from "@/data/media";
  * (Gmail) and opens a pre-filled WhatsApp message at the same time.
  */
 
-export type LeadSource =
-  | "catalogue"
-  | "corporate"
-  | "bulk-quote"
-  | "product-enquiry"
-  | "contact";
+export type LeadSource = "catalogue" | "corporate" | "bulk-quote" | "product-enquiry" | "contact";
 
 export interface Lead {
   source: LeadSource;
@@ -36,11 +32,28 @@ export interface Lead {
   /** Multi-product enquiry tray — grows as the catalogue grows. */
   products?: Array<{ slug: string; name: string; code: string; image?: string }> | undefined;
   consent: boolean;
+  /** Honeypot — must stay empty; filled only by bots. */
+  website?: string | undefined;
   submittedAt: string;
   pageUrl: string;
+  /** Site origin, so the email script can build product links from slugs. */
+  siteUrl?: string | undefined;
+  /** Where the visit started: landing page, referrer and UTM campaign. */
+  attribution?: Attribution | undefined;
 }
 
-export type LeadResult = { ok: true } | { ok: false; error: string };
+/**
+ * `confirmed`: the leads script answered ok. `unconfirmed`: the request was sent but the browser
+ * could not read the answer. `whatsapp-only`: no leads script is configured, so the enquiry reaches
+ * us only if the visitor sends the pre-filled WhatsApp message.
+ */
+export type LeadDelivery = "confirmed" | "unconfirmed" | "whatsapp-only";
+
+export type LeadResult = { ok: true; delivery: LeadDelivery } | { ok: false; error: string };
+
+/** Public link to a product page, for WhatsApp and email. Empty when there is no slug. */
+export const productUrl = (slug: string | undefined) =>
+  slug ? `${BRAND.siteUrl}/products/${slug}` : "";
 
 export function formatLeadWhatsApp(lead: Lead) {
   const lines = [
@@ -61,13 +74,26 @@ export function formatLeadWhatsApp(lead: Lead) {
 
   const listed =
     lead.products && lead.products.length > 0
-      ? lead.products.map((item) => `${item.name} (${item.code})`)
+      ? lead.products.map((item) => ({
+          label: `${item.name} (${item.code})`,
+          link: productUrl(item.slug) || lead.pageUrl,
+        }))
       : lead.productName
-        ? [`${lead.productName}${lead.productCode ? ` (${lead.productCode})` : ""}`]
+        ? [
+            {
+              label: `${lead.productName}${lead.productCode ? ` (${lead.productCode})` : ""}`,
+              link: lead.pageUrl,
+            },
+          ]
         : [];
   if (listed.length > 0) {
     lines.push("", "Products:");
-    listed.forEach((item) => lines.push(`• ${item}`));
+    listed.forEach((item) => {
+      lines.push(`• ${item.label}`);
+      if (item.link) lines.push(`  ${item.link}`);
+    });
+  } else if (lead.pageUrl) {
+    lines.push("", `Page: ${lead.pageUrl}`);
   }
   if (lead.message) {
     lines.push("", lead.message);
@@ -75,8 +101,13 @@ export function formatLeadWhatsApp(lead: Lead) {
   return lines.join("\n");
 }
 
+/** True when a lead is specific enough to follow up as a bulk-order opportunity. */
+const isQualified = (lead: Lead) =>
+  Boolean(lead.quantity && lead.quantity !== "Under 25" && (lead.budget || lead.eventDate));
+
 export async function submitLead(lead: Lead): Promise<LeadResult> {
   try {
+    if (lead.website) return { ok: true, delivery: "confirmed" }; // honeypot tripped — silently drop
     if (import.meta.env.DEV) console.info("[lead]", lead);
 
     if (typeof window !== "undefined") {
@@ -84,45 +115,92 @@ export async function submitLead(lead: Lead): Promise<LeadResult> {
     }
 
     const scriptUrl = import.meta.env.VITE_LEADS_SCRIPT_URL?.trim();
-    const token = import.meta.env.VITE_LEADS_TOKEN?.trim();
     if (!scriptUrl) {
-      if (import.meta.env.DEV) {
-        console.warn("[lead] VITE_LEADS_SCRIPT_URL is empty — Gmail was skipped. Put the URL in .env (not .env.example) and restart npm run dev.");
-      }
-      return { ok: true };
+      console.error(
+        "[lead] VITE_LEADS_SCRIPT_URL is not set, so this enquiry was not emailed. Set it in .env and rebuild.",
+      );
+      return { ok: true, delivery: "whatsapp-only" };
     }
 
-    const payload = await buildLeadPayload(token, lead);
+    const payload = await attachThumbnails({
+      ...lead,
+      siteUrl: BRAND.siteUrl,
+      attribution: getAttribution(),
+    });
     const json = JSON.stringify(payload);
-    const encoded = encodeURIComponent(json);
-    // Apps Script GET URLs truncate around 8KB. Prefer GET (POST bodies are often dropped on Google's redirect).
-    if (encoded.length < 6200) {
-      const url = new URL(scriptUrl);
-      url.searchParams.set("payload", json);
-      fetch(url.toString(), { method: "GET", mode: "no-cors", keepalive: true }).catch(() => undefined);
-    } else {
-      fetch(scriptUrl, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: json,
-        keepalive: true,
-      }).catch(() => undefined);
+    const delivery = await sendToScript(scriptUrl, json);
+    if (delivery === "rejected") {
+      return { ok: false, error: "We couldn't send your details. Please try again." };
     }
 
-    return { ok: true };
+    trackEvent("generate_lead", {
+      lead_source: lead.source,
+      ...(lead.occasion ? { occasion: lead.occasion } : {}),
+      ...(lead.quantity ? { quantity: lead.quantity } : {}),
+      ...(lead.budget ? { budget: lead.budget } : {}),
+      qualified: isQualified(lead),
+      ...(payload.attribution?.landingPage
+        ? { landing_page: payload.attribution.landingPage }
+        : {}),
+      ...(payload.attribution?.utm_campaign ? { campaign: payload.attribution.utm_campaign } : {}),
+    });
+    return { ok: true, delivery };
   } catch {
     return { ok: false, error: "We couldn't send your details. Please try again." };
   }
 }
 
-function buildLeadPayload(token: string | undefined, lead: Lead) {
-  return attachThumbnails(token ? { token, ...lead } : { ...lead });
+/**
+ * Apps Script web apps answer cross-origin GET requests with JSON, so try to read the answer and
+ * confirm delivery. If the browser cannot read it, fall back to a blind send that cannot be checked.
+ */
+async function sendToScript(scriptUrl: string, json: string): Promise<LeadDelivery | "rejected"> {
+  const tooLongForGet = encodeURIComponent(json).length >= GET_PAYLOAD_MAX;
+  try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 12000);
+    let response: Response;
+    if (tooLongForGet) {
+      response = await fetch(scriptUrl, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: json,
+        signal: controller.signal,
+      });
+    } else {
+      const url = new URL(scriptUrl);
+      url.searchParams.set("payload", json);
+      response = await fetch(url.toString(), { method: "GET", signal: controller.signal });
+    }
+    clearTimeout(timer);
+    const result = (await response.json()) as { ok?: boolean };
+    return result.ok ? "confirmed" : "rejected";
+  } catch {
+    // The answer could not be read (CORS or network). Send once more without reading it.
+    try {
+      if (tooLongForGet) {
+        await fetch(scriptUrl, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: json,
+          keepalive: true,
+        });
+      } else {
+        const url = new URL(scriptUrl);
+        url.searchParams.set("payload", json);
+        await fetch(url.toString(), { method: "GET", mode: "no-cors", keepalive: true });
+      }
+      return "unconfirmed";
+    } catch {
+      return "rejected";
+    }
+  }
 }
 
 const GET_PAYLOAD_MAX = 6200;
 
-async function attachThumbnails(payload: Lead & { token?: string }) {
+async function attachThumbnails(payload: Lead) {
   if (typeof window === "undefined") return payload;
 
   const listed = payload.products?.length
@@ -140,9 +218,12 @@ async function attachThumbnails(payload: Lead & { token?: string }) {
     thumb: thumbs[index] || "",
   }));
 
-  let next: Lead & { token?: string } = { ...payload, products };
+  let next: Lead = { ...payload, products };
   // Drop trailing thumbs until the GET URL will fit.
-  while (encodeURIComponent(JSON.stringify(next)).length >= GET_PAYLOAD_MAX && products.some((item) => item.thumb)) {
+  while (
+    encodeURIComponent(JSON.stringify(next)).length >= GET_PAYLOAD_MAX &&
+    products.some((item) => item.thumb)
+  ) {
     let index = -1;
     for (let i = products.length - 1; i >= 0; i--) {
       if (products[i]?.thumb) {
@@ -165,7 +246,10 @@ async function attachThumbnails(payload: Lead & { token?: string }) {
 async function makeThumb(src: string | undefined, size: number, quality: number) {
   if (!src) return "";
   try {
-    const url = src.startsWith("http") || src.startsWith("data:") ? src : new URL(src, window.location.origin).href;
+    const url =
+      src.startsWith("http") || src.startsWith("data:")
+        ? src
+        : new URL(src, window.location.origin).href;
     const image = await loadImage(url);
     const canvas = document.createElement("canvas");
     canvas.width = size;
@@ -207,12 +291,10 @@ export const selectableValue = (options: SelectOption[], value: string | undefin
 
 export const catalogueOptions: SelectOption[] = CATALOGUE_FILES.map((file) => file.title);
 
-export const catalogueComingSoonNote = "More catalogues coming soon";
-
 export const occasionOptions: SelectOption[] = [
   "Diwali",
-  { label: "Wedding", comingSoon: true },
-  { label: "Birthday", comingSoon: true },
+  "Wedding",
+  "Birthday",
   "Baby Shower",
   "Housewarming",
   "Pooja / Festive",
@@ -220,27 +302,13 @@ export const occasionOptions: SelectOption[] = [
   "Other",
 ];
 
-export const quantityOptions = [
-  "Under 25",
-  "25–50",
-  "50–100",
-  "100–250",
-  "250–500",
-  "500+",
-];
+export const quantityOptions = ["Under 25", "25–50", "50–100", "100–250", "250–500", "500+"];
 
-export const budgetOptions = [
-  "Under ₹100",
-  "₹100–₹250",
-  "₹250–₹500",
-  "₹500–₹1,000",
-  "₹1,000+",
-];
+export const budgetOptions = ["Under ₹100", "₹100–₹250", "₹250–₹500", "₹500–₹1,000", "₹1,000+"];
 
 export const isValidPhone = (value: string) => {
   const digits = value.replace(/[^\d]/g, "");
   return digits.length >= 10 && digits.length <= 13;
 };
 
-export const isValidEmail = (value: string) =>
-  /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(value.trim());
+export const isValidEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(value.trim());

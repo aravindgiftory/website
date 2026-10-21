@@ -1,9 +1,18 @@
 import { createFileRoute, notFound, Link } from "@tanstack/react-router";
 import { SectionHeading } from "@/components/site/SectionHeading";
-import { ProductCard } from "@/components/site/ProductCard";
+import { CatalogueProductCard } from "@/components/site/CatalogueProductCard";
+import { FaqSection } from "@/components/site/Faq";
 import { CTASection } from "@/components/site/CTASection";
 import { useLeadDialog } from "@/components/site/LeadDialog";
-import { getOccasion, productsByOccasion, type OccasionSlug } from "@/data/catalog";
+import { getOccasion, BRAND, whatsappLink } from "@/data/catalog";
+import { OCCASION_SEO, occasionFaqs } from "@/data/seo-copy";
+import { breadcrumbScript, faqScript } from "@/lib/seo";
+import {
+  catalogueTitle,
+  occasionCatalogues,
+  occasionProducts,
+  pageSrc,
+} from "@/lib/occasion-products";
 
 export const Route = createFileRoute("/occasions/$occasion")({
   loader: ({ params }) => {
@@ -20,17 +29,29 @@ export const Route = createFileRoute("/occasions/$occasion")({
         ],
       };
     }
-    const title = `${loaderData.occasion.name} Gifts | Aravind Giftory`;
+    const { occasion } = loaderData;
+    const seo = OCCASION_SEO[occasion.slug];
+    const title = `${seo?.title ?? `Gifts for ${occasion.name}`} | Aravind Giftory`;
+    const description = seo?.description ?? occasion.description;
+    const path = `/occasions/${params.occasion}`;
     return {
       meta: [
         { title },
-        { name: "description", content: loaderData.occasion.description },
+        { name: "description", content: description },
         { property: "og:title", content: title },
-        { property: "og:description", content: loaderData.occasion.description },
-        { property: "og:url", content: `/occasions/${params.occasion}` },
+        { property: "og:description", content: description },
+        { property: "og:url", content: `${BRAND.siteUrl}${path}` },
         { property: "og:type", content: "website" },
       ],
-      links: [{ rel: "canonical", href: `/occasions/${params.occasion}` }],
+      links: [{ rel: "canonical", href: `${BRAND.siteUrl}${path}` }],
+      scripts: [
+        breadcrumbScript([
+          { name: "Home", path: "/" },
+          { name: "Occasions", path: "/occasions" },
+          { name: occasion.name, path },
+        ]),
+        faqScript(occasionFaqs(occasion.slug)),
+      ],
     };
   },
   component: OccasionPage,
@@ -39,7 +60,8 @@ export const Route = createFileRoute("/occasions/$occasion")({
 function OccasionPage() {
   const { occasion } = Route.useLoaderData();
   const { open } = useLeadDialog();
-  const items = productsByOccasion(occasion.slug as OccasionSlug);
+  const items = occasionProducts(occasion.slug);
+  const catalogues = occasionCatalogues(occasion.slug);
 
   return (
     <>
@@ -85,6 +107,8 @@ function OccasionPage() {
             <img
               src={occasion.image}
               alt={`${occasion.name} gifting`}
+              width={900}
+              height={1125}
               className="aspect-[4/3] w-full object-cover"
             />
           </div>
@@ -92,13 +116,55 @@ function OccasionPage() {
       </section>
 
       <section className="mx-auto mt-24 max-w-[1400px] px-5 sm:px-8">
-        <SectionHeading eyebrow="Suggested" title={`Gifts for ${occasion.name}`} />
-        <div className="mt-14 grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
+        <SectionHeading
+          eyebrow="From our catalogues"
+          title={`Gifts for ${occasion.name}`}
+          description="Real products from the Aravind Giftory catalogues. Open View details to see the full catalogue page, or enquire with your quantity and date."
+        />
+        <div className="mt-14 grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
           {items.map((product) => (
-            <ProductCard key={product.slug} product={product} />
+            <CatalogueProductCard
+              key={`${product.key}-${product.code}`}
+              product={product}
+              pageSrc={pageSrc(product)}
+              catalogueTitle={catalogueTitle(product.key)}
+            />
           ))}
         </div>
+        {catalogues.length > 0 && (
+          <p className="mt-12 text-sm text-muted-foreground">
+            Browse every page of the full catalogue:{" "}
+            {catalogues.map((file, index) => (
+              <span key={file.slug}>
+                {index > 0 && " · "}
+                <Link
+                  to="/gifts/$catalogue"
+                  params={{ catalogue: file.slug }}
+                  className="link-underline text-foreground"
+                >
+                  {file.title}
+                </Link>
+              </span>
+            ))}
+          </p>
+        )}
+        <p className="mt-4 text-sm text-muted-foreground">
+          Prefer to talk it through?{" "}
+          <a
+            href={whatsappLink(
+              `Hi ${BRAND.name}, I'm looking for ${occasion.name} gifts. Quantity: \nBudget: \nEvent date: `,
+            )}
+            target="_blank"
+            rel="noreferrer"
+            className="link-underline text-foreground"
+          >
+            Enquire on WhatsApp
+          </a>
+          .
+        </p>
       </section>
+
+      <FaqSection items={occasionFaqs(occasion.slug)} />
 
       <div className="mt-32">
         <CTASection />

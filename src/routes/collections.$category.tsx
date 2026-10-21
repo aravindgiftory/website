@@ -2,7 +2,8 @@ import { createFileRoute, notFound, Link } from "@tanstack/react-router";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { ProductCard } from "@/components/site/ProductCard";
 import { CTASection } from "@/components/site/CTASection";
-import { getCollection, productsByCollection, type CollectionSlug } from "@/data/catalog";
+import { breadcrumbScript } from "@/lib/seo";
+import { getCollection, productsByCollection, type CollectionSlug, BRAND } from "@/data/catalog";
 
 export const Route = createFileRoute("/collections/$category")({
   loader: ({ params }) => {
@@ -13,7 +14,10 @@ export const Route = createFileRoute("/collections/$category")({
   head: ({ loaderData, params }) => {
     if (!loaderData) {
       return {
-        meta: [{ title: "Collection unavailable | Aravind Giftory" }, { name: "robots", content: "noindex" }],
+        meta: [
+          { title: "Collection unavailable | Aravind Giftory" },
+          { name: "robots", content: "noindex" },
+        ],
       };
     }
     const title = `${loaderData.collection.name} | Aravind Giftory`;
@@ -23,10 +27,17 @@ export const Route = createFileRoute("/collections/$category")({
         { name: "description", content: loaderData.collection.description },
         { property: "og:title", content: title },
         { property: "og:description", content: loaderData.collection.description },
-        { property: "og:url", content: `/collections/${params.category}` },
+        { property: "og:url", content: `${BRAND.siteUrl}/collections/${params.category}` },
         { property: "og:type", content: "website" },
       ],
-      links: [{ rel: "canonical", href: `/collections/${params.category}` }],
+      links: [{ rel: "canonical", href: `${BRAND.siteUrl}/collections/${params.category}` }],
+      scripts: [
+        breadcrumbScript([
+          { name: "Home", path: "/" },
+          { name: "Collections", path: "/collections" },
+          { name: loaderData.collection.name, path: `/collections/${params.category}` },
+        ]),
+      ],
     };
   },
   component: CategoryPage,
@@ -48,6 +59,7 @@ function CategoryPage() {
         <div className="mt-8 grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:items-end">
           <SectionHeading
             eyebrow="Collection"
+            as="h1"
             title={collection.name}
             description={collection.description}
           />

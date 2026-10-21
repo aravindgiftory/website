@@ -1,87 +1,18 @@
 import { useMemo } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { breadcrumbScript } from "@/lib/seo";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { CTASection } from "@/components/site/CTASection";
 import { occasions, BRAND } from "@/data/catalog";
-import pageData from "@/data/catalogue-pages.json";
-import productData from "@/data/catalogue-products.json";
-import { CATALOGUE_FILES } from "@/data/media";
-import {
-  CatalogueProductCard,
-  type CatalogueProduct,
-} from "@/components/site/CatalogueProductCard";
-
-interface CataloguePage {
-  n: number;
-  src: string;
-}
-
-const PAGES = pageData as Record<string, CataloguePage[]>;
-const CATALOGUE_PRODUCTS = productData as CatalogueProduct[];
-
-/** Which real catalogue products suit each occasion: catalogue key, optionally limited to code prefixes. */
-const OCCASION_SOURCES: Record<string, Array<{ key: string; prefixes?: string[] }>> = {
-  wedding: [
-    { key: "gift-hampers-5k-plus-2026" },
-    { key: "gift-hampers-2k-3k-2026" },
-    { key: "luxury-gifting-2026", prefixes: ["DB", "GS"] },
-  ],
-  birthday: [
-    { key: "gift-hampers-1k-2026" },
-    { key: "snacks-munchies-hampers-2026" },
-    { key: "gift-hampers-2k-3k-2026" },
-  ],
-  housewarming: [
-    { key: "luxury-gifting-2026", prefixes: ["JR", "BW", "TR", "ST", "FL", "TS", "MG", "LB"] },
-  ],
-  "pooja-festive": [{ key: "luxury-gifting-2026", prefixes: ["DY", "PL", "UR", "ID", "DN", "KT"] }],
-  corporate: [{ key: "corporate-gifting-2026" }],
-};
-
-/** Desk, tech and office items read as corporate gifts, so personal occasions skip them. */
-const CORPORATE_LOOK =
-  /desk|laptop|clock|speaker|earphone|bluetooth|office|stationery|stand|\bled\b|mirror|\bpen\b|diary|notebook|power/i;
-const PERSONAL_OCCASIONS = new Set(["wedding", "birthday"]);
+import { CatalogueProductCard } from "@/components/site/CatalogueProductCard";
+import { catalogueTitle, occasionProducts, pageSrc, shuffled } from "@/lib/occasion-products";
 
 const PREVIEW_COUNT = 8;
-
-/** Fixed-seed shuffle, so server and browser render the same order. */
-function shuffled<T>(list: T[], seed: number): T[] {
-  const out = [...list];
-  for (let i = out.length - 1; i > 0; i--) {
-    seed = (seed * 1664525 + 1013904223) % 4294967296;
-    const j = seed % (i + 1);
-    [out[i], out[j]] = [out[j] as T, out[i] as T];
-  }
-  return out;
-}
-
-const catalogueTitle = (key: string) =>
-  CATALOGUE_FILES.find((file) => file.href.endsWith(`/${key}.pdf`))?.title ?? "Catalogue";
-
-const pageSrc = (product: CatalogueProduct) =>
-  PAGES[product.key]?.find((page) => page.n === product.n)?.src;
-
-function occasionProducts(slug: string): CatalogueProduct[] {
-  const seen = new Set<string>();
-  return (OCCASION_SOURCES[slug] ?? [])
-    .flatMap(({ key, prefixes }) =>
-      CATALOGUE_PRODUCTS.filter(
-        (product) =>
-          product.key === key && (!prefixes || prefixes.includes(product.code.split("-")[1] ?? "")),
-      ),
-    )
-    .filter((product) => {
-      if (seen.has(product.code)) return false;
-      seen.add(product.code);
-      return !(PERSONAL_OCCASIONS.has(slug) && CORPORATE_LOOK.test(product.name));
-    });
-}
 
 export const Route = createFileRoute("/occasions/")({
   head: () => ({
     meta: [
-      { title: "Gifts by Occasion | Aravind Giftory" },
+      { title: "Return Gifts by Occasion in Hyderabad | Aravind Giftory" },
       {
         name: "description",
         content:
@@ -96,6 +27,12 @@ export const Route = createFileRoute("/occasions/")({
       { property: "og:type", content: "website" },
     ],
     links: [{ rel: "canonical", href: `${BRAND.siteUrl}/occasions` }],
+    scripts: [
+      breadcrumbScript([
+        { name: "Home", path: "/" },
+        { name: "Occasions", path: "/occasions" },
+      ]),
+    ],
   }),
   component: OccasionsPage,
 });
@@ -121,6 +58,7 @@ function OccasionsPage() {
       <section className="mx-auto max-w-[1400px] px-5 pt-36 sm:px-8 lg:pt-44">
         <SectionHeading
           eyebrow="Occasions"
+          as="h1"
           title="Every Occasion Deserves a Thoughtful Gift."
           description="Start with the moment you're celebrating. Pick an occasion to see the gifts we've curated for it."
         />

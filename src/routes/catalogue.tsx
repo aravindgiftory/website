@@ -129,10 +129,6 @@ function CataloguePage() {
             </div>
           ))}
         </div>
-
-        <span className="mt-8 inline-flex items-center rounded-full border border-gold/50 bg-gold/10 px-2.5 py-0.5 text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-gold">
-          More catalogues coming soon
-        </span>
       </section>
 
       <section

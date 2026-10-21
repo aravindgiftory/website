@@ -6,6 +6,8 @@ interface CatalogueProduct {
   name: string;
   key: string;
   image: string;
+  w: number;
+  h: number;
 }
 
 const PRODUCTS = productData as CatalogueProduct[];
@@ -75,6 +77,8 @@ export function InstagramGallery() {
             <img
               src={tile.image}
               alt={`${tile.name}, ${tile.code}`}
+              width={tile.w}
+              height={tile.h}
               loading="lazy"
               className="aspect-square w-full object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
             />

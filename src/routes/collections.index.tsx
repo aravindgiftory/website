@@ -1,3 +1,4 @@
+import { breadcrumbScript } from "@/lib/seo";
 import { useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SectionHeading } from "@/components/site/SectionHeading";
@@ -11,12 +12,13 @@ import {
   type CollectionSlug,
   type OccasionSlug,
   type ProductType,
+  BRAND,
 } from "@/data/catalog";
 
 export const Route = createFileRoute("/collections/")({
   head: () => ({
     meta: [
-      { title: "Gifting Collections | Aravind Giftory" },
+      { title: "Gift Collections for Weddings, Festivals & Corporate | Aravind Giftory" },
       {
         name: "description",
         content:
@@ -27,10 +29,16 @@ export const Route = createFileRoute("/collections/")({
         property: "og:description",
         content: "Explore curated gifting collections for every occasion.",
       },
-      { property: "og:url", content: "/collections" },
+      { property: "og:url", content: `${BRAND.siteUrl}/collections` },
       { property: "og:type", content: "website" },
     ],
-    links: [{ rel: "canonical", href: "/collections" }],
+    links: [{ rel: "canonical", href: `${BRAND.siteUrl}/collections` }],
+    scripts: [
+      breadcrumbScript([
+        { name: "Home", path: "/" },
+        { name: "Collections", path: "/collections" },
+      ]),
+    ],
   }),
   component: CollectionsPage,
 });
@@ -56,6 +64,7 @@ function CollectionsPage() {
       <section className="mx-auto max-w-[1400px] px-5 pt-36 sm:px-8 lg:pt-44">
         <SectionHeading
           eyebrow="Collections"
+          as="h1"
           title="The Giftory Collections"
           description="Traditional, contemporary and practical gifting — organised so you can find the right fit quickly."
         />

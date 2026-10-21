@@ -180,7 +180,8 @@ export const CATALOGUE_FILES: CatalogueFile[] = [
   {
     slug: "corporate-gifting",
     title: "Corporate Gifting Catalogue 2026",
-    description: "Gift sets for teams, clients and celebrations, ready for bulk and custom branding.",
+    description:
+      "Gift sets for teams, clients and celebrations, ready for bulk and custom branding.",
     href: "/catalogues/corporate-gifting-2026.pdf",
     fileName: "Aravind-Giftory-Corporate-Gifting-2026.pdf",
     cover: "/catalogues/corporate-gifting-2026.jpg",

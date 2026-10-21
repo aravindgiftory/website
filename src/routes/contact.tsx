@@ -16,10 +16,10 @@ export const Route = createFileRoute("/contact")({
         property: "og:description",
         content: "Talk to Giftory about your gifting requirement.",
       },
-      { property: "og:url", content: "/contact" },
+      { property: "og:url", content: `${BRAND.siteUrl}/contact` },
       { property: "og:type", content: "website" },
     ],
-    links: [{ rel: "canonical", href: "/contact" }],
+    links: [{ rel: "canonical", href: `${BRAND.siteUrl}/contact` }],
   }),
   component: ContactPage,
 });
@@ -81,13 +81,6 @@ function ContactPage() {
             >
               Call {BRAND.phone}
             </a>
-          </div>
-
-          {/* Location placeholder — drop an embedded map here when the address is finalised. */}
-          <div className="mt-10 flex aspect-[16/10] items-center justify-center border border-dashed border-border bg-card text-center">
-            <p className="max-w-xs px-6 text-sm text-muted-foreground">
-              Map location coming soon · {BRAND.city}
-            </p>
           </div>
         </div>
 

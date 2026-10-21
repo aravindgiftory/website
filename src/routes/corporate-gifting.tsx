@@ -3,10 +3,13 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { ProductCard } from "@/components/site/ProductCard";
 import { LeadForm } from "@/components/site/LeadForm";
-import { productsByOccasion, BRAND } from "@/data/catalog";
+import { productsByOccasion, BRAND, whatsappLink } from "@/data/catalog";
 import type { Product } from "@/data/types";
 import { useLeadDialog } from "@/components/site/LeadDialog";
 import { CATALOGUE_FILES } from "@/data/media";
+import { FaqSection } from "@/components/site/Faq";
+import { corporateFaqs } from "@/data/seo-copy";
+import { breadcrumbScript, faqScript } from "@/lib/seo";
 import pageData from "@/data/catalogue-pages.json";
 
 interface CataloguePage {
@@ -37,13 +40,13 @@ function shuffled<T>(list: T[]): T[] {
 export const Route = createFileRoute("/corporate-gifting")({
   head: () => ({
     meta: [
-      { title: "Corporate Gifting | Aravind Giftory" },
+      { title: "Corporate Gifting in Hyderabad | Aravind Giftory" },
       {
         name: "description",
         content:
-          "Thoughtful corporate gifting for employees, clients, partners and corporate occasions. Request the corporate catalogue from Aravind Giftory, Hyderabad.",
+          "Corporate gift sets, welcome kits and festive hampers in bulk for teams, clients and partners, from Aravind Giftory, Hyderabad. Browse the catalogue and request a corporate quote.",
       },
-      { property: "og:title", content: "Corporate Gifting | Aravind Giftory" },
+      { property: "og:title", content: "Corporate Gifting in Hyderabad | Aravind Giftory" },
       {
         property: "og:description",
         content: "Gifts that represent your brand — curated corporate gifting in volume.",
@@ -52,6 +55,13 @@ export const Route = createFileRoute("/corporate-gifting")({
       { property: "og:type", content: "website" },
     ],
     links: [{ rel: "canonical", href: `${BRAND.siteUrl}/corporate-gifting` }],
+    scripts: [
+      breadcrumbScript([
+        { name: "Home", path: "/" },
+        { name: "Corporate Gifting", path: "/corporate-gifting" },
+      ]),
+      faqScript(corporateFaqs),
+    ],
   }),
   component: CorporatePage,
 });
@@ -83,14 +93,27 @@ function CorporatePage() {
               Gifts That Represent Your Brand.
             </h1>
             <p className="mt-6 max-w-md text-base leading-relaxed text-muted-foreground">
-              Thoughtful gifting for employees, clients, partners and corporate occasions.
+              Corporate gift sets, welcome kits and festive hampers for employees, clients and
+              partners, in bulk from Hyderabad.
             </p>
-            <a
-              href="#corporate-form"
-              className="mt-9 inline-block rounded-sm bg-primary px-8 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-primary-foreground"
-            >
-              Request Corporate Catalogue
-            </a>
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+              <a
+                href="#corporate-form"
+                className="inline-block rounded-sm bg-primary px-8 py-4 text-center text-xs font-semibold uppercase tracking-[0.18em] text-primary-foreground"
+              >
+                Request a Bulk Quote
+              </a>
+              <a
+                href={whatsappLink(
+                  `Hi ${BRAND.name}, I'd like corporate gifting options. Occasion: \nQuantity: \nBudget: \nDelivery date: `,
+                )}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-block rounded-sm border border-primary/25 px-8 py-4 text-center text-xs font-semibold uppercase tracking-[0.18em] text-primary transition-colors hover:border-primary"
+              >
+                Enquire on WhatsApp
+              </a>
+            </div>
           </div>
           <div className="overflow-hidden bg-muted">
             <img
@@ -155,6 +178,8 @@ function CorporatePage() {
           )}
         </div>
       </section>
+
+      <FaqSection items={corporateFaqs} />
 
       <section
         id="corporate-form"

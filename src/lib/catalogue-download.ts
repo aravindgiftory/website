@@ -1,4 +1,5 @@
 import { CATALOGUE_FILES, type CatalogueFile } from "@/data/media";
+import { trackEvent } from "@/lib/analytics";
 
 export const CATALOGUE_PRINT_PATH = "/catalogue/print";
 
@@ -12,6 +13,11 @@ function triggerDownload(file: CatalogueFile) {
   document.body.appendChild(link);
   link.click();
   link.remove();
+  trackEvent("file_download", {
+    file_name: file.fileName,
+    file_extension: "pdf",
+    link_url: file.href,
+  });
 }
 
 /**

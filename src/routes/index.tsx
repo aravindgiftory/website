@@ -12,6 +12,9 @@ import { edits, occasions, BRAND, whatsappLink } from "@/data/catalog";
 import pageData from "@/data/catalogue-pages.json";
 import productData from "@/data/catalogue-products.json";
 import { CATALOGUE_FILES } from "@/data/media";
+import { FaqSection } from "@/components/site/Faq";
+import { faqScript } from "@/lib/seo";
+import { homeFaqs } from "@/data/seo-copy";
 import brandStory from "@/assets/brand-story.jpg";
 
 const CATALOGUE_PRODUCTS = productData as CatalogueProduct[];
@@ -54,13 +57,16 @@ const catalogueTitle = (key: string) =>
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Aravind Giftory | Thoughtful Gifts for Every Occasion" },
+      { title: "Bulk Return Gifts & Corporate Gifting in Hyderabad | Aravind Giftory" },
       {
         name: "description",
         content:
-          "Discover curated return gifts, premium gifting collections and thoughtful gifts for weddings, birthdays, baby showers, housewarmings, festive occasions and corporate events.",
+          "Aravind Giftory, Hyderabad: return gifts, hampers and corporate gift sets in bulk for weddings, baby showers, housewarmings, festivals and corporate events. Browse the catalogue and request a quote.",
       },
-      { property: "og:title", content: "Aravind Giftory | Thoughtful Gifts for Every Occasion" },
+      {
+        property: "og:title",
+        content: "Bulk Return Gifts & Corporate Gifting in Hyderabad | Aravind Giftory",
+      },
       {
         property: "og:description",
         content:
@@ -70,6 +76,7 @@ export const Route = createFileRoute("/")({
       { property: "og:type", content: "website" },
     ],
     links: [{ rel: "canonical", href: `${BRAND.siteUrl}/` }],
+    scripts: [faqScript(homeFaqs)],
   }),
   component: Home,
 });
@@ -442,6 +449,8 @@ function Home() {
           ))}
         </div>
       </section>
+
+      <FaqSection items={homeFaqs} />
 
       {/* 10 — Instagram */}
       <div className="mt-32">
