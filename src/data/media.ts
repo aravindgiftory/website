@@ -103,6 +103,14 @@ export const CATALOGUE_FILES: CatalogueFile[] = [
     budget: "₹5K & above",
   },
   {
+    slug: "luxury-gifting",
+    title: "The Luxury Gifting Collection 2026",
+    description: "A curated atelier of brass, crystal and heritage objects.",
+    href: "/catalogues/luxury-gifting-2026.pdf",
+    fileName: "Aravind-Giftory-Luxury-Gifting-2026.pdf",
+    cover: "/catalogues/luxury-gifting-2026.jpg",
+  },
+  {
     slug: "diwali-hampers",
     title: "Diwali Hampers Catalogue 2026",
     description: "Festive hampers and curated Diwali gifting.",
