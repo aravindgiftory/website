@@ -9,12 +9,15 @@ import {
 import { InstagramGallery } from "@/components/site/InstagramGallery";
 import { useLeadDialog } from "@/components/site/LeadDialog";
 import { occasions, BRAND, whatsappLink } from "@/data/catalog";
+import { Fireworks, FairyLights } from "@/components/site/DiwaliTheme";
+import { isDiwaliSeason } from "@/data/festival";
 import {
   BudgetTiles,
   CategoryStrip,
   ProductCarousel,
   ServicesSection,
   AudienceLinks,
+  DiwaliHighlight,
   UspStrip,
 } from "@/components/site/HomeSections";
 import productData from "@/data/catalogue-products.json";
@@ -163,10 +166,16 @@ const stories = [
 
 function Home() {
   const { open } = useLeadDialog();
+  const diwali = isDiwaliSeason();
 
   return (
     <>
-      <Hero />
+      <div className="relative">
+        {diwali && <Fireworks />}
+        <Hero />
+        {diwali && <FairyLights />}
+      </div>
+      <DiwaliHighlight />
       <CategoryStrip />
       <UspStrip />
       <FestiveCombos />

@@ -1,7 +1,11 @@
 import { useRef, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
-import { BRAND } from "@/data/catalog";
 import { AUDIENCES } from "@/data/audiences";
+import { isDiwaliSeason } from "@/data/festival";
+import { Diya } from "./DiwaliTheme";
+import { useLeadDialog } from "./LeadDialog";
+import { BRAND, whatsappLink } from "@/data/catalog";
+import productData from "@/data/catalogue-products.json";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { SectionHeading } from "./SectionHeading";
 import { CatalogueProductCard, type CatalogueProduct } from "./CatalogueProductCard";
@@ -322,6 +326,128 @@ export function AudienceLinks() {
           </li>
         ))}
       </ul>
+    </section>
+  );
+}
+
+const DIWALI_PRODUCTS = (productData as Array<CatalogueProduct & { key: string }>).filter(
+  (product) => product.key === "diwali-hampers",
+);
+
+/**
+ * The seasonal highlight: every gift set from the Diwali Hampers catalogue as a card, on a deep
+ * maroon band with diyas. It disappears by itself after Diwali (see `data/festival.ts`).
+ */
+export function DiwaliHighlight() {
+  const { openCatalogue, open } = useLeadDialog();
+  const track = useRef<HTMLUListElement>(null);
+  if (!isDiwaliSeason() || DIWALI_PRODUCTS.length === 0) return null;
+  const scroll = (direction: 1 | -1) =>
+    track.current?.scrollBy({
+      left: direction * track.current.clientWidth * 0.8,
+      behavior: "smooth",
+    });
+
+  return (
+    <section
+      aria-labelledby="diwali-heading"
+      className="relative z-20 mx-auto mt-8 max-w-[1400px] px-5 sm:px-8"
+    >
+      <div className="relative overflow-hidden rounded-sm bg-primary px-5 py-12 text-primary-foreground sm:px-10 sm:py-14">
+        <div className="pointer-events-none absolute inset-3 border border-gold/50" />
+        <div className="pointer-events-none absolute -left-6 bottom-4 hidden opacity-90 sm:block">
+          <Diya className="h-24 w-24" />
+        </div>
+        <div className="pointer-events-none absolute -right-6 bottom-4 hidden opacity-90 sm:block">
+          <Diya className="h-24 w-24" />
+        </div>
+
+        <div className="relative text-center">
+          <div className="flex items-center justify-center gap-3">
+            <Diya className="h-8 w-8" />
+            <span className="eyebrow text-gold-soft">The festival of lights</span>
+            <Diya className="h-8 w-8" />
+          </div>
+          <h2
+            id="diwali-heading"
+            className="display-lg mx-auto mt-4 max-w-2xl text-primary-foreground"
+          >
+            Diwali Hampers
+          </h2>
+          <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-primary-foreground/80">
+            {DIWALI_PRODUCTS.length} gift sets in a Happy Diwali box, with dry fruits, lamps,
+            speakers, power banks and flasks. Open a set to see everything inside.
+          </p>
+          <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <button
+              type="button"
+              onClick={() => openCatalogue(undefined, "Diwali Hampers Catalogue")}
+              className="rounded-sm bg-primary-foreground px-8 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-primary transition-colors hover:bg-primary-foreground/90"
+            >
+              Get the Diwali catalogue
+            </button>
+            <button
+              type="button"
+              onClick={() =>
+                open({
+                  source: "bulk-quote",
+                  title: "Diwali hampers quote",
+                  intro: "Share your quantity and delivery date and we'll confirm pricing.",
+                  submitLabel: "Request a Bulk Quote",
+                  occasion: "Diwali",
+                })
+              }
+              className="rounded-sm border border-primary-foreground/40 px-8 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-primary-foreground transition-colors hover:border-gold-soft hover:text-gold-soft"
+            >
+              Request a Bulk Quote
+            </button>
+            <a
+              href={whatsappLink(
+                `Hi ${BRAND.name}, I'd like Diwali hampers. Quantity: \nBudget per gift: \nDelivery date: `,
+              )}
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-sm border border-primary-foreground/40 px-8 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-primary-foreground transition-colors hover:border-gold-soft hover:text-gold-soft"
+            >
+              Enquire on WhatsApp
+            </a>
+          </div>
+        </div>
+
+        <div className="relative mt-10">
+          <div className="mb-4 hidden justify-end gap-2 sm:flex">
+            {([-1, 1] as const).map((direction) => (
+              <button
+                key={direction}
+                type="button"
+                onClick={() => scroll(direction)}
+                aria-label={direction === 1 ? "Next gift sets" : "Previous gift sets"}
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-primary-foreground/40 text-primary-foreground transition-colors hover:border-gold-soft hover:text-gold-soft"
+              >
+                {direction === 1 ? (
+                  <ChevronRight className="h-4 w-4" />
+                ) : (
+                  <ChevronLeft className="h-4 w-4" />
+                )}
+              </button>
+            ))}
+          </div>
+          <ul
+            ref={track}
+            className="flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4 [scrollbar-width:thin]"
+          >
+            {DIWALI_PRODUCTS.map((product) => (
+              <li key={product.code} className="w-[16rem] shrink-0 snap-start sm:w-[17.5rem]">
+                <CatalogueProductCard
+                  product={product}
+                  pageSrc={pageSrc(product)}
+                  catalogueTitle={catalogueTitle(product.key)}
+                />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
     </section>
   );
 }

@@ -25,6 +25,13 @@ export const collectionCover = (slug: string) => ({
  */
 export const REAL_COLLECTIONS: RealCollection[] = [
   {
+    slug: "diwali-hampers",
+    name: "Diwali Hampers",
+    description:
+      "Gift sets with dry fruits, lamps, speakers and flasks for the festival of lights.",
+    key: "diwali-hampers",
+  },
+  {
     slug: "hampers-under-1k",
     name: "Gift Hampers Under ₹1K",
     description: "Budget-friendly hampers for return gifts and thank-yous.",

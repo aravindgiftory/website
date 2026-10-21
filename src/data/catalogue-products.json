@@ -19,7 +19,7 @@
   },
   {
     "code": "AG-DY-003",
-    "name": "Lotus desiner diya\u20ac",
+    "name": "Lotus desiner diya€",
     "key": "luxury-gifting-2026",
     "n": 2,
     "image": "/catalogue-products/luxury-gifting-2026/AG-DY-003.jpg",
@@ -1237,10 +1237,7 @@
   {
     "code": "AG-CO-037",
     "name": "Eco-Friendly 4-in-1 Gift Set",
-    "details": [
-      "Product type: Employee kit | Welcome Kit | Client Gift Set",
-      "4-in-1 Gift Set"
-    ],
+    "details": ["Product type: Employee kit | Welcome Kit | Client Gift Set", "4-in-1 Gift Set"],
     "key": "corporate-gifting-2026",
     "n": 14,
     "image": "/catalogue-products/corporate-gifting-2026/AG-CO-037.jpg",
@@ -1392,10 +1389,7 @@
   {
     "code": "AG-CO-048",
     "name": "Woodsy 4-In-1 Gift Set",
-    "details": [
-      "Product type: Eco-friendly 4-in-1 gift set",
-      "Material: Bamboo and cork"
-    ],
+    "details": ["Product type: Eco-friendly 4-in-1 gift set", "Material: Bamboo and cork"],
     "key": "corporate-gifting-2026",
     "n": 17,
     "image": "/catalogue-products/corporate-gifting-2026/AG-CO-048.jpg",
@@ -1564,7 +1558,7 @@
       "Material: Vegan leather",
       "Size: 9 x 11 x 3 inches",
       "Includes: 500ml Water Bottle A5 Notebook Card Holder Pen",
-      "Men\u2019s Wallet Key Chain"
+      "Men’s Wallet Key Chain"
     ],
     "key": "corporate-gifting-2026",
     "n": 22,
@@ -2300,9 +2294,9 @@
     "name": "Kashmiri Kahwa & Waffle Cookies with Candle Box",
     "details": [
       "Ekam Premium scented candle in votive jar",
-      "Nova Nova Waf\ufb02e Cookies 65g",
+      "Nova Nova Wafﬂe Cookies 65g",
       "Phab Protein Milkshake 200ml",
-      "Tong Garden Honey Sun\ufb02ower 30g"
+      "Tong Garden Honey Sunﬂower 30g"
     ],
     "key": "gift-hampers-1k-2026",
     "n": 3,
@@ -2364,7 +2358,7 @@
     "details": [
       "Sorriso Italian Mix Cashew 100g",
       "Abs Body",
-      "Eye Mask super \ufb01ne velvet fabric",
+      "Eye Mask super ﬁne velvet fabric",
       "Plain Solid Color Conical Ceramic Mug 200ml",
       "Gift Message Card"
     ],
@@ -2419,7 +2413,7 @@
     "details": [
       "Tong Garden Party Snacks 160g",
       "American Delight Basil Seed Drink 300ml",
-      "Jabsons \ufb02avoured Roasted Peanuts 140g",
+      "Jabsons ﬂavoured Roasted Peanuts 140g",
       "Kashmiri Mukhwas 90g",
       "Wingreen Baked Pita Chips and Sauce Dip Combo 70g",
       "Mr Makhana Roasted Flavored Makhana 20g",
@@ -2484,9 +2478,9 @@
     "code": "AG1206",
     "name": "Millets & Choco Crunch Snacking Set",
     "details": [
-      "Waf\ufb02e Mill Waf\ufb02e Chips Dark Chocolate And Sea Salt 80g",
+      "Wafﬂe Mill Wafﬂe Chips Dark Chocolate And Sea Salt 80g",
       "Fabbox Chatpata Jowar Pops Healthy Snacks 55g",
-      "Tong Garden Salted Sun\ufb02ower 30g",
+      "Tong Garden Salted Sunﬂower 30g",
       "Natch Thai Rice Chips 25g",
       "Raw Pressery Mixed Fruit Juice 200ml",
       "Fresa Crispy Chikoo 10g",
@@ -2538,7 +2532,7 @@
       "Raw Pressery Mixed Fruit Juice 200ml",
       "Vo Smart Flavored Khakhra Roasted And Vacuum Packed 38g",
       "Taali Protein Flavored Puffs 22g",
-      "Tong Garden Honey Sun\ufb02ower 15g",
+      "Tong Garden Honey Sunﬂower 15g",
       "Gift Message Card"
     ],
     "key": "gift-hampers-1k-2026",
@@ -2551,10 +2545,10 @@
     "code": "AG653",
     "name": "Savory & Sweet Gift Box",
     "details": [
-      "Waf\ufb02e Mill Waf\ufb02e Chips-Dark Chocolate And Sea Salt 85g",
+      "Wafﬂe Mill Wafﬂe Chips-Dark Chocolate And Sea Salt 85g",
       "Lovely Bake Studio Choco-Chip Cookies 75g",
       "Tong Garden Paprika Pumpkins 30 g",
-      "Tong Garden Salted Sun\ufb02ower 30g",
+      "Tong Garden Salted Sunﬂower 30g",
       "Gift Message Card",
       "Red Happiness Box"
     ],
@@ -2571,7 +2565,7 @@
       "Tong Garden Mexican Style Peanut 70 g",
       "Gourmet's Delight 3-Layer Chocolate Wafers 75g",
       "Vo Smart Flavored Khakhra Roasted And Vacuum Packed 38g",
-      "Tong Garden Honey Sun\ufb02ower 15 g",
+      "Tong Garden Honey Sunﬂower 15 g",
       "Gift Message Card",
       "Blue Happiness Box"
     ],
@@ -2666,7 +2660,7 @@
     "name": "Coffee, Self Stirring Mug & Music Box Gift Set",
     "details": [
       "Ubon V5.3 speaker with RGB light and mobile stand",
-      "Phab protein bars mix \ufb02avors 210g",
+      "Phab protein bars mix ﬂavors 210g",
       "Continental Special Instant Coffee 100g",
       "Digital Mirror Clock with alarm",
       "Premium Black Box with Satin Ribbon bow 10 X 10 X 4\"",
@@ -2725,7 +2719,7 @@
       "Wooden Snake Cube Challenge Puzzle 5.5 X 5.5 cm",
       "JBL Wireless Mini Portable Speaker High Performance Sound",
       "Desk Phone Holder",
-      "Happiness Box (10 \u00d7 8 \u00d7 3 in)",
+      "Happiness Box (10 × 8 × 3 in)",
       "Gift Message Card"
     ],
     "key": "gift-hampers-2k-3k-2026",
@@ -2825,7 +2819,7 @@
       "Starbucks Hazelnut Chocolate Bites",
       "Starbucks Salted Almond",
       "Chocolate Bites Hershey's Kisses Almond",
-      "London Bubble Co Waf\ufb02e Chips Dark Chocolate",
+      "London Bubble Co Wafﬂe Chips Dark Chocolate",
       "Message Card",
       "Square metal Basket with handle"
     ],
@@ -2850,7 +2844,7 @@
       "Message Card",
       "Ivory Metal Reusable tub- 16*6 in",
       "Jacker Wafer Cube",
-      "Waffle Mill Waffle Chips \u2013 Dark Chocolate & Sea Salt",
+      "Waffle Mill Waffle Chips – Dark Chocolate & Sea Salt",
       "Foodio Fit Avial Vacuum Fried Mix Vegetable Chips",
       "Makino Flavoured Corn Chips / Twisties"
     ],
@@ -2958,9 +2952,9 @@
       "Multi-Angle Adjustable Portable Mobile Stand-Compact, Abs Body",
       "Premium Maroon Box with Satin Ribbon bow",
       "Gift Hamper",
-      "Hot & Cold Thermos Flask \u2013 Sweetie 200ml",
+      "Hot & Cold Thermos Flask – Sweetie 200ml",
       "Lindt Excellence Flavoured Swiss Chocolate 100g",
-      "A5 Notebook \u2013 Hard Bound With Gold Foil Detailing",
+      "A5 Notebook – Hard Bound With Gold Foil Detailing",
       "SleepyOwl Assorted Premium Instant Coffee Dip Bags 20g",
       "Gift Message Card"
     ],
@@ -2975,15 +2969,15 @@
     "name": "Office and Travel Hamper",
     "details": [
       "Dubblin Insulated Stainless Steel Bottle- Double Walled Hot & Cold",
-      "Tabletop Planter With Coloured Flowers (Arti\ufb01cial)",
+      "Tabletop Planter With Coloured Flowers (Artiﬁcial)",
       "Inspirational Book- The One Thing",
       "Sorriso Black Pepper Cashews 100g",
       "Sorriso Premium Almond 100g",
       "4700Bc Flavoured Microwave Popcorn 94g",
       "Gift Message Card",
       "Premium Maroon Box with Satin Ribbon bow",
-      "Thermos Flask \u2013 Sweetie",
-      "A5 Notebook \u2013 Hard Bound With Gold Foil Detailing",
+      "Thermos Flask – Sweetie",
+      "A5 Notebook – Hard Bound With Gold Foil Detailing",
       "Sunflower Aroma Floating Candle"
     ],
     "key": "gift-hampers-2k-3k-2026",
@@ -3028,7 +3022,7 @@
       "Df Gourmet Roasted Multigrain Flavoured Cubes 55g",
       "Taali Roasted Makhana Pudina Pop",
       "Gift Message Card",
-      "Golden Gift Basket With Red Bow (13 \u00d7 10 \u00d7 4 in)"
+      "Golden Gift Basket With Red Bow (13 × 10 × 4 in)"
     ],
     "key": "gift-hampers-2k-3k-2026",
     "n": 19,
@@ -3072,7 +3066,7 @@
       "Goodwyn Assorted Herbal Tea Collection Tea Bags 20 tea bags",
       "Tong Garden Party Snacks 180 g",
       "American Delight Basil Seed Drink 290 ml",
-      "Tong Garden Salted Sun\ufb02ower 30g",
+      "Tong Garden Salted Sunﬂower 30g",
       "Golden Gift Basket With Red Bow",
       "Gift Message Card",
       "Rostaa Gourmet Berrylicious 200 g",
@@ -3096,7 +3090,7 @@
       "Goodwyn Assorted Herbal Tea Collection Tea Bags 20 tea bags",
       "Tong Garden Party Snacks 180 g",
       "American Delight Basil Seed Drink 290 ml",
-      "Tong Garden Salted Sun\ufb02ower 30g",
+      "Tong Garden Salted Sunﬂower 30g",
       "Golden Gift Basket With Red Bow",
       "Gift Message Card",
       "Rostaa Gourmet Berrylicious 200 g",
@@ -3207,11 +3201,11 @@
     "name": "Luxury Coffee Gift Hamper",
     "details": [
       "Starbucks Colorful Ceramic Coffee Cup-Bean To Coffee 400ml",
-      "Ultrasonic Aroma Humidi\ufb01er With Color Changing Led-Wooden Finish 200ml",
+      "Ultrasonic Aroma Humidiﬁer With Color Changing Led-Wooden Finish 200ml",
       "Loyka Almond Caramel Dates 108gm",
       "Loacker Quadratini Double Choco Italian Wafer Cookies 125g",
       "Gery Dark Choco Rolls 24 Sticks 120g",
-      "Waf\ufb02e Mill Waf\ufb02e Chips-Dark Chocolate And Sea Salt 85g",
+      "Wafﬂe Mill Wafﬂe Chips-Dark Chocolate And Sea Salt 85g",
       "Girnar Detox Desi Kahwa Tea Bags With Rock Salt 25g",
       "Df Gourmet Roasted Multigrain Flavoured Cubes 55g",
       "Fabbox Flavoured Ragi Chips-Healthy Snacks 78g",
@@ -3229,7 +3223,7 @@
     "code": "AG10002",
     "name": "The Royal Treat",
     "details": [
-      "Ultrasonic Aroma Humidi\ufb01er With Color Changing Led-Wooden Finish 200ml",
+      "Ultrasonic Aroma Humidiﬁer With Color Changing Led-Wooden Finish 200ml",
       "Lindt Excellence Flavoured Swiss Chocolate 100 g",
       "Happilo Premium Cashew Nuts 200gm",
       "Nutella Hazelnut Cocoa Spread 350g",
@@ -3262,7 +3256,7 @@
       "Loyka Almond Brittle Brownie Dark Choco Praline",
       "Ancient roots Almond cookies 150 g",
       "Loacker Quadratini Double Choco Italian Wafer Cookies 125gm",
-      "Waf\ufb02e Mill Waf\ufb02e Chips- Dark Chocolate And Sea Salt",
+      "Wafﬂe Mill Wafﬂe Chips- Dark Chocolate And Sea Salt",
       "Epiphany Almond Cranberry Crunch",
       "Sapphire Fruit & Nut Covered With Milk Choco 250gm",
       "Loyka Almond Brittle Brownie Dark Chocolate Praline 17gm",
@@ -3333,7 +3327,7 @@
       "Lets Try Flavoured Crunchy Party Mix 30g",
       "Premium Flavoured Mouth Freshener",
       "Haldirams Roasted Chana 42g",
-      "Monginis Muf\ufb01n Fruit Cake 30g",
+      "Monginis Mufﬁn Fruit Cake 30g",
       "Udupi Munch Murukku 42g",
       "Gift Message Card",
       "Elegant Plain Colored Paper Box with Bow"
@@ -3367,11 +3361,11 @@
     "code": "AG1243WD",
     "name": "Treats Jute Snack Hamper",
     "details": [
-      "Waf\ufb02e Mill Waf\ufb02e Chips Dark Chocolate And Sea Salt",
+      "Wafﬂe Mill Wafﬂe Chips Dark Chocolate And Sea Salt",
       "SAO Foods Premium Flavoured Chana 200g",
       "Taali Flavoured Peanuts 34g",
       "Lets Try Flavoured Bhujia 34g",
-      "Monginis Muf\ufb01n Fruit Cake 30g",
+      "Monginis Mufﬁn Fruit Cake 30g",
       "Premium Flavoured Mouth Freshener",
       "Gift Message Card"
     ],
@@ -3407,7 +3401,7 @@
     "code": "AG1241WD",
     "name": "Treats Snack Hamper Bag",
     "details": [
-      "Waf\ufb02e Mill Waf\ufb02e Chips Dark Chocolate And Sea Salt",
+      "Wafﬂe Mill Wafﬂe Chips Dark Chocolate And Sea Salt",
       "KitKat Wafer Chocolate 38.5g",
       "Taali Flavoured Protein Puffs 21g",
       "Eat Better Flavoured Millet Namkeen 32g",
@@ -3417,7 +3411,7 @@
       "Britannia Treat Croissant 18.5g",
       "SAO Foods Premium Flavoured Chana 40g",
       "Premium Flavoured Mouth Freshener",
-      "Monginis Muf\ufb01n Fruit Cake 30g",
+      "Monginis Mufﬁn Fruit Cake 30g",
       "Udupi Munch Murukku 42g",
       "Gift Message Card"
     ],
@@ -3456,9 +3450,9 @@
     "code": "AG1206",
     "name": "Millets & Choco Crunch Snacking Set",
     "details": [
-      "Waf\ufb02e Mill Waf\ufb02e Chips Dark Chocolate And Sea Salt 80g",
+      "Wafﬂe Mill Wafﬂe Chips Dark Chocolate And Sea Salt 80g",
       "Fabbox Chatpata Jowar Pops Healthy Snacks 55g",
-      "Tong Garden Salted Sun\ufb02ower 30g",
+      "Tong Garden Salted Sunﬂower 30g",
       "Natch Thai Rice Chips 25g",
       "Raw Pressery Mixed Fruit Juice 200ml",
       "Fresa Crispy Chikoo 10g",
@@ -3518,7 +3512,7 @@
     "details": [
       "Tong Garden Party Snacks 160g",
       "American Delight Basil Seed Drink 300ml",
-      "Jabsons \ufb02avoured Roasted Peanuts 140g",
+      "Jabsons ﬂavoured Roasted Peanuts 140g",
       "Kashmiri Mukhwas 90g",
       "Wingreen Baked Pita Chips and Sauce Dip Combo 70g",
       "Mr Makhana Roasted Flavored Makhana 20g",
@@ -3562,7 +3556,7 @@
     "name": "Premium Snacks & Chocolates Gift Hamper",
     "details": [
       "Hersheys Kisses Almond Chocolate 100.8g",
-      "Grab N Go Pringles with No Arti\ufb01cial Colors 40g",
+      "Grab N Go Pringles with No Artiﬁcial Colors 40g",
       "Loyka Almond Brittle Brownie Dark Chocolate Praline 17g",
       "Loyka Almond Brittle Brownie Dark Chocolate Praline 17g",
       "Tong Garden Mexican Style Peanut 65g",
@@ -3626,5 +3620,185 @@
     "image": "/catalogue-products/snacks-munchies-hampers-2026/AG5015.jpg",
     "w": 640,
     "h": 427
+  },
+  {
+    "code": "DW 001",
+    "name": "Insulated Bottle, Date Bites & Coffee Cup Gift Set",
+    "details": [
+      "Insulated bottle",
+      "Date Bites assorted pack (3 flavours)",
+      "Eco-friendly coffee cup"
+    ],
+    "key": "diwali-hampers",
+    "n": 1,
+    "image": "/catalogue-products/diwali-hampers/DW-001.jpg",
+    "w": 640,
+    "h": 640
+  },
+  {
+    "code": "DW 002",
+    "name": "Roasted Nuts, Protein Mix, Glass Mixing Cup & Candle Gift Set",
+    "details": [
+      "Roasted cashew (no oil)",
+      "Trail mix (no oil)",
+      "Protein mix (high protein, rich in fibre, 100% natural)",
+      "Glass mixing cup with wooden handle",
+      "Glass candle, premium finish"
+    ],
+    "key": "diwali-hampers",
+    "n": 2,
+    "image": "/catalogue-products/diwali-hampers/DW-002.jpg",
+    "w": 640,
+    "h": 640
+  },
+  {
+    "code": "DW 003",
+    "name": "Roasted Nuts, Diamond Lamp, Mixing Cup & Candle Gift Set",
+    "details": [
+      "Roasted cashew (no oil)",
+      "Trail mix (no oil)",
+      "Protein mix (high protein, rich in fibre, 100% natural)",
+      "Glass mixing cup with wooden handle",
+      "Diamond lamp with crystal",
+      "Glass candle, premium finish"
+    ],
+    "key": "diwali-hampers",
+    "n": 3,
+    "image": "/catalogue-products/diwali-hampers/DW-003.jpg",
+    "w": 640,
+    "h": 640
+  },
+  {
+    "code": "DW 004",
+    "name": "Paan Shots, Health Mix, Bluetooth Speaker & Table Lamp Gift Set",
+    "details": [
+      "Paan Shots, choco paan delight (50g)",
+      "Daily Health Mix (100g)",
+      "Bluetooth speaker (Quantron)",
+      "Table lamp, ceramic finish with warm light"
+    ],
+    "key": "diwali-hampers",
+    "n": 4,
+    "image": "/catalogue-products/diwali-hampers/DW-004.jpg",
+    "w": 640,
+    "h": 640
+  },
+  {
+    "code": "DW 006",
+    "name": "Cashews, Reading Lamp, Earbuds, Humidifier & Flask Gift Set",
+    "details": [
+      "Cashews, premium roasted",
+      "Chatpata trail mix",
+      "LED reading lamp",
+      "TWS earbuds",
+      "Humidifier",
+      "Insulated flask"
+    ],
+    "key": "diwali-hampers",
+    "n": 5,
+    "image": "/catalogue-products/diwali-hampers/DW-006.jpg",
+    "w": 640,
+    "h": 640
+  },
+  {
+    "code": "DW 007",
+    "name": "Dry Fruits, Reading Lamp, Humidifier, Earbuds & Bottle Gift Set",
+    "details": [
+      "Premium dry fruits: cashews and chatpata trail mix",
+      "LED reading lamp with touch control",
+      "Portable humidifier",
+      "Wireless earbuds",
+      "Insulated bottle"
+    ],
+    "key": "diwali-hampers",
+    "n": 6,
+    "image": "/catalogue-products/diwali-hampers/DW-007.jpg",
+    "w": 640,
+    "h": 640
+  },
+  {
+    "code": "DW 009",
+    "name": "Dry Fruits, Wireless Speaker, Earbuds, Candle & Flask Gift Set",
+    "details": [
+      "Premium dry fruits",
+      "Wireless speaker",
+      "True wireless earbuds",
+      "Glass bottle with wooden lid",
+      "Glass candle",
+      "Insulated flask"
+    ],
+    "key": "diwali-hampers",
+    "n": 7,
+    "image": "/catalogue-products/diwali-hampers/DW-009.jpg",
+    "w": 640,
+    "h": 640
+  },
+  {
+    "code": "DW 010",
+    "name": "Nut Jars, Power Bank, Speaker, Table Lamp & Bottle Gift Set",
+    "details": [
+      "Premium dry fruits: protein mix, trail mix, chatpata cashews, roasted cashews",
+      "Power bank, 10000 mAh",
+      "Glass bottle with cover (fragrance bottle)",
+      "Bluetooth speaker",
+      "Rechargeable table lamp"
+    ],
+    "key": "diwali-hampers",
+    "n": 8,
+    "image": "/catalogue-products/diwali-hampers/DW-010.jpg",
+    "w": 640,
+    "h": 640
+  },
+  {
+    "code": "DW 011",
+    "name": "Sweet Box, Crystal Lamp, Neckband, Power Bank & Bottle Gift Set",
+    "details": [
+      "Daily Nut sweet box",
+      "Premium cashew",
+      "Diamond crystal lamp",
+      "Wireless neckband",
+      "Zebronics power bank",
+      "Glass bottle"
+    ],
+    "key": "diwali-hampers",
+    "n": 9,
+    "image": "/catalogue-products/diwali-hampers/DW-011.jpg",
+    "w": 640,
+    "h": 640
+  },
+  {
+    "code": "DW 012",
+    "name": "Sweet Box, Crystal Lamp, Speakers, Power Bank & Tumbler Gift Set",
+    "details": [
+      "Daily Nuts sweet box",
+      "Premium cashew",
+      "Diamond crystal lamp",
+      "Saregama Carvaan Mini",
+      "Quantron Bluetooth speaker",
+      "Magsafe power bank",
+      "Borosil Hike tumbler"
+    ],
+    "key": "diwali-hampers",
+    "n": 10,
+    "image": "/catalogue-products/diwali-hampers/DW-012.jpg",
+    "w": 640,
+    "h": 640
+  },
+  {
+    "code": "DW 013",
+    "name": "Protein Mix, Self-Stirring Mug, Speaker, Power Bank & Flask Gift Set",
+    "details": [
+      "Protein mix",
+      "Premium cashew nuts",
+      "Glass self-stirring mug",
+      "Bluetooth speaker",
+      "Power bank",
+      "Insulated flask, 500ml"
+    ],
+    "key": "diwali-hampers",
+    "n": 11,
+    "image": "/catalogue-products/diwali-hampers/DW-013.jpg",
+    "w": 640,
+    "h": 640
   }
 ]

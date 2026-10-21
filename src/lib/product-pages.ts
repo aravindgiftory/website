@@ -24,7 +24,7 @@ for (const product of RAW) {
   if (byCode.has(product.code)) continue;
   byCode.set(product.code, {
     ...product,
-    slug: `${product.code.toLowerCase()}-${slugify(product.name)}`.slice(0, 90).replace(/-+$/, ""),
+    slug: `${slugify(product.code)}-${slugify(product.name)}`.slice(0, 90).replace(/-+$/, ""),
   });
 }
 

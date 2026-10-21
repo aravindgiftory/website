@@ -124,3 +124,13 @@ currently not indexed". The 137 indexable product pages are the most likely to b
 
 To add real proof, append entries to `TESTIMONIALS` and `EVENT_PHOTOS` in `src/data/proof.ts` (photos go in
 `public/events/`). Only add quotes and photos the client has agreed to share.
+
+## Diwali season
+
+- The new Diwali Hampers catalogue replaces the earlier Diwali PDF: 11 gift sets (DW 001 to DW 013, with no DW 005 or DW 008
+  in the catalogue), each with a card, product page, search entry and a "Diwali Hampers" collection.
+  Product names were written from each page's item list because the catalogue pages carry no titles; the item lists are
+  transcribed from the pages.
+- The home page shows a Diwali Hampers highlight band, fairy lights, diyas and a light firecracker and ember animation until
+  `DIWALI_ACTIVE_UNTIL` in `src/data/festival.ts` (12 November 2026), then removes them by itself. Change that date each year.
+  The animation pauses off-screen and in hidden tabs and is off for visitors who prefer reduced motion.

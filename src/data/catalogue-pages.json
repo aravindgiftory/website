@@ -472,85 +472,6 @@
       "w": 820
     }
   ],
-  "diwali-hampers-2026": [
-    {
-      "codes": [],
-      "h": 461,
-      "n": 1,
-      "src": "/catalogue-pages/diwali-hampers-2026/p-01.jpg",
-      "w": 820
-    },
-    {
-      "codes": [],
-      "h": 461,
-      "n": 2,
-      "src": "/catalogue-pages/diwali-hampers-2026/p-02.jpg",
-      "w": 820
-    },
-    {
-      "codes": [],
-      "h": 461,
-      "n": 3,
-      "src": "/catalogue-pages/diwali-hampers-2026/p-03.jpg",
-      "w": 820
-    },
-    {
-      "codes": [],
-      "h": 461,
-      "n": 4,
-      "src": "/catalogue-pages/diwali-hampers-2026/p-04.jpg",
-      "w": 820
-    },
-    {
-      "codes": [],
-      "h": 461,
-      "n": 5,
-      "src": "/catalogue-pages/diwali-hampers-2026/p-05.jpg",
-      "w": 820
-    },
-    {
-      "codes": [],
-      "h": 461,
-      "n": 6,
-      "src": "/catalogue-pages/diwali-hampers-2026/p-06.jpg",
-      "w": 820
-    },
-    {
-      "codes": [],
-      "h": 461,
-      "n": 7,
-      "src": "/catalogue-pages/diwali-hampers-2026/p-07.jpg",
-      "w": 820
-    },
-    {
-      "codes": [],
-      "h": 461,
-      "n": 8,
-      "src": "/catalogue-pages/diwali-hampers-2026/p-08.jpg",
-      "w": 820
-    },
-    {
-      "codes": [],
-      "h": 461,
-      "n": 9,
-      "src": "/catalogue-pages/diwali-hampers-2026/p-09.jpg",
-      "w": 820
-    },
-    {
-      "codes": [],
-      "h": 461,
-      "n": 10,
-      "src": "/catalogue-pages/diwali-hampers-2026/p-10.jpg",
-      "w": 820
-    },
-    {
-      "codes": [],
-      "h": 461,
-      "n": 11,
-      "src": "/catalogue-pages/diwali-hampers-2026/p-11.jpg",
-      "w": 820
-    }
-  ],
   "drinkware-barware-2026-27": [
     {
       "codes": [],
@@ -2936,6 +2857,85 @@
       "n": 24,
       "src": "/catalogue-pages/luxury-gifting-2026/p-24.jpg",
       "w": 640
+    }
+  ],
+  "diwali-hampers": [
+    {
+      "codes": ["DW 001"],
+      "h": 461,
+      "n": 1,
+      "src": "/catalogue-pages/diwali-hampers/p-01.jpg",
+      "w": 820
+    },
+    {
+      "codes": ["DW 002"],
+      "h": 461,
+      "n": 2,
+      "src": "/catalogue-pages/diwali-hampers/p-02.jpg",
+      "w": 820
+    },
+    {
+      "codes": ["DW 003"],
+      "h": 461,
+      "n": 3,
+      "src": "/catalogue-pages/diwali-hampers/p-03.jpg",
+      "w": 820
+    },
+    {
+      "codes": ["DW 004"],
+      "h": 461,
+      "n": 4,
+      "src": "/catalogue-pages/diwali-hampers/p-04.jpg",
+      "w": 820
+    },
+    {
+      "codes": ["DW 006"],
+      "h": 461,
+      "n": 5,
+      "src": "/catalogue-pages/diwali-hampers/p-05.jpg",
+      "w": 820
+    },
+    {
+      "codes": ["DW 007"],
+      "h": 461,
+      "n": 6,
+      "src": "/catalogue-pages/diwali-hampers/p-06.jpg",
+      "w": 820
+    },
+    {
+      "codes": ["DW 009"],
+      "h": 461,
+      "n": 7,
+      "src": "/catalogue-pages/diwali-hampers/p-07.jpg",
+      "w": 820
+    },
+    {
+      "codes": ["DW 010"],
+      "h": 461,
+      "n": 8,
+      "src": "/catalogue-pages/diwali-hampers/p-08.jpg",
+      "w": 820
+    },
+    {
+      "codes": ["DW 011"],
+      "h": 461,
+      "n": 9,
+      "src": "/catalogue-pages/diwali-hampers/p-09.jpg",
+      "w": 820
+    },
+    {
+      "codes": ["DW 012"],
+      "h": 461,
+      "n": 10,
+      "src": "/catalogue-pages/diwali-hampers/p-10.jpg",
+      "w": 820
+    },
+    {
+      "codes": ["DW 013"],
+      "h": 462,
+      "n": 11,
+      "src": "/catalogue-pages/diwali-hampers/p-11.jpg",
+      "w": 820
     }
   ]
 }

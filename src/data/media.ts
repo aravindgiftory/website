@@ -76,6 +76,14 @@ export interface CatalogueFile {
 /** The catalogues offered on the site. Files live in public/catalogues/. */
 export const CATALOGUE_FILES: CatalogueFile[] = [
   {
+    slug: "diwali-hampers",
+    title: "Diwali Hampers Catalogue",
+    description: "Eleven Diwali gift sets with dry fruits, lamps, speakers, flasks and more.",
+    href: "/catalogues/diwali-hampers.pdf",
+    fileName: "Aravind-Giftory-Diwali-Hampers.pdf",
+    cover: "/catalogues/diwali-hampers.jpg",
+  },
+  {
     slug: "gift-hampers-1k",
     title: "Gift Hampers Under ₹1K · 2026",
     description: "Thoughtful, budget-friendly hampers for teams, clients and family.",
@@ -109,14 +117,6 @@ export const CATALOGUE_FILES: CatalogueFile[] = [
     href: "/catalogues/luxury-gifting-2026.pdf",
     fileName: "Aravind-Giftory-Luxury-Gifting-2026.pdf",
     cover: "/catalogues/luxury-gifting-2026.jpg",
-  },
-  {
-    slug: "diwali-hampers",
-    title: "Diwali Hampers Catalogue 2026",
-    description: "Festive hampers and curated Diwali gifting.",
-    href: "/catalogues/diwali-hampers-2026.pdf",
-    fileName: "Aravind-Giftory-Diwali-Hampers-2026.pdf",
-    cover: "/catalogues/diwali-hampers-2026.jpg",
   },
   {
     slug: "electronics-accessories",

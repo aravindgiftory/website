@@ -22,8 +22,11 @@ const OCCASION_SOURCES: Record<string, Array<{ key: string; prefixes?: string[] 
   housewarming: [
     { key: "luxury-gifting-2026", prefixes: ["JR", "BW", "TR", "ST", "FL", "TS", "MG", "LB"] },
   ],
-  "pooja-festive": [{ key: "luxury-gifting-2026", prefixes: ["DY", "PL", "UR", "ID", "DN", "KT"] }],
-  corporate: [{ key: "corporate-gifting-2026" }],
+  "pooja-festive": [
+    { key: "diwali-hampers" },
+    { key: "luxury-gifting-2026", prefixes: ["DY", "PL", "UR", "ID", "DN", "KT"] },
+  ],
+  corporate: [{ key: "corporate-gifting-2026" }, { key: "diwali-hampers" }],
 };
 
 /** Desk, tech and office items read as corporate gifts, so personal occasions skip them. */
