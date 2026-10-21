@@ -15,6 +15,7 @@ import { Route as CatalogueRouteImport } from './routes/catalogue'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CorporateGiftingRouteImport } from './routes/corporate-gifting'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
+import { Route as SearchRouteImport } from './routes/search'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as CataloguePrintRouteImport } from './routes/catalogue.print'
@@ -55,6 +56,11 @@ const CorporateGiftingRoute = CorporateGiftingRouteImport.update({
 const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
   id: '/privacy-policy',
   path: '/privacy-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SearchRoute = SearchRouteImport.update({
+  id: '/search',
+  path: '/search',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -120,6 +126,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/corporate-gifting': typeof CorporateGiftingRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
+  '/search': typeof SearchRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/catalogue/print': typeof CataloguePrintRoute
@@ -139,6 +146,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/corporate-gifting': typeof CorporateGiftingRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
+  '/search': typeof SearchRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/catalogue/print': typeof CataloguePrintRoute
@@ -159,6 +167,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/corporate-gifting': typeof CorporateGiftingRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
+  '/search': typeof SearchRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/catalogue/print': typeof CataloguePrintRoute
@@ -180,6 +189,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/corporate-gifting'
     | '/privacy-policy'
+    | '/search'
     | '/sitemap.xml'
     | '/terms'
     | '/catalogue/print'
@@ -199,6 +209,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/corporate-gifting'
     | '/privacy-policy'
+    | '/search'
     | '/sitemap.xml'
     | '/terms'
     | '/catalogue/print'
@@ -218,6 +229,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/corporate-gifting'
     | '/privacy-policy'
+    | '/search'
     | '/sitemap.xml'
     | '/terms'
     | '/catalogue/print'
@@ -238,6 +250,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   CorporateGiftingRoute: typeof CorporateGiftingRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
+  SearchRoute: typeof SearchRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
   CollectionsCategoryRoute: typeof CollectionsCategoryRoute
@@ -292,6 +305,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy-policy'
       fullPath: '/privacy-policy'
       preLoaderRoute: typeof PrivacyPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/search': {
+      id: '/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof SearchRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sitemap.xml': {
@@ -393,6 +413,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   CorporateGiftingRoute: CorporateGiftingRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
+  SearchRoute: SearchRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
   CollectionsCategoryRoute: CollectionsCategoryRoute,
