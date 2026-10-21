@@ -1,5 +1,5 @@
-import pageData from "@/data/catalogue-pages.json";
-import productData from "@/data/catalogue-products.json";
+import pageData from "@/data/catalogue-pages";
+import productData from "@/data/catalogue-products";
 import { CATALOGUE_FILES } from "@/data/media";
 import type { CatalogueProduct } from "@/components/site/CatalogueProductCard";
 

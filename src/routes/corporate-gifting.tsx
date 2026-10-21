@@ -10,7 +10,7 @@ import { CATALOGUE_FILES } from "@/data/media";
 import { FaqSection } from "@/components/site/Faq";
 import { corporateFaqs } from "@/data/seo-copy";
 import { breadcrumbScript, faqScript } from "@/lib/seo";
-import pageData from "@/data/catalogue-pages.json";
+import pageData from "@/data/catalogue-pages";
 
 interface CataloguePage {
   n: number;

@@ -142,22 +142,22 @@ export function Hero() {
                         className="aspect-[4/3] w-full object-cover object-left sm:aspect-[2/1] sm:object-center"
                       />
                     </Link>
-                    <div className="absolute bottom-4 left-4 z-10 flex flex-wrap items-center gap-2 sm:bottom-6 sm:left-8 sm:gap-3">
+                    <div className="absolute bottom-9 left-4 z-10 flex flex-wrap items-center gap-2 sm:bottom-6 sm:left-8 sm:gap-3">
                       <button
                         type="button"
                         onClick={() => openCatalogue(undefined, slide.catalogue)}
-                        className="flex items-center gap-2 rounded-full bg-primary px-4 py-2.5 text-xs font-semibold text-primary-foreground shadow-[var(--shadow-soft)] transition-transform duration-300 hover:-translate-y-0.5 sm:px-6 sm:py-3 sm:text-sm"
+                        className="flex items-center gap-1.5 rounded-full bg-primary px-3 py-2 text-[0.7rem] font-semibold min-[380px]:gap-2 min-[380px]:px-4 min-[380px]:py-2.5 min-[380px]:text-xs text-primary-foreground shadow-[var(--shadow-soft)] transition-transform duration-300 hover:-translate-y-0.5 sm:px-6 sm:py-3 sm:text-sm"
                       >
                         Get the catalogue
-                        <Download className="h-4 w-4" />
+                        <Download className="hidden h-4 w-4 min-[360px]:block" />
                       </button>
                       <Link
                         to="/gifts/$catalogue"
                         params={{ catalogue: slide.slug }}
-                        className="flex items-center gap-2 rounded-full border border-primary/25 bg-white/90 px-4 py-2.5 text-xs font-semibold text-primary shadow-[var(--shadow-soft)] transition-colors hover:bg-white sm:px-6 sm:py-3 sm:text-sm"
+                        className="flex items-center gap-1.5 rounded-full border border-primary/25 bg-white/90 px-3 py-2 text-[0.7rem] font-semibold min-[380px]:gap-2 min-[380px]:px-4 min-[380px]:py-2.5 min-[380px]:text-xs text-primary shadow-[var(--shadow-soft)] transition-colors hover:bg-white sm:px-6 sm:py-3 sm:text-sm"
                       >
                         View all products
-                        <ArrowUpRight className="h-4 w-4" />
+                        <ArrowUpRight className="hidden h-4 w-4 min-[360px]:block" />
                       </Link>
                     </div>
                   </div>
@@ -183,23 +183,25 @@ export function Hero() {
             <ChevronRight className="h-5 w-5" />
           </button>
 
-          <div className="absolute bottom-3 right-4 flex justify-end sm:right-8">
-            {SLIDES.map((slide, i) => (
-              <button
-                key={slide.id}
-                type="button"
-                onClick={() => embla?.scrollTo(i)}
-                aria-label={`Go to slide ${i + 1}: ${slide.kicker}`}
-                aria-current={i === index}
-                className="group flex h-6 min-w-6 items-center justify-center"
-              >
-                <span
-                  className={`block h-2 rounded-full transition-all ${
-                    i === index ? "w-8 bg-primary" : "w-2 bg-primary/30 group-hover:bg-primary/50"
-                  }`}
-                />
-              </button>
-            ))}
+          <div className="absolute inset-x-0 bottom-1 flex justify-center sm:inset-x-auto sm:bottom-3 sm:right-8 sm:justify-end">
+            <div className="flex rounded-full bg-white/70 px-1.5 backdrop-blur-sm">
+              {SLIDES.map((slide, i) => (
+                <button
+                  key={slide.id}
+                  type="button"
+                  onClick={() => embla?.scrollTo(i)}
+                  aria-label={`Go to slide ${i + 1}: ${slide.kicker}`}
+                  aria-current={i === index}
+                  className="group flex h-6 min-w-6 items-center justify-center"
+                >
+                  <span
+                    className={`block h-2 rounded-full transition-all ${
+                      i === index ? "w-8 bg-primary" : "w-2 bg-primary/30 group-hover:bg-primary/50"
+                    }`}
+                  />
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>

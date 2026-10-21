@@ -1,4 +1,4 @@
-import productData from "@/data/catalogue-products.json";
+import productData from "@/data/catalogue-products";
 import { REAL_COLLECTIONS, collectionProducts, type RealCollection } from "@/lib/real-collections";
 import { catalogueTitle } from "@/lib/occasion-products";
 import type { CatalogueProduct } from "@/components/site/CatalogueProductCard";

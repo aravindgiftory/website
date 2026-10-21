@@ -1,4 +1,4 @@
-import productData from "@/data/catalogue-products.json";
+import productData from "@/data/catalogue-products";
 import type { CatalogueProduct } from "@/components/site/CatalogueProductCard";
 
 const PRODUCTS = productData as CatalogueProduct[];

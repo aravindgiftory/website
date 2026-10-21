@@ -165,10 +165,9 @@ export function LeadForm({
 
   return (
     <form onSubmit={handleSubmit} noValidate aria-busy={status === "loading"} className="space-y-6">
-      {/* Spam trap: no label, inert and off-screen via inline style, so it never shows as a field. */}
+      {/* Spam trap: no label, hidden from assistive tech and off-screen via inline style, so it never shows as a field. */}
       <div
         aria-hidden="true"
-        inert
         style={{ position: "absolute", left: "-9999px", width: 1, height: 1, overflow: "hidden" }}
       >
         <input

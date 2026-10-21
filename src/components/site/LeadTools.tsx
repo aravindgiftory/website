@@ -4,8 +4,8 @@ import { SectionHeading } from "./SectionHeading";
 import { useLeadDialog } from "./LeadDialog";
 import { BRAND, whatsappLink } from "@/data/catalog";
 import { CATALOGUE_FILES, catalogueKey } from "@/data/media";
-import pageData from "@/data/catalogue-pages.json";
-import productData from "@/data/catalogue-products.json";
+import pageData from "@/data/catalogue-pages";
+import productData from "@/data/catalogue-products";
 import { EVENT_PHOTOS, TESTIMONIALS } from "@/data/proof";
 import { budgetOptions, occasionOptions, quantityOptions } from "@/lib/leads";
 

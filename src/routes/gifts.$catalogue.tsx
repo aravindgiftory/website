@@ -4,7 +4,7 @@ import { ChevronLeft, ChevronRight, Download, X } from "lucide-react";
 import { breadcrumbScript } from "@/lib/seo";
 import { BRAND, products } from "@/data/catalog";
 import { CATALOGUE_FILES, catalogueKey, type CatalogueFile } from "@/data/media";
-import pageData from "@/data/catalogue-pages.json";
+import pageData from "@/data/catalogue-pages";
 import { ProductCard } from "@/components/site/ProductCard";
 import { useLeadDialog } from "@/components/site/LeadDialog";
 

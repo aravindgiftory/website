@@ -5,7 +5,7 @@ import { isDiwaliSeason } from "@/data/festival";
 import { Diya } from "./DiwaliTheme";
 import { useLeadDialog } from "./LeadDialog";
 import { BRAND, whatsappLink } from "@/data/catalog";
-import productData from "@/data/catalogue-products.json";
+import productData from "@/data/catalogue-products";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { SectionHeading } from "./SectionHeading";
 import { CatalogueProductCard, type CatalogueProduct } from "./CatalogueProductCard";

@@ -1,4 +1,12 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
 import { X } from "lucide-react";
 import { LeadForm } from "./LeadForm";
 import { type LeadSource } from "@/lib/leads";
@@ -15,13 +23,15 @@ interface OpenOptions {
   productCode?: string | undefined;
   products?: Array<{ slug: string; name: string; code: string; image?: string }> | undefined;
   corporate?: boolean | undefined;
+  /** Catalogue pre-selected in the form (title from CATALOGUE_FILES). */
+  catalogueChoice?: string | undefined;
   /** Catalogue flow shows the download success state. */
   catalogue?: boolean | undefined;
 }
 
 interface LeadDialogContextValue {
   open: (options: OpenOptions) => void;
-  openCatalogue: (quantity?: string | undefined) => void;
+  openCatalogue: (quantity?: string | undefined, catalogueChoice?: string | undefined) => void;
 }
 
 const LeadDialogContext = createContext<LeadDialogContextValue | null>(null);
@@ -47,7 +57,13 @@ export function LeadDialogProvider({ children }: { children: ReactNode }) {
       if (event.key === "Escape") close();
     };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    // Stop the page behind the dialog scrolling on phones while the form is open.
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = previous;
+    };
   }, [options, close]);
 
   const value = useMemo<LeadDialogContextValue>(
@@ -56,7 +72,7 @@ export function LeadDialogProvider({ children }: { children: ReactNode }) {
         setDownloaded(false);
         setOptions(next);
       },
-      openCatalogue: (quantity) => {
+      openCatalogue: (quantity, catalogueChoice) => {
         setDownloaded(false);
         setOptions({
           source: "catalogue",
@@ -64,6 +80,7 @@ export function LeadDialogProvider({ children }: { children: ReactNode }) {
           intro: "Tell us a little about your requirement and we'll send you the catalogue.",
           submitLabel: "Get My Catalogue",
           quantity,
+          catalogueChoice,
           catalogue: true,
         });
       },
@@ -76,7 +93,7 @@ export function LeadDialogProvider({ children }: { children: ReactNode }) {
       {children}
       {options && (
         <div
-          className="fixed inset-0 z-[70] flex items-start justify-center overflow-y-auto bg-[oklch(0.22_0.012_50_/_0.55)] p-4 py-10 backdrop-blur-[2px]"
+          className="fixed inset-0 z-[70] flex items-start justify-center overflow-y-auto overscroll-contain bg-[oklch(0.22_0.012_50_/_0.55)] p-4 py-10 backdrop-blur-[2px]"
           role="dialog"
           aria-modal="true"
           aria-label={options.title ?? "Enquiry form"}
@@ -153,6 +170,7 @@ export function LeadDialogProvider({ children }: { children: ReactNode }) {
                     corporate={options.corporate}
                     showLookingFor={options.catalogue}
                     defaultQuantity={options.quantity}
+                    defaultCatalogue={options.catalogueChoice}
                     defaultOccasion={options.occasion}
                     productName={options.productName}
                     productCode={options.productCode}

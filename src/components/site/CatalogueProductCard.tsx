@@ -7,7 +7,7 @@ import { useLeadDialog } from "./LeadDialog";
 export interface CatalogueProduct {
   code: string;
   name: string;
-  /** Catalogue file key (see catalogue-pages.json). */
+  /** Catalogue file key (see catalogue-pages.ts). */
   key: string;
   /** Page of that catalogue the product appears on. */
   n: number;

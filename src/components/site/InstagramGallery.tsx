@@ -1,5 +1,5 @@
 import { BRAND } from "@/data/catalog";
-import productData from "@/data/catalogue-products.json";
+import productData from "@/data/catalogue-products";
 
 interface CatalogueProduct {
   code: string;

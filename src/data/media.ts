@@ -196,6 +196,6 @@ export const CATALOGUE_FILES: CatalogueFile[] = [
   },
 ];
 
-/** Key of each catalogue in src/data/catalogue-pages.json (the PDF's file name). */
+/** Key of each catalogue in src/data/catalogue-pages.ts (the PDF's file name). */
 export const catalogueKey = (file: CatalogueFile) =>
   file.href.replace("/catalogues/", "").replace(".pdf", "");

@@ -20,7 +20,7 @@ import {
   DiwaliHighlight,
   UspStrip,
 } from "@/components/site/HomeSections";
-import productData from "@/data/catalogue-products.json";
+import productData from "@/data/catalogue-products";
 import { FaqSection } from "@/components/site/Faq";
 import { faqScript } from "@/lib/seo";
 import { homeFaqs } from "@/data/seo-copy";
