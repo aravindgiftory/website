@@ -1,130 +1,226 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import heroComposition from "@/assets/hero-composition.jpg";
-import brassDiya from "@/assets/product-brass-lotus-diya.jpg";
-import crystalBall from "@/assets/product-crystal-ball-light.jpg";
-import pichwaiTray from "@/assets/product-pichwai-tray.jpg";
+import useEmblaCarousel from "embla-carousel-react";
+import { ArrowUpRight, ChevronLeft, ChevronRight, Download } from "lucide-react";
 import { BRAND } from "@/data/catalog";
 import { useLeadDialog } from "./LeadDialog";
 
+interface Slide {
+  id: string;
+  /** Catalogue listing page this slide leads to: /gifts/{slug}. */
+  slug: string;
+  /** Short label for the slide dots and the action bar. */
+  kicker: string;
+  /** The banner's headline and line of text. They are baked into the image, so they also go in the alt text and a hidden heading. */
+  title: string;
+  text: string;
+  catalogue: string;
+  image: { src: string; width: number; height: number };
+}
+
+/** Banner artwork with the headline in the picture; each slide opens its own catalogue form. */
+const SLIDES: Slide[] = [
+  {
+    id: "diwali",
+    slug: "festive-cork-gifting",
+    kicker: "Diwali 2026",
+    title: "Diwali gifting, ready in bulk.",
+    text: "Sustainable cork gift combos for clients, teams and families, packed and delivered from Hyderabad.",
+    catalogue: "Festive Cork Gifting Catalogue 2026",
+    image: { src: "/site/hero-diwali.webp", width: 1774, height: 887 },
+  },
+  {
+    id: "gift-sets",
+    slug: "gift-sets",
+    kicker: "Corporate gift sets",
+    title: "Simple. Useful. Significant.",
+    text: "Flask, notebook, pen and keychain sets in black, ivory and olive, boxed and ready to give.",
+    catalogue: "Gift Sets Catalogue 2026–27",
+    image: { src: "/site/hero-gift-sets.webp", width: 1672, height: 941 },
+  },
+  {
+    id: "drinkware",
+    slug: "drinkware-barware",
+    kicker: "Drinkware & barware",
+    title: "Practical gifts. Remembered every day.",
+    text: "Insulated bottles, tumblers and gift-box sets for corporate gifting, events and celebrations.",
+    catalogue: "Drinkware & Barware 2026–27",
+    image: { src: "/site/hero-drinkware.webp", width: 1774, height: 887 },
+  },
+  {
+    id: "planters",
+    slug: "cork-planters",
+    kicker: "Cork planters",
+    title: "Greenery that stays on the desk.",
+    text: "Cork planters for desks, walls and thoughtful gifting.",
+    catalogue: "Cork Planters Catalogue 2026",
+    image: { src: "/site/hero-planters.webp", width: 1672, height: 941 },
+  },
+  {
+    id: "corporate-festive",
+    slug: "corporate-festive-gifting",
+    kicker: "Corporate & festive",
+    title: "Candles, diffusers and gift boxes.",
+    text: "Scented candles, reed diffusers and boxed sets for Diwali, teams and clients.",
+    catalogue: "Corporate & Festive Gifting 2026",
+    image: { src: "/site/hero-corporate-festive.webp", width: 1672, height: 941 },
+  },
+];
+
+const AUTOPLAY_MS = 6500;
+
 /**
- * Hero "Gift Universe" — a layered CSS-perspective composition. No WebGL:
- * depth comes from transforms, scale, shadow and parallax offsets, so it stays
- * light on mobile. All motion is disabled under prefers-reduced-motion.
+ * Hero carousel of banner artwork, with the catalogue and "View all products" actions for the
+ * current slide underneath. Autoplay pauses on keyboard focus and is off under prefers-reduced-motion.
  */
 export function Hero() {
   const { openCatalogue } = useLeadDialog();
-  const [offset, setOffset] = useState(0);
-  const [pointer, setPointer] = useState({ x: 0, y: 0 });
-  const sceneRef = useRef<HTMLDivElement>(null);
+  const [emblaRef, embla] = useEmblaCarousel({ loop: true });
+  const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    let frame = 0;
-    const onScroll = () => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => setOffset(Math.min(window.scrollY, 600)));
-    };
-    const onPointerMove = (event: PointerEvent) => {
-      const rect = sceneRef.current?.getBoundingClientRect();
-      if (!rect) return;
-      setPointer({
-        x: (event.clientX - (rect.left + rect.width / 2)) / rect.width,
-        y: (event.clientY - (rect.top + rect.height / 2)) / rect.height,
-      });
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("pointermove", onPointerMove);
+    if (!embla) return;
+    const onSelect = () => setIndex(embla.selectedScrollSnap());
+    onSelect();
+    embla.on("select", onSelect);
     return () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("pointermove", onPointerMove);
+      embla.off("select", onSelect);
     };
-  }, []);
+  }, [embla]);
 
-  const depth = (factor: number) => ({
-    transform: `translate3d(${pointer.x * 18 * factor}px, ${offset * 0.06 * factor + pointer.y * 14 * factor}px, 0)`,
-  });
+  useEffect(() => {
+    if (!embla || paused) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const timer = window.setInterval(() => embla.scrollNext(), AUTOPLAY_MS);
+    return () => window.clearInterval(timer);
+  }, [embla, paused, index]);
+
+  const prev = useCallback(() => embla?.scrollPrev(), [embla]);
+  const next = useCallback(() => embla?.scrollNext(), [embla]);
+  const current = SLIDES[index] ?? SLIDES[0];
 
   return (
-    <section className="relative overflow-hidden pt-32 pb-16 sm:pt-40 lg:pb-28">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-[70vh] bg-[radial-gradient(70%_60%_at_70%_20%,oklch(0.93_0.05_84_/_0.65),transparent_70%)]"
-      />
-      <div className="relative mx-auto grid max-w-[1400px] items-center gap-14 px-5 sm:px-8 lg:grid-cols-[1fr_1.05fr] lg:gap-10">
-        <div className="rise-in">
-          <div className="flex items-center gap-3">
-            <span className="rule-gold" />
-            <span className="eyebrow">{BRAND.name}</span>
-          </div>
-          <h1 className="display-xl mt-7 max-w-xl text-primary">
-            Not Just a Return Gift.
-            <span className="block italic text-secondary">A Little Memory to Take Home.</span>
-          </h1>
-          <p className="mt-7 max-w-md text-base leading-relaxed text-muted-foreground">
-            Curated gifting collections for life's memorable occasions.
-          </p>
-          <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-            <Link
-              to="/collections"
-              className="rounded-sm bg-primary px-8 py-4 text-center text-xs font-semibold uppercase tracking-[0.18em] text-primary-foreground transition-transform duration-300 hover:-translate-y-0.5"
-            >
-              Explore the Collection
-            </Link>
-            <button
-              type="button"
-              onClick={() => openCatalogue()}
-              className="rounded-sm border border-primary/25 px-8 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-primary transition-colors hover:border-primary"
-            >
-              Get the 2026 Catalogue
-            </button>
-          </div>
-          <p className="mt-10 max-w-sm text-sm leading-relaxed text-muted-foreground">
-            Weddings · Birthdays · Baby Showers · Housewarmings · Pooja &amp; Festive · Corporate
-          </p>
-        </div>
-
-        <div
-          ref={sceneRef}
-          className="relative [perspective:1400px]"
-          aria-hidden="true"
-        >
-          <div
-            className="relative overflow-hidden rounded-sm border border-border shadow-[var(--shadow-lift)]"
-            style={{
-              transform: `rotateY(${pointer.x * -3}deg) rotateX(${pointer.y * 2}deg) translate3d(0, ${offset * -0.03}px, 0)`,
-              transition: "transform 700ms cubic-bezier(0.16,1,0.3,1)",
-            }}
-          >
-            <img
-              src={heroComposition}
-              alt="An open burgundy gift box surrounded by a brass lotus diya, ceramic cup, crystal leaf lamp, Pichwai-print container and a dry fruit box"
-              width={1280}
-              height={1280}
-              className="w-full object-cover"
-            />
+    <section
+      aria-roledescription="carousel"
+      aria-label="Featured gifting collections"
+      className="mx-auto max-w-[1400px] px-3 pt-24 sm:px-6 sm:pt-28"
+      onFocus={(event) => {
+        // Only keyboard focus pauses; a mouse click on an arrow must not stop autoplay.
+        if (event.target.matches(":focus-visible")) setPaused(true);
+      }}
+      onBlur={() => setPaused(false)}
+    >
+      <div className="overflow-hidden rounded-md border border-border bg-card shadow-[var(--shadow-soft)]">
+        <div className="relative">
+          <div ref={emblaRef} className="touch-pan-y overflow-hidden">
+            <div className="flex">
+              {SLIDES.map((slide, i) => {
+                const Heading = i === 0 ? "h1" : "h2";
+                return (
+                  <div
+                    key={slide.id}
+                    role="group"
+                    aria-roledescription="slide"
+                    aria-label={`${i + 1} of ${SLIDES.length}: ${slide.kicker}`}
+                    className="min-w-0 flex-[0_0_100%]"
+                  >
+                    <Heading className="sr-only">{slide.title}</Heading>
+                    <Link
+                      to="/gifts/$catalogue"
+                      params={{ catalogue: slide.slug }}
+                      draggable={false}
+                      tabIndex={-1}
+                      className="block select-none"
+                    >
+                      <img
+                        draggable={false}
+                        src={slide.image.src}
+                        alt={`${slide.title} ${slide.text}`}
+                        width={slide.image.width}
+                        height={slide.image.height}
+                        loading={i === 0 ? "eager" : "lazy"}
+                        fetchPriority={i === 0 ? "high" : "auto"}
+                        className="aspect-[4/3] w-full object-cover object-left sm:aspect-[2/1] sm:object-center"
+                      />
+                    </Link>
+                  </div>
+                );
+              })}
+            </div>
           </div>
 
-          <div
-            className="float-slow absolute -left-4 top-8 hidden w-28 overflow-hidden rounded-sm border border-border bg-card shadow-[var(--shadow-soft)] sm:block lg:w-36"
-            style={depth(1.4)}
+          <button
+            type="button"
+            onClick={prev}
+            aria-label="Previous slide"
+            className="absolute left-3 top-1/2 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-white/85 text-primary shadow-[var(--shadow-soft)] transition-colors hover:bg-white sm:flex"
           >
-            <img src={brassDiya} alt="" width={1200} height={1200} loading="lazy" className="w-full" />
-          </div>
-          <div
-            className="float-slower absolute -right-3 top-1/3 hidden w-24 overflow-hidden rounded-sm border border-border bg-card shadow-[var(--shadow-soft)] sm:block lg:w-32"
-            style={depth(-1.1)}
+            <ChevronLeft className="h-5 w-5" />
+          </button>
+          <button
+            type="button"
+            onClick={next}
+            aria-label="Next slide"
+            className="absolute right-3 top-1/2 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-white/85 text-primary shadow-[var(--shadow-soft)] transition-colors hover:bg-white sm:flex"
           >
-            <img src={crystalBall} alt="" width={1200} height={1200} loading="lazy" className="w-full" />
-          </div>
-          <div
-            className="float-slow absolute -bottom-6 left-1/4 hidden w-28 overflow-hidden rounded-sm border border-border bg-card shadow-[var(--shadow-soft)] md:block lg:w-36"
-            style={depth(0.8)}
-          >
-            <img src={pichwaiTray} alt="" width={1200} height={1200} loading="lazy" className="w-full" />
+            <ChevronRight className="h-5 w-5" />
+          </button>
+
+          <div className="absolute inset-x-0 bottom-3 flex justify-center">
+            {SLIDES.map((slide, i) => (
+              <button
+                key={slide.id}
+                type="button"
+                onClick={() => embla?.scrollTo(i)}
+                aria-label={`Go to slide ${i + 1}: ${slide.kicker}`}
+                aria-current={i === index}
+                className="group flex h-6 min-w-6 items-center justify-center"
+              >
+                <span
+                  className={`block h-2 rounded-full transition-all ${
+                    i === index ? "w-8 bg-primary" : "w-2 bg-primary/30 group-hover:bg-primary/50"
+                  }`}
+                />
+              </button>
+            ))}
           </div>
         </div>
+
+        {current && (
+          <div
+            aria-label={`Actions for ${current.kicker}`}
+            role="group"
+            className="flex flex-col gap-4 border-t border-border px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-8"
+          >
+            <div className="flex flex-wrap items-center gap-3">
+              <button
+                type="button"
+                onClick={() => openCatalogue(undefined, current.catalogue)}
+                className="flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-transform duration-300 hover:-translate-y-0.5"
+              >
+                Get the catalogue
+                <Download className="h-4 w-4" />
+              </button>
+              <Link
+                to="/gifts/$catalogue"
+                params={{ catalogue: current.slug }}
+                className="flex items-center gap-2 px-3 py-3 text-sm font-medium text-primary transition-colors hover:text-primary/70"
+              >
+                View all products
+                <ArrowUpRight className="h-4 w-4" />
+              </Link>
+            </div>
+            <ul className="flex flex-wrap gap-2" aria-label="Pricing">
+              <li className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground">
+                From ₹{BRAND.startingPrice} per gift
+              </li>
+              <li className="rounded-full border border-primary/25 bg-white/60 px-4 py-2 text-sm font-medium text-primary">
+                Minimum order {BRAND.minQuantity} pieces
+              </li>
+            </ul>
+          </div>
+        )}
       </div>
     </section>
   );
