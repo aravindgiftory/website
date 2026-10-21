@@ -12,7 +12,7 @@ const coverOf = (slug: string) => {
   return collection ? collectionProducts(collection)[0] : undefined;
 };
 
-/** Round quick-links to every collection, shown right under the hero. */
+/** Rounded-square quick-links to every collection, shown right under the hero. */
 export function CategoryStrip() {
   return (
     <section aria-label="Shop by collection" className="mx-auto max-w-[1400px] px-5 pt-10 sm:px-8">
@@ -20,13 +20,13 @@ export function CategoryStrip() {
         {REAL_COLLECTIONS.map((collection) => {
           const cover = coverOf(collection.slug);
           return (
-            <li key={collection.slug} className="w-24 shrink-0 sm:w-28">
+            <li key={collection.slug} className="w-28 shrink-0 sm:w-32">
               <Link
                 to="/collections"
                 search={{ collection: collection.slug }}
                 className="group block text-center"
               >
-                <span className="mx-auto block h-20 w-20 overflow-hidden rounded-full border border-border bg-white sm:h-24 sm:w-24">
+                <span className="mx-auto block h-24 w-24 overflow-hidden rounded-2xl border border-border bg-white sm:h-28 sm:w-28">
                   {cover && (
                     <img
                       src={cover.image}
@@ -69,7 +69,9 @@ export function UspStrip() {
       <ul className="grid grid-cols-2 gap-px overflow-hidden rounded-sm border border-border bg-border lg:grid-cols-4">
         {items.map((item) => (
           <li key={item.title} className="bg-card px-5 py-5 text-center">
-            <p className="font-display text-xl text-primary">{item.title}</p>
+            <p className="font-display text-base leading-tight text-primary sm:text-xl">
+              {item.title}
+            </p>
             <p className="mt-1 text-xs leading-snug text-muted-foreground">{item.note}</p>
           </li>
         ))}
