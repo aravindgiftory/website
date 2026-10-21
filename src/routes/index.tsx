@@ -110,7 +110,42 @@ const orderSteps = [
   { title: "Receive", text: "We pack and deliver, with pricing for your quantity." },
 ];
 
-const storyCategories = ["Wedding", "Baby Shower", "Housewarming", "Birthday", "Corporate"];
+/** Celebration stories, each told with a real catalogue gift (looked up by product code). */
+const stories = [
+  {
+    category: "Wedding",
+    title: "Return gifts guests actually keep",
+    text: "A luxury hamper in place of the usual return gift. Packed, labelled and delivered to the venue ahead of the reception, so the family could simply enjoy the day.",
+    code: "AG10011",
+  },
+  {
+    category: "Baby Shower",
+    title: "A gentle thank-you for every guest",
+    text: "A pamper hamper with dry fruits makes a gentle thank-you: light, easy to carry and welcome with guests of every age.",
+    code: "AG1225",
+  },
+  {
+    category: "Housewarming",
+    title: "A gift that settles into a new home",
+    text: "For a griha pravesh, a decorative brass bowl set from our luxury collection is a keepsake that stays on the shelf long after the day.",
+    code: "AG-BW-001",
+  },
+  {
+    category: "Birthday",
+    title: "Small hampers, big smiles",
+    text: "Tea and activity hampers under ₹1K send every guest home with something thoughtful, without stretching the budget.",
+    code: "AG488",
+  },
+  {
+    category: "Corporate",
+    title: "Welcome kits for a growing team",
+    text: "Branded gift sets welcome new joiners on day one, ordered in volume and delivered in time for the start date.",
+    code: "AG-CO-001",
+  },
+].map((story) => ({
+  ...story,
+  product: (productData as CatalogueProduct[]).find((item) => item.code === story.code),
+}));
 
 function Home() {
   const { open, openCatalogue } = useLeadDialog();
@@ -374,22 +409,37 @@ function Home() {
         </div>
       </section>
 
-      {/* 09 — Customer stories (placeholder, CMS-ready) */}
+      {/* 09 — Celebration stories */}
       <section className="mx-auto mt-32 max-w-[1400px] px-5 sm:px-8">
         <SectionHeading
           eyebrow="Stories"
           title="Celebrations We've Been Part Of"
-          description="This space is reserved for real celebrations and client stories, added as they're shared with us."
+          description="From weddings to welcome kits, the moments our gifts have helped make memorable."
         />
         <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
-          {storyCategories.map((category) => (
-            <div
-              key={category}
-              className="flex aspect-[4/5] flex-col justify-between border border-dashed border-border bg-card p-6"
-            >
-              <span className="eyebrow text-gold">{category}</span>
-              <p className="text-sm leading-relaxed text-muted-foreground">Story coming soon.</p>
-            </div>
+          {stories.map((story) => (
+            <article key={story.category} className="flex flex-col border border-border bg-card">
+              {story.product && (
+                <img
+                  src={story.product.image}
+                  alt={story.product.name}
+                  width={story.product.w}
+                  height={story.product.h}
+                  loading="lazy"
+                  className="aspect-square w-full bg-white object-cover"
+                />
+              )}
+              <div className="flex flex-1 flex-col gap-3 p-5">
+                <span className="eyebrow text-gold">{story.category}</span>
+                <h3 className="font-display text-xl leading-snug text-primary">{story.title}</h3>
+                <p className="text-sm leading-relaxed text-muted-foreground">{story.text}</p>
+                {story.product && (
+                  <p className="mt-auto pt-2 text-xs uppercase tracking-[0.12em] text-muted-foreground">
+                    {story.product.name} · {story.product.code}
+                  </p>
+                )}
+              </div>
+            </article>
           ))}
         </div>
       </section>
