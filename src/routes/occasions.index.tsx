@@ -26,14 +26,22 @@ const OCCASION_SOURCES: Record<string, Array<{ key: string; prefixes?: string[] 
     { key: "gift-hampers-2k-3k-2026" },
     { key: "luxury-gifting-2026", prefixes: ["DB", "GS"] },
   ],
-  birthday: [{ key: "gift-hampers-1k-2026" }, { key: "snacks-munchies-hampers-2026" }],
-  "baby-shower": [{ key: "gift-hampers-2k-3k-2026" }, { key: "gift-hampers-1k-2026" }],
+  birthday: [
+    { key: "gift-hampers-1k-2026" },
+    { key: "snacks-munchies-hampers-2026" },
+    { key: "gift-hampers-2k-3k-2026" },
+  ],
   housewarming: [
     { key: "luxury-gifting-2026", prefixes: ["JR", "BW", "TR", "ST", "FL", "TS", "MG", "LB"] },
   ],
   "pooja-festive": [{ key: "luxury-gifting-2026", prefixes: ["DY", "PL", "UR", "ID", "DN", "KT"] }],
   corporate: [{ key: "corporate-gifting-2026" }],
 };
+
+/** Desk, tech and office items read as corporate gifts, so personal occasions skip them. */
+const CORPORATE_LOOK =
+  /desk|laptop|clock|speaker|earphone|bluetooth|office|stationery|stand|\bled\b|mirror|\bpen\b|diary|notebook|power/i;
+const PERSONAL_OCCASIONS = new Set(["wedding", "birthday"]);
 
 const PREVIEW_COUNT = 8;
 
@@ -55,12 +63,19 @@ const pageSrc = (product: CatalogueProduct) =>
   PAGES[product.key]?.find((page) => page.n === product.n)?.src;
 
 function occasionProducts(slug: string): CatalogueProduct[] {
-  return (OCCASION_SOURCES[slug] ?? []).flatMap(({ key, prefixes }) =>
-    CATALOGUE_PRODUCTS.filter(
-      (product) =>
-        product.key === key && (!prefixes || prefixes.includes(product.code.split("-")[1] ?? "")),
-    ),
-  );
+  const seen = new Set<string>();
+  return (OCCASION_SOURCES[slug] ?? [])
+    .flatMap(({ key, prefixes }) =>
+      CATALOGUE_PRODUCTS.filter(
+        (product) =>
+          product.key === key && (!prefixes || prefixes.includes(product.code.split("-")[1] ?? "")),
+      ),
+    )
+    .filter((product) => {
+      if (seen.has(product.code)) return false;
+      seen.add(product.code);
+      return !(PERSONAL_OCCASIONS.has(slug) && CORPORATE_LOOK.test(product.name));
+    });
 }
 
 export const Route = createFileRoute("/occasions/")({
@@ -70,7 +85,7 @@ export const Route = createFileRoute("/occasions/")({
       {
         name: "description",
         content:
-          "Wedding, birthday, baby shower, housewarming, pooja & festive and corporate gifting — curated collections for every occasion.",
+          "Wedding, birthday, housewarming, pooja & festive and corporate gifting — curated collections for every occasion.",
       },
       { property: "og:title", content: "Gifts by Occasion | Aravind Giftory" },
       {
@@ -88,14 +103,16 @@ export const Route = createFileRoute("/occasions/")({
 function OccasionsPage() {
   const groups = useMemo(
     () =>
-      occasions.map((occasion, index) => {
-        const all = occasionProducts(occasion.slug);
-        return {
-          occasion,
-          total: all.length,
-          preview: shuffled(all, 2026 + index).slice(0, PREVIEW_COUNT),
-        };
-      }),
+      occasions
+        .filter((occasion) => occasion.slug !== "baby-shower")
+        .map((occasion, index) => {
+          const all = occasionProducts(occasion.slug);
+          return {
+            occasion,
+            total: all.length,
+            preview: shuffled(all, 2026 + index).slice(0, PREVIEW_COUNT),
+          };
+        }),
     [],
   );
 
@@ -107,7 +124,7 @@ function OccasionsPage() {
           title="Every Occasion Deserves a Thoughtful Gift."
           description="Start with the moment you're celebrating. Pick an occasion to see the gifts we've curated for it."
         />
-        <ul className="mt-14 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+        <ul className="mt-14 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
           {groups.map(({ occasion, total }) => (
             <li key={occasion.slug}>
               <a href={`#${occasion.slug}`} className="group block">

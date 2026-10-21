@@ -2152,7 +2152,7 @@
   },
   {
     "code": "AG10001",
-    "name": "Ultimate Indulgence",
+    "name": "Leatherite Trunk Gift Hamper",
     "key": "gift-hampers-5k-plus-2026",
     "n": 5,
     "image": "/catalogue-products/gift-hampers-5k-plus-2026/AG10001.jpg",
@@ -2196,11 +2196,65 @@
     "h": 339
   },
   {
+    "code": "AG103",
+    "name": "Leatherite Trunk Gift Hamper",
+    "key": "gift-hampers-5k-plus-2026",
+    "n": 10,
+    "image": "/catalogue-products/gift-hampers-5k-plus-2026/AG103.jpg",
+    "w": 584,
+    "h": 474
+  },
+  {
+    "code": "AG1246WD",
+    "name": "Happy Snack Gift Hamper",
+    "key": "snacks-munchies-hampers-2026",
+    "n": 2,
+    "image": "/catalogue-products/snacks-munchies-hampers-2026/AG1246WD.jpg",
+    "w": 640,
+    "h": 640
+  },
+  {
     "code": "AG1213",
     "name": "Cookies & Savouries Snacks Gift Pack",
     "key": "snacks-munchies-hampers-2026",
     "n": 3,
     "image": "/catalogue-products/snacks-munchies-hampers-2026/AG1213.jpg",
+    "w": 640,
+    "h": 640
+  },
+  {
+    "code": "AG1243WD",
+    "name": "Treats Jute Snack Hamper",
+    "key": "snacks-munchies-hampers-2026",
+    "n": 4,
+    "image": "/catalogue-products/snacks-munchies-hampers-2026/AG1243WD.jpg",
+    "w": 640,
+    "h": 640
+  },
+  {
+    "code": "AG1240WD",
+    "name": "Snacks & Treats Hamper",
+    "key": "snacks-munchies-hampers-2026",
+    "n": 5,
+    "image": "/catalogue-products/snacks-munchies-hampers-2026/AG1240WD.jpg",
+    "w": 640,
+    "h": 640
+  },
+  {
+    "code": "AG1241WD",
+    "name": "Treats Snack Hamper Bag",
+    "key": "snacks-munchies-hampers-2026",
+    "n": 6,
+    "image": "/catalogue-products/snacks-munchies-hampers-2026/AG1241WD.jpg",
+    "w": 640,
+    "h": 640
+  },
+  {
+    "code": "AG1239WD",
+    "name": "Celebration Gourmet Snacks Baskets",
+    "key": "snacks-munchies-hampers-2026",
+    "n": 7,
+    "image": "/catalogue-products/snacks-munchies-hampers-2026/AG1239WD.jpg",
     "w": 640,
     "h": 640
   },
@@ -2223,6 +2277,15 @@
     "h": 640
   },
   {
+    "code": "AG1244WD",
+    "name": "Celebration Gourmet Hamper",
+    "key": "snacks-munchies-hampers-2026",
+    "n": 10,
+    "image": "/catalogue-products/snacks-munchies-hampers-2026/AG1244WD.jpg",
+    "w": 640,
+    "h": 640
+  },
+  {
     "code": "AG1208",
     "name": "Snacks & Munchies Gift Hamper",
     "key": "snacks-munchies-hampers-2026",
@@ -2232,8 +2295,35 @@
     "h": 640
   },
   {
+    "code": "AG1242WD",
+    "name": "Treats Snack Hamper Bag",
+    "key": "snacks-munchies-hampers-2026",
+    "n": 12,
+    "image": "/catalogue-products/snacks-munchies-hampers-2026/AG1242WD.jpg",
+    "w": 640,
+    "h": 640
+  },
+  {
+    "code": "AG1237WD",
+    "name": "Premium Snacks & Chocolates Gift Hamper",
+    "key": "snacks-munchies-hampers-2026",
+    "n": 13,
+    "image": "/catalogue-products/snacks-munchies-hampers-2026/AG1237WD.jpg",
+    "w": 640,
+    "h": 640
+  },
+  {
+    "code": "AG1238WD",
+    "name": "Premium Snacks & Chocolates Hamper",
+    "key": "snacks-munchies-hampers-2026",
+    "n": 14,
+    "image": "/catalogue-products/snacks-munchies-hampers-2026/AG1238WD.jpg",
+    "w": 640,
+    "h": 640
+  },
+  {
     "code": "AG5015",
-    "name": "Deluxe Party Snacks & Flavoured",
+    "name": "Dry Fruits Gift Hamper",
     "key": "snacks-munchies-hampers-2026",
     "n": 15,
     "image": "/catalogue-products/snacks-munchies-hampers-2026/AG5015.jpg",
