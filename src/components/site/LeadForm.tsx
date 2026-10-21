@@ -3,11 +3,9 @@ import { Link } from "@tanstack/react-router";
 import {
   budgetOptions,
   catalogueOptions,
-  isComingSoon,
   isValidEmail,
   isValidPhone,
   occasionOptions,
-  optionLabel,
   quantityOptions,
   selectableValue,
   submitLead,
@@ -167,11 +165,15 @@ export function LeadForm({
 
   return (
     <form onSubmit={handleSubmit} noValidate aria-busy={status === "loading"} className="space-y-6">
-      <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
-        <label htmlFor={`${uid}-website`}>Website</label>
+      {/* Spam trap: no label, inert and off-screen via inline style, so it never shows as a field. */}
+      <div
+        aria-hidden="true"
+        inert
+        style={{ position: "absolute", left: "-9999px", width: 1, height: 1, overflow: "hidden" }}
+      >
         <input
-          id={`${uid}-website`}
           type="text"
+          name="contact_reference"
           tabIndex={-1}
           autoComplete="off"
           value={values.website}
@@ -380,7 +382,6 @@ function SelectField({
   options,
   placeholder,
   error,
-  comingSoonNote,
 }: {
   id: string;
   label: string;
@@ -389,13 +390,7 @@ function SelectField({
   options: SelectOption[];
   placeholder: string;
   error?: string | undefined;
-  comingSoonNote?: string | undefined;
 }) {
-  const comingSoonLabels = options.filter(isComingSoon).map(optionLabel);
-  const note =
-    comingSoonNote ??
-    (comingSoonLabels.length > 0 ? `${comingSoonLabels.join(" & ")} — Coming Soon` : undefined);
-
   return (
     <div>
       <label htmlFor={id} className={labelClass}>
@@ -410,21 +405,12 @@ function SelectField({
         className={`${controlClass} ${error ? "border-destructive" : ""}`}
       >
         <option value="">{placeholder}</option>
-        {options.map((option) => {
-          const label = optionLabel(option);
-          const comingSoon = isComingSoon(option);
-          return (
-            <option key={label} value={comingSoon ? "" : label} disabled={comingSoon}>
-              {comingSoon ? `${label} — Coming Soon` : label}
-            </option>
-          );
-        })}
+        {options.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
       </select>
-      {note && (
-        <span className="mt-2 inline-flex items-center rounded-full border border-gold/50 bg-gold/10 px-2.5 py-0.5 text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-gold">
-          {note}
-        </span>
-      )}
       {error && (
         <p id={`${id}-error`} className="mt-2 text-xs text-destructive">
           {error}

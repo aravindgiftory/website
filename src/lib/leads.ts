@@ -275,19 +275,11 @@ function loadImage(src: string) {
   });
 }
 
-export type SelectOption = string | { label: string; comingSoon?: boolean };
+export type SelectOption = string;
 
-export const optionLabel = (option: SelectOption) =>
-  typeof option === "string" ? option : option.label;
-
-export const isComingSoon = (option: SelectOption) =>
-  typeof option !== "string" && Boolean(option.comingSoon);
-
-/** Returns the value only when it matches an active (not "Coming Soon") option. */
+/** Returns the value only when it is one of the offered options. */
 export const selectableValue = (options: SelectOption[], value: string | undefined) =>
-  value && options.some((option) => optionLabel(option) === value && !isComingSoon(option))
-    ? value
-    : "";
+  value && options.includes(value) ? value : "";
 
 export const catalogueOptions: SelectOption[] = CATALOGUE_FILES.map((file) => file.title);
 
