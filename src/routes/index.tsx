@@ -6,7 +6,6 @@ import {
   CatalogueProductCard,
   type CatalogueProduct,
 } from "@/components/site/CatalogueProductCard";
-import { CTASection } from "@/components/site/CTASection";
 import { InstagramGallery } from "@/components/site/InstagramGallery";
 import { useLeadDialog } from "@/components/site/LeadDialog";
 import { edits, occasions, BRAND, whatsappLink } from "@/data/catalog";
@@ -449,11 +448,7 @@ function Home() {
         <InstagramGallery />
       </div>
 
-      <div className="mt-32">
-        <CTASection />
-      </div>
-
-      <section className="mx-auto mb-20 mt-8 max-w-[1400px] px-5 sm:px-8">
+      <section className="mx-auto mb-20 mt-32 max-w-[1400px] px-5 sm:px-8">
         <div className="relative overflow-hidden rounded-sm bg-primary px-6 py-16 text-center text-primary-foreground sm:px-12 sm:py-20">
           <div className="pointer-events-none absolute inset-3 border border-gold/50" />
           <div className="relative">
