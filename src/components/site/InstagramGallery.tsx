@@ -1,12 +1,45 @@
 import { BRAND } from "@/data/catalog";
-import occasionWedding from "@/assets/occasion-wedding.jpg";
-import occasionPooja from "@/assets/occasion-pooja.jpg";
-import occasionHousewarming from "@/assets/occasion-housewarming.jpg";
-import occasionBirthday from "@/assets/occasion-birthday.jpg";
-import brandStory from "@/assets/brand-story.jpg";
-import dryFruit from "@/assets/product-dry-fruit-box.jpg";
+import productData from "@/data/catalogue-products.json";
 
-const tiles = [occasionWedding, occasionPooja, brandStory, occasionHousewarming, dryFruit, occasionBirthday];
+interface CatalogueProduct {
+  code: string;
+  name: string;
+  key: string;
+  image: string;
+}
+
+const PRODUCTS = productData as CatalogueProduct[];
+
+/** Real catalogue photography: how many tiles to take from each catalogue. */
+const PICKS: Array<[key: string, count: number]> = [
+  ["luxury-gifting-2026", 2],
+  ["corporate-gifting-2026", 2],
+  ["gift-hampers-5k-plus-2026", 1],
+  ["gift-hampers-2k-3k-2026", 1],
+  ["gift-hampers-1k-2026", 1],
+  ["snacks-munchies-hampers-2026", 1],
+];
+
+/** Fixed-seed shuffle, so server and browser render the same order. */
+function shuffled<T>(list: T[], seed: number): T[] {
+  const out = [...list];
+  for (let i = out.length - 1; i > 0; i--) {
+    seed = (seed * 1664525 + 1013904223) % 4294967296;
+    const j = seed % (i + 1);
+    [out[i], out[j]] = [out[j] as T, out[i] as T];
+  }
+  return out;
+}
+
+const tiles = shuffled(
+  PICKS.flatMap(([key, count], index) =>
+    shuffled(
+      PRODUCTS.filter((product) => product.key === key),
+      31 + index,
+    ).slice(0, count),
+  ),
+  11,
+);
 
 export function InstagramGallery() {
   return (
@@ -30,22 +63,20 @@ export function InstagramGallery() {
         </a>
       </div>
 
-      <div className="mt-12 columns-2 gap-3 sm:columns-3 lg:columns-4 [&>*]:mb-3">
-        {tiles.map((tile, index) => (
+      <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-4">
+        {tiles.map((tile) => (
           <a
-            key={index}
+            key={`${tile.key}-${tile.code}`}
             href={BRAND.instagramUrl}
             target="_blank"
             rel="noreferrer"
-            className="group block overflow-hidden bg-muted"
+            className="group block overflow-hidden border border-border bg-white"
           >
             <img
-              src={tile}
-              alt={`${BRAND.name} gifting on Instagram`}
+              src={tile.image}
+              alt={`${tile.name}, ${tile.code}`}
               loading="lazy"
-              className={`w-full object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105 ${
-                index % 3 === 0 ? "aspect-[3/4]" : index % 3 === 1 ? "aspect-square" : "aspect-[4/5]"
-              }`}
+              className="aspect-square w-full object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
             />
           </a>
         ))}
