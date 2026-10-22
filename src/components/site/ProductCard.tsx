@@ -3,7 +3,13 @@ import { type Product } from "@/data/catalog";
 import { useLeadDialog } from "./LeadDialog";
 import { useEnquiry } from "./EnquiryProvider";
 
-export function ProductCard({ product, priority = false }: { product: Product; priority?: boolean | undefined }) {
+export function ProductCard({
+  product,
+  priority = false,
+}: {
+  product: Product;
+  priority?: boolean | undefined;
+}) {
   const { open } = useLeadDialog();
   const { add, has } = useEnquiry();
   const inList = has(product.slug);
@@ -55,7 +61,14 @@ export function ProductCard({ product, priority = false }: { product: Product; p
                 submitLabel: "Send Enquiry",
                 productName: product.name,
                 productCode: product.code,
-                products: [{ slug: product.slug, name: product.name, code: product.code, image: product.image }],
+                products: [
+                  {
+                    slug: product.slug,
+                    name: product.name,
+                    code: product.code,
+                    image: product.image,
+                  },
+                ],
               })
             }
             className="text-xs uppercase tracking-[0.16em] text-muted-foreground link-underline"

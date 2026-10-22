@@ -18,7 +18,7 @@ export function CTASection({
         <div>
           <div className="flex items-center gap-3">
             <span className="rule-gold" />
-            <span className="eyebrow text-gold">{eyebrow}</span>
+            <span className="eyebrow text-gold-soft">{eyebrow}</span>
           </div>
           <h2 className="display-lg mt-5 max-w-xl text-primary-foreground">{title}</h2>
           <p className="mt-5 max-w-md text-sm leading-relaxed text-primary-foreground/75">
@@ -29,13 +29,13 @@ export function CTASection({
           <button
             type="button"
             onClick={() => openCatalogue()}
-            className="rounded-sm bg-gold px-8 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-accent-foreground transition-transform duration-300 hover:-translate-y-0.5"
+            className="rounded-sm bg-gold-soft px-8 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-accent-foreground transition-transform duration-300 hover:-translate-y-0.5"
           >
             Get the Catalogue
           </button>
           <Link
             to="/contact"
-            className="rounded-sm border border-primary-foreground/35 px-8 py-4 text-center text-xs font-semibold uppercase tracking-[0.18em] text-primary-foreground transition-colors hover:border-gold hover:text-gold"
+            className="rounded-sm border border-primary-foreground/35 px-8 py-4 text-center text-xs font-semibold uppercase tracking-[0.18em] text-primary-foreground transition-colors hover:border-gold-soft hover:text-gold-soft"
           >
             Talk to Giftory
           </Link>

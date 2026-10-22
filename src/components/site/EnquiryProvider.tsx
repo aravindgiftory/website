@@ -1,17 +1,6 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useMemo,
-  useState,
-  type ReactNode,
-} from "react";
+import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from "react";
 import { type Product } from "@/data/catalog";
-import {
-  loadEnquiryItems,
-  saveEnquiryItems,
-  type EnquiryItem,
-} from "@/lib/enquiry";
+import { loadEnquiryItems, saveEnquiryItems, type EnquiryItem } from "@/lib/enquiry";
 
 interface EnquiryContextValue {
   items: EnquiryItem[];

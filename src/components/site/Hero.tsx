@@ -72,7 +72,7 @@ const AUTOPLAY_MS = 6500;
  * Hero carousel of banner artwork, with the catalogue and "View all products" actions for the
  * current slide underneath. Autoplay pauses on keyboard focus and is off under prefers-reduced-motion.
  */
-export function Hero() {
+export function Hero({ lightsGap = false }: { lightsGap?: boolean }) {
   const { openCatalogue } = useLeadDialog();
   const [emblaRef, embla] = useEmblaCarousel({ loop: true });
   const [index, setIndex] = useState(0);
@@ -102,7 +102,7 @@ export function Hero() {
     <section
       aria-roledescription="carousel"
       aria-label="Featured gifting collections"
-      className="mx-auto max-w-[1400px] px-3 pt-24 sm:px-6 sm:pt-28"
+      className={`mx-auto max-w-[1400px] px-3 sm:px-6 sm:pt-28 ${lightsGap ? "pt-[9.25rem]" : "pt-24"}`}
       onFocus={(event) => {
         // Only keyboard focus pauses; a mouse click on an arrow must not stop autoplay.
         if (event.target.matches(":focus-visible")) setPaused(true);
@@ -139,10 +139,10 @@ export function Hero() {
                         height={slide.image.height}
                         loading={i === 0 ? "eager" : "lazy"}
                         fetchPriority={i === 0 ? "high" : "auto"}
-                        className="aspect-[4/3] w-full object-cover object-left sm:aspect-[2/1] sm:object-center"
+                        className="aspect-[2/1] w-full object-cover object-center"
                       />
                     </Link>
-                    <div className="absolute bottom-9 left-4 z-10 flex flex-wrap items-center gap-2 sm:bottom-6 sm:left-8 sm:gap-3">
+                    <div className="absolute bottom-6 left-8 z-10 hidden flex-wrap items-center gap-3 sm:flex">
                       <button
                         type="button"
                         onClick={() => openCatalogue(undefined, slide.catalogue)}
@@ -155,6 +155,24 @@ export function Hero() {
                         to="/gifts/$catalogue"
                         params={{ catalogue: slide.slug }}
                         className="flex items-center gap-1.5 rounded-full border border-primary/25 bg-white/90 px-3 py-2 text-[0.7rem] font-semibold min-[380px]:gap-2 min-[380px]:px-4 min-[380px]:py-2.5 min-[380px]:text-xs text-primary shadow-[var(--shadow-soft)] transition-colors hover:bg-white sm:px-6 sm:py-3 sm:text-sm"
+                      >
+                        View all products
+                        <ArrowUpRight className="hidden h-4 w-4 min-[360px]:block" />
+                      </Link>
+                    </div>
+                    <div className="flex flex-wrap items-center gap-2 px-3 pb-1 pt-3 sm:hidden">
+                      <button
+                        type="button"
+                        onClick={() => openCatalogue(undefined, slide.catalogue)}
+                        className="flex items-center gap-1.5 rounded-full bg-primary px-3 py-2 text-[0.7rem] font-semibold min-[380px]:gap-2 min-[380px]:px-4 min-[380px]:py-2.5 min-[380px]:text-xs text-primary-foreground transition-transform duration-300 hover:-translate-y-0.5 sm:px-6 sm:py-3 sm:text-sm"
+                      >
+                        Get the catalogue
+                        <Download className="hidden h-4 w-4 min-[360px]:block" />
+                      </button>
+                      <Link
+                        to="/gifts/$catalogue"
+                        params={{ catalogue: slide.slug }}
+                        className="flex items-center gap-1.5 rounded-full border border-primary/25 bg-white/90 px-3 py-2 text-[0.7rem] font-semibold min-[380px]:gap-2 min-[380px]:px-4 min-[380px]:py-2.5 min-[380px]:text-xs text-primary transition-colors hover:bg-white sm:px-6 sm:py-3 sm:text-sm"
                       >
                         View all products
                         <ArrowUpRight className="hidden h-4 w-4 min-[360px]:block" />
@@ -183,7 +201,7 @@ export function Hero() {
             <ChevronRight className="h-5 w-5" />
           </button>
 
-          <div className="absolute inset-x-0 bottom-1 flex justify-center sm:inset-x-auto sm:bottom-3 sm:right-8 sm:justify-end">
+          <div className="flex justify-center pb-2 pt-1 sm:absolute sm:inset-x-auto sm:bottom-3 sm:right-8 sm:justify-end sm:p-0">
             <div className="flex rounded-full bg-white/70 px-1.5 backdrop-blur-sm">
               {SLIDES.map((slide, i) => (
                 <button

@@ -6,7 +6,8 @@ export const kitchenProducts: Product[] = [
     slug: "airtight-plastic-storage-containers",
     name: "Airtight Plastic Storage Containers",
     code: "AG-501",
-    description: "Airtight storage containers for everyday kitchen use, popular for large guest lists.",
+    description:
+      "Airtight storage containers for everyday kitchen use, popular for large guest lists.",
     collection: "kitchen-storage",
     type: "Storage",
     occasions: ["housewarming", "birthday", "wedding"],

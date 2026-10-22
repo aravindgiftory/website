@@ -172,7 +172,7 @@ function Home() {
     <>
       <div className="relative">
         {diwali && <Fireworks />}
-        <Hero />
+        <Hero lightsGap={diwali} />
         {diwali && <FairyLights />}
       </div>
       <DiwaliHighlight />

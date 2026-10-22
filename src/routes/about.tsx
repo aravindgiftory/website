@@ -20,10 +20,10 @@ export const Route = createFileRoute("/about")({
         property: "og:description",
         content: "Thoughtful gifting, curated for every occasion — from Hyderabad.",
       },
-      { property: "og:url", content: "/about" },
+      { property: "og:url", content: `${BRAND.siteUrl}/about` },
       { property: "og:type", content: "website" },
     ],
-    links: [{ rel: "canonical", href: "/about" }],
+    links: [{ rel: "canonical", href: `${BRAND.siteUrl}/about` }],
   }),
   component: AboutPage,
 });

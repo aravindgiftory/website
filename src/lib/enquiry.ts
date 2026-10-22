@@ -29,9 +29,9 @@ function isEnquiryItem(value: unknown): value is EnquiryItem {
   if (!value || typeof value !== "object") return false;
   const item = value as Record<string, unknown>;
   return (
-    typeof item.slug === "string" &&
-    typeof item.name === "string" &&
-    typeof item.code === "string" &&
-    typeof item.image === "string"
+    typeof item["slug"] === "string" &&
+    typeof item["name"] === "string" &&
+    typeof item["code"] === "string" &&
+    typeof item["image"] === "string"
   );
 }
